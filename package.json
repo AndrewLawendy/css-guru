@@ -1,0 +1,55 @@
+{
+  "main": "src/App.jsx",
+  "scripts": {
+    "clear-build-cache": "rm -rf .cache/ dist/",
+    "dev": "parcel src/index.html --open",
+    "build": "parcel build src/index.html --no-source-maps",
+    "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
+    "lint": "eslint \"src/**/*.{js,jsx,scss}\" --fix --cache --quiet"
+  },
+  "author": "Andrew Lawendy",
+  "license": "MIT",
+  "dependencies": {
+    "babel-plugin-react-css-modules": "^5.2.6",
+    "node-sass": "^5.0.0",
+    "postcss-scss": "^3.0.4",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^2.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.18.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^10.5.3",
+    "parcel-bundler": "^1.12.4",
+    "prettier": "^2.2.1",
+    "sass": "^1.32.5"
+  },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
+  "lint-staged": {
+    "*.{jsx}": [
+      "yarn lint"
+    ],
+    "*.{scss,yml,json,prettierrc}": [
+      "yarn format",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
