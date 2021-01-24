@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 import "semantic-ui-css/semantic.min.css";
 
-import AppContextProvider from "./context/AppContextProvider.jsx";
+import AppContextProvider from "./context/AppContextProvider";
 
 const App = () => {
   return (

@@ -4,18 +4,69 @@
     "plugin:import/errors",
     "plugin:react/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
-    "prettier/react"
+    "prettier/react",
+    "prettier/@typescript-eslint"
   ],
   "rules": {
     "react/prop-types": 0,
     "react-hooks/rules-of-hooks": "error",
     "no-console": "warn",
-    "react/display-name": 0
+    "react/display-name": 0,
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/member-delimiter-style": "error",
+    "@typescript-eslint/prefer-includes": 1,
+    "@typescript-eslint/prefer-string-starts-ends-with": "error",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/require-await": "error",
+    "@typescript-eslint/no-for-in-array": "error",
+    "@typescript-eslint/await-thenable": "error",
+    "@typescript-eslint/ban-types": "warn",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-unnecessary-type-assertion": [
+      "error",
+      { "typesToIgnore": [] }
+    ],
+    "@typescript-eslint/no-inferrable-types": [
+      "warn",
+      {
+        "ignoreParameters": true
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "none"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": [
+      "error",
+      {
+        "ignoreRestArgs": true
+      }
+    ],
+    "@typescript-eslint/unbound-method": [
+      "error",
+      {
+        "ignoreStatic": true
+      }
+    ]
   },
-  "parser": "babel-eslint",
-  "plugins": ["react", "import", "jsx-a11y", "react-hooks"],
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "import",
+    "jsx-a11y",
+    "react-hooks"
+  ],
   "parserOptions": {
+    "project": "./tsconfig.json",
     "ecmaVersion": 2021,
     "sourceType": "module",
     "ecmaFeatures": {
@@ -30,6 +81,14 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true
+      }
     }
   }
 }

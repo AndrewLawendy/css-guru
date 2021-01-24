@@ -4,8 +4,8 @@
     "clear-build-cache": "rm -rf .cache/ dist/",
     "dev": "parcel src/index.html --open",
     "build": "parcel build src/index.html --no-source-maps",
-    "format": "prettier --write \"src/**/*.{js,jsx,scss}\"",
-    "lint": "eslint \"src/**/*.{js,jsx,scss}\" --fix --cache --quiet"
+    "format": "prettier --write \"src/**/*.{ts,tsx,scss}\"",
+    "lint": "eslint \"src/**/*.{ts,tsx,scss}\" --fix --cache --quiet"
   },
   "author": "Andrew Lawendy",
   "license": "MIT",
@@ -22,6 +22,10 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.14.0",
+    "@typescript-eslint/parser": "^4.14.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
@@ -33,13 +37,14 @@
     "lint-staged": "^10.5.3",
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.2.1",
-    "sass": "^1.32.5"
+    "sass": "^1.32.5",
+    "typescript": "^4.1.3"
   },
   "browserslist": [
     "last 2 Chrome versions"
   ],
   "lint-staged": {
-    "*.{jsx}": [
+    "*.{tsx}": [
       "yarn lint"
     ],
     "*.{scss,yml,json,prettierrc}": [
