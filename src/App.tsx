@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import "semantic-ui-css/semantic.min.css";
-
 import AppContextProvider from "./context/AppContextProvider";
-import Editor from "./components/Editor/Editor";
+import Dashboard from "./components/Dashboard/Dashboard";
+
+import "semantic-ui-css/semantic.min.css";
+import "./style/style.scss";
 
 const App = () => {
   return (
     <AppContextProvider>
-      <Editor />
+      <Dashboard />
     </AppContextProvider>
   );
 };
