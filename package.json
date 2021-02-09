@@ -10,10 +10,14 @@
   "author": "Andrew Lawendy",
   "license": "MIT",
   "dependencies": {
+    "ace-builds": "^1.4.12",
     "babel-plugin-react-css-modules": "^5.2.6",
+    "css-tree": "^1.1.2",
+    "csstree-validator": "^2.0.0",
     "node-sass": "^5.0.0",
     "postcss-scss": "^3.0.4",
     "react": "^17.0.1",
+    "react-ace": "^9.2.1",
     "react-dom": "^17.0.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3"
@@ -22,6 +26,8 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-react": "^7.12.10",
+    "@types/css-tree": "^1.0.5",
+    "@types/node": "^14.14.25",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
