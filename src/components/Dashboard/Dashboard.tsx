@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { Grid, Segment, Accordion, Icon, Divider } from "semantic-ui-react";
 
 import Editor from "../Editor/Editor";
+import CodeExplanation from "../CodeExplanation/CodeExplanation";
 
 const Dashboard: FC = () => {
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(0);
@@ -30,7 +31,7 @@ const Dashboard: FC = () => {
               </Accordion.Title>
               <Accordion.Content active={activeAccordionIndex === 0}>
                 <Divider className="mt-0" />
-                Parsing...
+                <CodeExplanation />
               </Accordion.Content>
             </Segment>
 

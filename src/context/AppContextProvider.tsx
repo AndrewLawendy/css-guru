@@ -1,9 +1,16 @@
-import React, { createContext } from "react";
+import React, { FC, createContext, useState } from "react";
 
-const AppContext = createContext({});
+export const AppContext = createContext({});
+import { ContextValueType } from "./types";
 
-const AppContextProvider = ({ children }) => {
-  return <AppContext.Provider value={{}}>{children}</AppContext.Provider>;
+const AppContextProvider: FC = ({ children }) => {
+  const [cssValue, setCssValue] = useState("");
+  const value: ContextValueType = {
+    cssValue,
+    setCssValue,
+  };
+
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export default AppContextProvider;
