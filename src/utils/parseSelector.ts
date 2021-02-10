@@ -4,6 +4,10 @@ import getArticle from "./getArticle";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
 
+const interpretationsStore = [];
+const compoundSelector = [];
+let lastElement = "An element with";
+
 function getElementType(selectorElement: selectorElement): string {
   switch (selectorElement.type) {
     case "TypeSelector":
@@ -23,40 +27,48 @@ function parseElement(selectorElement) {
   return elementType;
 }
 
+function resetSelector() {
+  compoundSelector.length = 0;
+  const article = interpretationsStore.length > 0 ? "an" : "An";
+  lastElement = `${article} element with`;
+}
+
+function updateInterpretations() {
+  const selectorElementInterpretationInContext = `${lastElement} ${compoundSelector.join(
+    " and "
+  )}`;
+  interpretationsStore.push(selectorElementInterpretationInContext);
+}
+
+function handleWhiteSpaceCase() {
+  updateInterpretations();
+  resetSelector();
+  interpretationsStore.push("...descendant of");
+}
+
+function handleCombinatorCase(selectorElement) {
+  updateInterpretations();
+  resetSelector();
+  const combinatorInterpretation = handleCombinator(selectorElement);
+  interpretationsStore.push(combinatorInterpretation);
+}
+
+function handleTypeSelectorCase(selectorElement) {
+  const article = getArticle(selectorElement.name);
+  lastElement = `${article} <code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
+}
+
 export default function ({ children }: selector): string[] {
-  const interpretations = [];
-  const compoundSelector = [];
-  let lastElement = "An element with";
-
-  function resetSelector() {
-    compoundSelector.length = 0;
-    const article = interpretations.length > 0 ? "an" : "An";
-    lastElement = `${article} element with`;
-  }
-
-  function updateInterpretations() {
-    const selectorElementInterpretationInContext = `${lastElement} ${compoundSelector.join(
-      " and "
-    )}`;
-    interpretations.push(selectorElementInterpretationInContext);
-  }
-
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);
 
     if (selectorElement.type === "WhiteSpace") {
-      updateInterpretations();
-      resetSelector();
-      interpretations.push("...descendant of");
+      handleWhiteSpaceCase();
     } else if (selectorElement.type === "Combinator") {
-      updateInterpretations();
-      resetSelector();
-      const combinatorInterpretation = handleCombinator(selectorElement);
-      interpretations.push(combinatorInterpretation);
+      handleCombinatorCase(selectorElement);
     } else if (selectorElement.type === "TypeSelector") {
-      const article = getArticle(selectorElement.name);
-      lastElement = `${article} <code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
+      handleTypeSelectorCase(selectorElement);
     } else {
       compoundSelector.unshift(selectorElementInterpretation);
     }
@@ -67,5 +79,8 @@ export default function ({ children }: selector): string[] {
     }
   }
 
-  return interpretations;
+  const selectorInterpretations = [...interpretationsStore];
+  interpretationsStore.length = 0;
+
+  return selectorInterpretations;
 }
