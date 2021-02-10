@@ -34,7 +34,7 @@ function getAttributeMatcherInterpretation(selector: attributeSelectorElement) {
 }
 
 export default function (selector: attributeSelectorElement): string {
-  const attributeInterpretation = `with an attribute "${selector.name.name}"`;
+  const attributeInterpretation = `an attribute "${selector.name.name}"`;
   let attributeMatcherInterpretation = "";
 
   if (selector.matcher) {

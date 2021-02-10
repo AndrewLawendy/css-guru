@@ -9,7 +9,12 @@ export type attributeSelectorElement = {
 };
 
 export type regularSelectorElement = {
-  type: "TypeSelector" | "ClassSelector" | "IdSelector";
+  type:
+    | "TypeSelector"
+    | "ClassSelector"
+    | "IdSelector"
+    | "WhiteSpace"
+    | "Combinator";
   name: string;
 };
 
