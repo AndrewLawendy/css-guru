@@ -4,16 +4,16 @@ import getArticle from "./getArticle";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
 
-function getElementType(selector: selectorElement): string {
-  switch (selector.type) {
+function getElementType(selectorElement: selectorElement): string {
+  switch (selectorElement.type) {
     case "TypeSelector":
-      return selector.name;
+      return selectorElement.name;
     case "ClassSelector":
-      return `class "${selector.name}"`;
+      return `class <code>.${selectorElement.name}</code>`;
     case "IdSelector":
-      return `id "${selector.name}"`;
+      return `id <code>#${selectorElement.name}</code>`;
     case "AttributeSelector":
-      return handleAttributeSelectedElement(selector);
+      return handleAttributeSelectedElement(selectorElement);
   }
 }
 
@@ -23,7 +23,7 @@ function parseElement(selectorElement) {
   return elementType;
 }
 
-export default function ({ children }: selector): string {
+export default function ({ children }: selector): string[] {
   const interpretations = [];
   const compoundSelector = [];
   let lastElement = "An element with";
@@ -56,7 +56,7 @@ export default function ({ children }: selector): string {
       interpretations.push(combinatorInterpretation);
     } else if (selectorElement.type === "TypeSelector") {
       const article = getArticle(selectorElement.name);
-      lastElement = `${article} ${selectorElement.name} tag`;
+      lastElement = `${article} <code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
     } else {
       compoundSelector.unshift(selectorElementInterpretation);
     }
@@ -67,5 +67,5 @@ export default function ({ children }: selector): string {
     }
   }
 
-  return interpretations.join("/n");
+  return interpretations;
 }

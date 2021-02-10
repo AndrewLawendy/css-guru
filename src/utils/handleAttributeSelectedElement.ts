@@ -15,17 +15,17 @@ function getAttributeMatcherInterpretation(selector: attributeSelectorElement) {
   switch (selector.matcher) {
     case "=":
       if (selector.flags) return getFlagInterpretation(selector);
-      return `whose value is exactly equal to ${selector.value.value}`;
+      return `whose value is exactly equal to <code>${selector.value.value}</code>`;
     case "~=":
-      return `whose value contains exactly the string ${selector.value.value}`;
+      return `whose value contains exactly the string <code>${selector.value.value}</code>`;
     case "^=":
-      return `whose value starts exactly with the string ${selector.value.value}`;
+      return `whose value starts exactly with the string <code>${selector.value.value}</code>`;
     case "$=":
-      return `whose value ends exactly with the string ${selector.value.value}`;
+      return `whose value ends exactly with the string <code>${selector.value.value}</code>`;
     case "*=":
-      return `whose value contains the substring of the string ${selector.value.value}`;
+      return `whose value contains the substring of the string <code>${selector.value.value}</code>`;
     case "|=":
-      return `whose value is a hyphen-separated list of values beginning with ${selector.value.value}`;
+      return `whose value is a hyphen-separated list of values beginning with <code>${selector.value.value}</code>`;
     default:
       throw new Error(
         `This matcher ${selector.matcher} is not a valid attribute matcher`
@@ -34,7 +34,7 @@ function getAttributeMatcherInterpretation(selector: attributeSelectorElement) {
 }
 
 export default function (selector: attributeSelectorElement): string {
-  const attributeInterpretation = `an attribute "${selector.name.name}"`;
+  const attributeInterpretation = `an attribute <code>${selector.name.name}</code>`;
   let attributeMatcherInterpretation = "";
 
   if (selector.matcher) {

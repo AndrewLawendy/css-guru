@@ -13,16 +13,36 @@ const CodeExplanation: FC = () => {
   useEffect(parseAndGenerateCssTree, [cssValue]);
 
   function parseAndGenerateCssTree() {
+    setSelectorsInterpretations([]);
     const ast = parse(cssValue);
     const { children: cssRules } = toPlainObject(ast);
     cssRules.forEach(({ prelude: { children: selectorList } }) => {
       selectorList.forEach((selector) => {
-        const selectorsInterpretation = parseSelector(selector);
+        const selectorsInterpretations = parseSelector(selector);
+        setSelectorsInterpretations((selectorsInterpretationsArray) => [
+          ...selectorsInterpretationsArray,
+          selectorsInterpretations,
+        ]);
       });
     });
   }
 
-  return <div>Parsing...</div>;
+  return (
+    <>
+      {selectorsInterpretations.map((selectorInterpretations, index) => (
+        <ul key={`selector-interpretations-${index}`}>
+          {selectorInterpretations.map(
+            (interpretation, interpretationIndex) => (
+              <li
+                key={`interpretation-${interpretationIndex}`}
+                dangerouslySetInnerHTML={{ __html: interpretation }}
+              ></li>
+            )
+          )}
+        </ul>
+      ))}
+    </>
+  );
 };
 
 export default CodeExplanation;
