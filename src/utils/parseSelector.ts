@@ -34,7 +34,8 @@ function resetSelector() {
 }
 
 function updateInterpretations() {
-  const selectorElementInterpretationInContext = `${lastElement} ${compoundSelector.join(
+  const compoundSelectorLink = compoundSelector.length > 0 ? " with " : "";
+  const selectorElementInterpretationInContext = `${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
   )}`;
   interpretationsStore.push(selectorElementInterpretationInContext);
