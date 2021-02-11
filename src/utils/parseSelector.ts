@@ -61,7 +61,8 @@ function handleCombinatorCase(selectorElement) {
 function handleTypeSelectorCase(selectorElement) {
   const article = getArticle(
     selectorElement.name,
-    interpretationsStore.length === 0
+    interpretationsStore.length === 0,
+    compoundSelector.length > 0
   );
   const tag =
     selectorElement.name === "*"
