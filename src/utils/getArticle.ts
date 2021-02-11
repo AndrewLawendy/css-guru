@@ -3,8 +3,13 @@ function capitalizeArticle(article: string): string {
 }
 
 export default function (word: string, capitalize: boolean = false): string {
-  const [firstLetter] = word;
-  const article = /[a,e,i,o,u,h]/i.test(firstLetter) ? "an" : "a";
+  let article;
+  if (word === "*") {
+    article = "any";
+  } else {
+    const [firstLetter] = word;
+    article = /[a,e,i,o,u,h]/i.test(firstLetter) ? "an" : "a";
+  }
 
   return capitalize ? capitalizeArticle(article) : article;
 }

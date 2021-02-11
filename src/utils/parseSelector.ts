@@ -63,8 +63,12 @@ function handleTypeSelectorCase(selectorElement) {
     selectorElement.name,
     interpretationsStore.length === 0
   );
+  const tag =
+    selectorElement.name === "*"
+      ? "element"
+      : `<code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
 
-  lastElement = `${article} <code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
+  lastElement = `${article} ${tag}`;
 }
 
 export default function ({ children }: selector): string[] {
@@ -90,6 +94,7 @@ export default function ({ children }: selector): string[] {
 
   const selectorInterpretations = [...interpretationsStore];
   interpretationsStore.length = 0;
+  resetSelector();
 
   return selectorInterpretations;
 }
