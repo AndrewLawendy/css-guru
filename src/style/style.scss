@@ -24,4 +24,12 @@
   .ml-0 {
     margin-left: 0 !important;
   }
+
+  code {
+    color: #e01e5a;
+    background-color: rgba(29, 28, 29, 0.04);
+    border: 1px solid rgba(29, 28, 29, 0.13);
+    border-radius: 3px;
+    padding: 1px 3px;
+  }
 }
