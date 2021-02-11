@@ -58,7 +58,11 @@ function handleCombinatorCase(selectorElement) {
 }
 
 function handleTypeSelectorCase(selectorElement) {
-  const article = getArticle(selectorElement.name);
+  const article = getArticle(
+    selectorElement.name,
+    interpretationsStore.length === 0
+  );
+
   lastElement = `${article} <code>&lt;${selectorElement.name}&#47;&gt;</code> tag`;
 }
 
