@@ -43,7 +43,11 @@ function updateInterpretations() {
 function handleWhiteSpaceCase() {
   updateInterpretations();
   resetSelector();
-  interpretationsStore.push("...descendant of");
+  const interpretation =
+    interpretationsStore.length > 2
+      ? "...who is itself descendant of"
+      : "... descendant of";
+  interpretationsStore.push(interpretation);
 }
 
 function handleCombinatorCase(selectorElement) {
