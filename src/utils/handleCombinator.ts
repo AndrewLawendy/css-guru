@@ -1,6 +1,6 @@
-import { selectorElement } from "../types";
+import { regularSelectorElement } from "../types";
 
-export default function (selectorElement: selectorElement): string {
+export default function (selectorElement: regularSelectorElement): string {
   switch (selectorElement.name) {
     case ">":
       return "...is directly child of";

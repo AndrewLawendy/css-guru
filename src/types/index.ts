@@ -14,7 +14,8 @@ export type regularSelectorElement = {
     | "ClassSelector"
     | "IdSelector"
     | "WhiteSpace"
-    | "Combinator";
+    | "Combinator"
+    | "PseudoClassSelector";
   name: string;
 };
 

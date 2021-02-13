@@ -3,10 +3,12 @@ import { selectorElement, selector } from "../types";
 import getArticle from "./getArticle";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
+import handlePseudoClass from "./handlePseudoClass";
 
-const interpretationsStore = [];
-const compoundSelector = [];
+const interpretationsStore: string[] = [];
+const compoundSelector: string[] = [];
 let lastElement = "An element with";
+let pseudoClass: string;
 
 function getElementType(selectorElement: selectorElement): string {
   switch (selectorElement.type) {
@@ -18,6 +20,8 @@ function getElementType(selectorElement: selectorElement): string {
       return `id <code>#${selectorElement.name}</code>`;
     case "AttributeSelector":
       return handleAttributeSelectedElement(selectorElement);
+    case "PseudoClassSelector":
+      return handlePseudoClass(selectorElement);
   }
 }
 
@@ -35,9 +39,10 @@ function resetSelector() {
 
 function updateInterpretations() {
   const compoundSelectorLink = compoundSelector.length > 0 ? " with " : "";
+  const pseudoClassLink = pseudoClass ? ` when it's ${pseudoClass}` : "";
   const selectorElementInterpretationInContext = `${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
-  )}`;
+  )}${pseudoClassLink}`;
   interpretationsStore.push(selectorElementInterpretationInContext);
 }
 
@@ -77,14 +82,21 @@ export default function ({ children }: selector): string[] {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);
 
-    if (selectorElement.type === "WhiteSpace") {
-      handleWhiteSpaceCase();
-    } else if (selectorElement.type === "Combinator") {
-      handleCombinatorCase(selectorElement);
-    } else if (selectorElement.type === "TypeSelector") {
-      handleTypeSelectorCase(selectorElement);
-    } else {
-      compoundSelector.unshift(selectorElementInterpretation);
+    switch (selectorElement.type) {
+      case "WhiteSpace":
+        handleWhiteSpaceCase();
+        break;
+      case "Combinator":
+        handleCombinatorCase(selectorElement);
+        break;
+      case "TypeSelector":
+        handleTypeSelectorCase(selectorElement);
+        break;
+      case "PseudoClassSelector":
+        pseudoClass = selectorElementInterpretation;
+        break;
+      default:
+        compoundSelector.unshift(selectorElementInterpretation);
     }
 
     if (index === 0) {
