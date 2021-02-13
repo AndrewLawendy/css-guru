@@ -1,6 +1,6 @@
-import { regularSelectorElement } from "../types";
+import { PseudoClassElement } from "../types";
 
-export default function (selectorElement: regularSelectorElement): string {
+export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
     case "hover":
       return "hovered";

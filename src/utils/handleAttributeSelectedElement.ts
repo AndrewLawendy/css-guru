@@ -1,6 +1,6 @@
-import { attributeSelectorElement } from "../types";
+import { AttributeSelectorElement } from "../types";
 
-function getFlagInterpretation(selector: attributeSelectorElement) {
+function getFlagInterpretation(selector: AttributeSelectorElement) {
   switch (selector.flags) {
     case "s":
       return `whose value is exactly and case-sensitively equal to ${selector.value.value}`;
@@ -11,7 +11,7 @@ function getFlagInterpretation(selector: attributeSelectorElement) {
   }
 }
 
-function getAttributeMatcherInterpretation(selector: attributeSelectorElement) {
+function getAttributeMatcherInterpretation(selector: AttributeSelectorElement) {
   switch (selector.matcher) {
     case "=":
       if (selector.flags) return getFlagInterpretation(selector);
@@ -33,7 +33,7 @@ function getAttributeMatcherInterpretation(selector: attributeSelectorElement) {
   }
 }
 
-export default function (selector: attributeSelectorElement): string {
+export default function (selector: AttributeSelectorElement): string {
   const attributeInterpretation = `an attribute <code>${selector.name.name}</code>`;
   let attributeMatcherInterpretation = "";
 

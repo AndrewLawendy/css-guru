@@ -1,4 +1,4 @@
-import { selectorElement, selector } from "../types";
+import { SelectorElement, Selector } from "../types";
 
 import getArticle from "./getArticle";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -10,7 +10,7 @@ const compoundSelector: string[] = [];
 let lastElement = "An element with";
 let pseudoClass: string;
 
-function getElementType(selectorElement: selectorElement): string {
+function getElementType(selectorElement: SelectorElement): string {
   switch (selectorElement.type) {
     case "TypeSelector":
       return selectorElement.name;
@@ -77,7 +77,7 @@ function handleTypeSelectorCase(selectorElement) {
   lastElement = `${article} ${tag}`;
 }
 
-export default function ({ children }: selector): string[] {
+export default function ({ children }: Selector): string[] {
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);

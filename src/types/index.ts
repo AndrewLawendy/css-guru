@@ -1,4 +1,4 @@
-export type attributeSelectorElement = {
+export type AttributeSelectorElement = {
   flags: "s" | "i";
   type: "AttributeSelector";
   name: { name: string };
@@ -8,19 +8,27 @@ export type attributeSelectorElement = {
   };
 };
 
-export type regularSelectorElement = {
+export type PseudoClassElement = {
+  type: "PseudoClassSelector";
+  name: string;
+  children?: SelectorElement[];
+};
+
+export type RegularSelectorElement = {
   type:
     | "TypeSelector"
     | "ClassSelector"
     | "IdSelector"
     | "WhiteSpace"
-    | "Combinator"
-    | "PseudoClassSelector";
+    | "Combinator";
   name: string;
 };
 
-export type selectorElement = regularSelectorElement | attributeSelectorElement;
+export type SelectorElement =
+  | RegularSelectorElement
+  | AttributeSelectorElement
+  | PseudoClassElement;
 
-export type selector = {
-  children: selectorElement[];
+export type Selector = {
+  children: SelectorElement[];
 };
