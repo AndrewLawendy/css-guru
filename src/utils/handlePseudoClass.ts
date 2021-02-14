@@ -79,11 +79,11 @@ export default function (selectorElement: PseudoClassElement): string {
     case "empty":
       return "has no children (neither elements nor text) except perhaps white space";
     case "nth-child":
-      return `${handleNth(selectorElement)} child of its parent`;
+      return `${handleNth(selectorElement)} of its parent`;
     case "nth-last-child":
       return `${handleNth(
         selectorElement
-      )} child of its parent counting from the last one`;
+      )} of its parent counting from the last one`;
     case "first-child":
       return "is first child of its parent";
     case "last-child":
@@ -91,11 +91,11 @@ export default function (selectorElement: PseudoClassElement): string {
     case "only-child":
       return "is only child of its parent";
     case "nth-of-type":
-      return `${handleNth(selectorElement)} sibling of its type`;
+      return `${handleNth(selectorElement)} of its type`;
     case "nth-last-of-type":
       return `${handleNth(
         selectorElement
-      )} sibling of its type counting from the last one`;
+      )} of its type counting from the last one`;
     case "first-of-type":
       return "is the first sibling of its type";
     case "last-of-type":
@@ -131,22 +131,22 @@ function handleNth(selectorElement: NthPseudoClassElement): string {
 
 function handleAnPlusB(firstChildNth: NthAnPlusBPseudoClassChild): string {
   if (firstChildNth.a === null && firstChildNth.b !== null) {
-    return `is the ${getNth(firstChildNth.b)}`;
+    return `is the ${getNth(firstChildNth.b)} child`;
   } else if (firstChildNth.a !== null) {
     if (firstChildNth.b === null) {
       //An
       switch (firstChildNth.a) {
         case "1":
-          return "is any";
+          return "is any child";
         case "2":
-          return "is an even";
+          return "is an even child";
         default:
-          return `is any ${getNth(firstChildNth.a)}`;
+          return `is any ${getNth(firstChildNth.a)} child`;
       }
     } else {
       // An+B
       if (firstChildNth.a === "0") {
-        return `is the ${getNth(firstChildNth.b)}`;
+        return `is the ${getNth(firstChildNth.b)} child`;
       } else {
         if (isNegative(firstChildNth.a)) {
           return handleNthNegativeB(firstChildNth.a, firstChildNth.b);
@@ -175,26 +175,32 @@ function handleNthNegativeB(a: string, b: string): string {
   const aNumber = Math.abs(Number(a));
   const bNumber = Number(b);
   if (aNumber >= bNumber) {
-    return `is the ${getNth(b)}`;
+    return `is the ${getNth(b)} child`;
   } else {
-    const selectedElements = [];
-    for (let n = 0; n <= bNumber; n++) {
-      const nthElement = bNumber - aNumber * n;
-      if (selectedElements.length <= 3) {
-        selectedElements.push(`${getNth(nthElement.toString())} element`);
-      } else {
-        selectedElements.push("etc...");
-        break;
-      }
-    }
+    if (a === "-1") {
+      return `is one of the first ${b} children`;
+    } else {
+      const selectedElements = [];
+      for (let n = 0; n <= bNumber; n++) {
+        const nthElement = bNumber - aNumber * n;
+        if (nthElement <= 0) break;
 
-    return `is ${selectedElements.join(", ")}`;
+        if (selectedElements.length <= 3) {
+          selectedElements.push(`${getNth(nthElement.toString())} child`);
+        } else {
+          if (n < bNumber) selectedElements.push("etc...");
+          break;
+        }
+      }
+
+      return `is ${selectedElements.join(", ")}`;
+    }
   }
 }
 
 function handleNthPositiveB(a: string, b: string): string {
-  if (b === "1") return "is an odd";
-  return `is every ${getNth(a)} element starting at ${getNth(b)} `;
+  if (b === "1") return "is an odd child";
+  return `is every ${getNth(a)} child starting at ${getNth(b)} child`;
 }
 
 function isNegative(nth: string): boolean {
