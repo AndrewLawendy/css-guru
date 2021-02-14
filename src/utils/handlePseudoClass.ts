@@ -79,8 +79,10 @@ export default function (selectorElement: PseudoClassElement): string {
     case "empty":
       return "has no children (neither elements nor text) except perhaps white space";
     case "nth-child":
+      isNthPseudoClass(selectorElement);
       return `${handleNth(selectorElement)} of its parent`;
     case "nth-last-child":
+      isNthPseudoClass(selectorElement);
       return `${handleNth(
         selectorElement
       )} of its parent counting from the last one`;
@@ -91,8 +93,10 @@ export default function (selectorElement: PseudoClassElement): string {
     case "only-child":
       return "is only child of its parent";
     case "nth-of-type":
+      isNthPseudoClass(selectorElement);
       return `${handleNth(selectorElement)} of its type`;
     case "nth-last-of-type":
+      isNthPseudoClass(selectorElement);
       return `${handleNth(
         selectorElement
       )} of its type counting from the last one`;
@@ -205,4 +209,17 @@ function handleNthPositiveB(a: string, b: string): string {
 
 function isNegative(nth: string): boolean {
   return nth.startsWith("-");
+}
+
+function isNthPseudoClass(
+  element: PseudoClassElement
+): asserts element is NthPseudoClassElement {
+  if (
+    element.name !== "nth-child" &&
+    element.name !== "nth-last-child" &&
+    element.name !== "nth-of-type" &&
+    element.name !== "nth-of-type"
+  ) {
+    throw new Error("This element is not an nth pseudo class");
+  }
 }
