@@ -47,6 +47,8 @@ function updateInterpretations() {
   const pseudoClassLink =
     pseudoClasses.length > 0 ? ` when it ${pseudoClasses.join(" and ")}` : "";
   const pseudoElementLink = pseudoElement ? `${pseudoElement} of ` : "";
+  if (pseudoClasses.length > 0 && lastElement === "an element")
+    lastElement = "any element";
 
   const selectorElementInterpretationInContext = `${pseudoElementLink}${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
@@ -108,7 +110,6 @@ export default function ({ children }: Selector): string[] {
         break;
       case "PseudoClassSelector":
         pseudoClasses.push(selectorElementInterpretation);
-        if (children.length === 1) lastElement = "any element";
         break;
       case "PseudoElementSelector":
         pseudoElement = selectorElementInterpretation;
