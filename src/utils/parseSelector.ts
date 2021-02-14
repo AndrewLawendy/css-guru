@@ -8,7 +8,7 @@ import handlePseudoClass from "./handlePseudoClass";
 const interpretationsStore: string[] = [];
 const compoundSelector: string[] = [];
 let lastElement = "An element with";
-let pseudoClass: string;
+const pseudoClasses: string[] = [];
 
 function getElementType(selectorElement: SelectorElement): string {
   switch (selectorElement.type) {
@@ -33,13 +33,15 @@ function parseElement(selectorElement) {
 
 function resetSelector() {
   compoundSelector.length = 0;
+  pseudoClasses.length = 0;
   const article = interpretationsStore.length > 0 ? "an" : "An";
   lastElement = `${article} element with`;
 }
 
 function updateInterpretations() {
   const compoundSelectorLink = compoundSelector.length > 0 ? " with " : "";
-  const pseudoClassLink = pseudoClass ? ` when it ${pseudoClass}` : "";
+  const pseudoClassLink =
+    pseudoClasses.length > 0 ? ` when it ${pseudoClasses.join(" and ")}` : "";
   const selectorElementInterpretationInContext = `${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
   )}${pseudoClassLink}`;
@@ -93,7 +95,7 @@ export default function ({ children }: Selector): string[] {
         handleTypeSelectorCase(selectorElement);
         break;
       case "PseudoClassSelector":
-        pseudoClass = selectorElementInterpretation;
+        pseudoClasses.push(selectorElementInterpretation);
         break;
       default:
         compoundSelector.unshift(selectorElementInterpretation);
