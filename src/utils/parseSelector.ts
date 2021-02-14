@@ -108,6 +108,7 @@ export default function ({ children }: Selector): string[] {
         break;
       case "PseudoClassSelector":
         pseudoClasses.push(selectorElementInterpretation);
+        if (children.length === 1) lastElement = "any element";
         break;
       case "PseudoElementSelector":
         pseudoElement = selectorElementInterpretation;
