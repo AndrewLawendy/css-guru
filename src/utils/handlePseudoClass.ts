@@ -12,7 +12,7 @@ export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
     case "not":
       isSelectorListParamsPseudoClass(selectorElement);
-      return `does not match either ${handleSelectorListParams(
+      return `does not match ${handleSelectorListParams(
         selectorElement,
         "or"
       )}`;
@@ -269,6 +269,7 @@ function handleSelectorListParams(
   const [firstChild] = selectorElement.children;
   const selectorsList = firstChild.children;
   const selectorsListInterpreted = [];
+  const getEither = selectorsList.length > 1 ? "either " : "";
 
   selectorsList.forEach((selector) => {
     const selectorsInterpretations = parseSelector(selector);
@@ -277,5 +278,5 @@ function handleSelectorListParams(
     );
   });
 
-  return selectorsListInterpreted.join(` ${link} `);
+  return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
 }
