@@ -3,10 +3,17 @@ import {
   RegularPseudoClassElement,
   NthPseudoClassElement,
   NthAnPlusBPseudoClassChild,
+  NotPseudoClassElement,
 } from "../types";
+
+import parseSelector from "./parseSelector";
 
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
+    case "not":
+      isNotPseudoClass(selectorElement);
+      return `does not match either ${handleNot(selectorElement)}`;
+
     case "dir":
       return `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`;
 
@@ -222,4 +229,27 @@ function isNthPseudoClass(
   ) {
     throw new Error("This element is not an nth pseudo class");
   }
+}
+
+function isNotPseudoClass(
+  element: PseudoClassElement
+): asserts element is NotPseudoClassElement {
+  if (element.name !== "not") {
+    throw new Error("This is element is not a not pseudo class");
+  }
+}
+
+function handleNot(selectorElement: NotPseudoClassElement): string {
+  const [firstChild] = selectorElement.children;
+  const selectorsList = firstChild.children;
+  const selectorsListInterpreted = [];
+
+  selectorsList.forEach((selector) => {
+    const selectorsInterpretations = parseSelector(selector);
+    selectorsListInterpreted.push(
+      selectorsInterpretations.join(" ").toLowerCase()
+    );
+  });
+
+  return selectorsListInterpreted.join(" or ");
 }

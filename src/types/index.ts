@@ -8,6 +8,12 @@ export type AttributeSelectorElement = {
   };
 };
 
+export type RegularPseudoClassElement = {
+  type: "PseudoClassSelector";
+  name: string;
+  children?: PseudoClassChild[];
+};
+
 type NthIdentifierPseudoClassChild = {
   type: "Identifier";
   name: string;
@@ -36,15 +42,16 @@ type PseudoClassChild = {
   value?: string;
 };
 
-export type RegularPseudoClassElement = {
+export type NotPseudoClassElement = {
   type: "PseudoClassSelector";
-  name: string;
-  children?: PseudoClassChild[];
+  name: "not";
+  children: SelectorElement[];
 };
 
 export type PseudoClassElement =
   | RegularPseudoClassElement
-  | NthPseudoClassElement;
+  | NthPseudoClassElement
+  | NotPseudoClassElement;
 
 export type RegularSelectorElement = {
   type:
