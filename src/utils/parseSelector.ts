@@ -1,14 +1,16 @@
 import { SelectorElement, Selector } from "../types";
 
-import getArticle from "./getArticle";
+import { getArticle, capitalizePhrase } from "./utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
 import handlePseudoClass from "./handlePseudoClass";
+import handlePseudoElements from "./handlePsuedoElements";
 
 const interpretationsStore: string[] = [];
 const compoundSelector: string[] = [];
-let lastElement = "An element with";
+let lastElement = "an element with";
 const pseudoClasses: string[] = [];
+let pseudoElement: string;
 
 function getElementType(selectorElement: SelectorElement): string {
   switch (selectorElement.type) {
@@ -22,6 +24,8 @@ function getElementType(selectorElement: SelectorElement): string {
       return handleAttributeSelectedElement(selectorElement);
     case "PseudoClassSelector":
       return handlePseudoClass(selectorElement);
+    case "PseudoElementSelector":
+      return handlePseudoElements(selectorElement);
   }
 }
 
@@ -34,18 +38,26 @@ function parseElement(selectorElement) {
 function resetSelector() {
   compoundSelector.length = 0;
   pseudoClasses.length = 0;
-  const article = interpretationsStore.length > 0 ? "an" : "An";
-  lastElement = `${article} element with`;
+  pseudoElement = "";
+  lastElement = "an element with";
 }
 
 function updateInterpretations() {
   const compoundSelectorLink = compoundSelector.length > 0 ? " with " : "";
   const pseudoClassLink =
     pseudoClasses.length > 0 ? ` when it ${pseudoClasses.join(" and ")}` : "";
-  const selectorElementInterpretationInContext = `${lastElement}${compoundSelectorLink}${compoundSelector.join(
+  const pseudoElementLink = pseudoElement ? `${pseudoElement} of ` : "";
+
+  const selectorElementInterpretationInContext = `${pseudoElementLink}${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
   )}${pseudoClassLink}`;
-  interpretationsStore.push(selectorElementInterpretationInContext);
+
+  const selectorElementInterpretationFormatted =
+    interpretationsStore.length === 0
+      ? capitalizePhrase(selectorElementInterpretationInContext)
+      : selectorElementInterpretationInContext;
+
+  interpretationsStore.push(selectorElementInterpretationFormatted);
 }
 
 function handleWhiteSpaceCase() {
@@ -96,6 +108,9 @@ export default function ({ children }: Selector): string[] {
         break;
       case "PseudoClassSelector":
         pseudoClasses.push(selectorElementInterpretation);
+        break;
+      case "PseudoElementSelector":
+        pseudoElement = selectorElementInterpretation;
         break;
       default:
         compoundSelector.unshift(selectorElementInterpretation);

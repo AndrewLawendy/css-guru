@@ -1,8 +1,8 @@
-function capitalizeArticle(article: string): string {
+export function capitalizePhrase(article: string): string {
   return article.charAt(0).toUpperCase() + article.slice(1);
 }
 
-export default function (
+export function getArticle(
   word: string,
   capitalize: boolean = false,
   isCompound: boolean
@@ -15,5 +15,5 @@ export default function (
     article = /[a,e,i,o,u,h]/i.test(firstLetter) ? "an" : "a";
   }
 
-  return capitalize ? capitalizeArticle(article) : article;
+  return capitalize ? capitalizePhrase(article) : article;
 }

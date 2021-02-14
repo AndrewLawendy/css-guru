@@ -59,7 +59,8 @@ export type RegularSelectorElement = {
     | "ClassSelector"
     | "IdSelector"
     | "WhiteSpace"
-    | "Combinator";
+    | "Combinator"
+    | "PseudoElementSelector";
   name: string;
 };
 
