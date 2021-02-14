@@ -3,6 +3,17 @@
 :global {
   body {
     background-color: $light-grey;
+    box-sizing: border-box;
+
+    #root {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: 80px 1fr;
+
+      header + * {
+        padding: 15px;
+      }
+    }
   }
 
   .m-0 {

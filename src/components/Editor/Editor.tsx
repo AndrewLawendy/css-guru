@@ -21,10 +21,13 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
   }
 
   return (
-    <>
-      <Button color="red" floated="right" onClick={handleParseCss}>
-        Parse Css
-      </Button>
+    <div className={styles.editorWrapper}>
+      <div>
+        <Button color="red" floated="right" onClick={handleParseCss}>
+          Parse Css
+        </Button>
+      </div>
+
       <AceEditor
         className={styles.editor}
         placeholder="Type your CSS here..."
@@ -45,7 +48,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
           tabSize: 2,
         }}
       />
-    </>
+    </div>
   );
 };
 

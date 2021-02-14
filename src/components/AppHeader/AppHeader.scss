@@ -1,0 +1,19 @@
+header {
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  border-bottom: 1px solid rgba(34, 36, 38, 0.15);
+  box-shadow: 0px 1px 2px 0px rgba(34, 36, 38, 0.15);
+  padding: 0 15px;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+
+  .buyMeACoffee {
+    height: 60px;
+    img {
+      height: 60px !important;
+      width: 217px !important;
+    }
+  }
+}
