@@ -3,7 +3,7 @@ import {
   RegularPseudoClassElement,
   NthPseudoClassElement,
   NthAnPlusBPseudoClassChild,
-  NotPseudoClassElement,
+  SelectorListParamsPseudoClassElement,
 } from "../types";
 
 import parseSelector from "./parseSelector";
@@ -11,8 +11,26 @@ import parseSelector from "./parseSelector";
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
     case "not":
-      isNotPseudoClass(selectorElement);
-      return `does not match either ${handleNot(selectorElement)}`;
+      isSelectorListParamsPseudoClass(selectorElement);
+      return `does not match either ${handleSelectorListParams(
+        selectorElement,
+        "or"
+      )}`;
+    case "is":
+      isSelectorListParamsPseudoClass(selectorElement);
+      return `matches ${handleSelectorListParams(selectorElement, "and/or")}`;
+    case "where":
+      isSelectorListParamsPseudoClass(selectorElement);
+      return `matches ${handleSelectorListParams(
+        selectorElement,
+        "and/or"
+      )} but contributes no specificity`;
+    case "has":
+      isSelectorListParamsPseudoClass(selectorElement);
+      return `has the relative selectors ${handleSelectorListParams(
+        selectorElement,
+        "or"
+      )} evaluated with the previous element as the :scope elements`;
 
     case "dir":
       return `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`;
@@ -231,15 +249,23 @@ function isNthPseudoClass(
   }
 }
 
-function isNotPseudoClass(
+function isSelectorListParamsPseudoClass(
   element: PseudoClassElement
-): asserts element is NotPseudoClassElement {
-  if (element.name !== "not") {
+): asserts element is SelectorListParamsPseudoClassElement {
+  if (
+    element.name !== "not" &&
+    element.name !== "is" &&
+    element.name !== "where" &&
+    element.name !== "has"
+  ) {
     throw new Error("This is element is not a not pseudo class");
   }
 }
 
-function handleNot(selectorElement: NotPseudoClassElement): string {
+function handleSelectorListParams(
+  selectorElement: SelectorListParamsPseudoClassElement,
+  link: string
+): string {
   const [firstChild] = selectorElement.children;
   const selectorsList = firstChild.children;
   const selectorsListInterpreted = [];
@@ -251,5 +277,5 @@ function handleNot(selectorElement: NotPseudoClassElement): string {
     );
   });
 
-  return selectorsListInterpreted.join(" or ");
+  return selectorsListInterpreted.join(` ${link} `);
 }

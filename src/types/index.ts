@@ -42,16 +42,16 @@ type PseudoClassChild = {
   value?: string;
 };
 
-export type NotPseudoClassElement = {
+export type SelectorListParamsPseudoClassElement = {
   type: "PseudoClassSelector";
-  name: "not";
+  name: "not" | "is" | "where" | "has";
   children: SelectorElement[];
 };
 
 export type PseudoClassElement =
   | RegularPseudoClassElement
   | NthPseudoClassElement
-  | NotPseudoClassElement;
+  | SelectorListParamsPseudoClassElement;
 
 export type RegularSelectorElement = {
   type:
