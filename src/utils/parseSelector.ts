@@ -8,7 +8,7 @@ import handlePseudoElements from "./handlePsuedoElements";
 
 const interpretationsStore: string[] = [];
 const compoundSelector: string[] = [];
-let lastElement = "an element with";
+let lastElement = "an element";
 const pseudoClasses: string[] = [];
 let pseudoElement: string;
 
@@ -39,7 +39,7 @@ function resetSelector() {
   compoundSelector.length = 0;
   pseudoClasses.length = 0;
   pseudoElement = "";
-  lastElement = "an element with";
+  lastElement = "an element";
 }
 
 function updateInterpretations() {
