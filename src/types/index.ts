@@ -11,7 +11,11 @@ export type AttributeSelectorElement = {
 export type PseudoClassElement = {
   type: "PseudoClassSelector";
   name: string;
-  children?: SelectorElement[];
+  children?: {
+    type: string;
+    name?: string;
+    value?: string;
+  }[];
 };
 
 export type RegularSelectorElement = {

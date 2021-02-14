@@ -39,7 +39,7 @@ function resetSelector() {
 
 function updateInterpretations() {
   const compoundSelectorLink = compoundSelector.length > 0 ? " with " : "";
-  const pseudoClassLink = pseudoClass ? ` when it's ${pseudoClass}` : "";
+  const pseudoClassLink = pseudoClass ? ` when it ${pseudoClass}` : "";
   const selectorElementInterpretationInContext = `${lastElement}${compoundSelectorLink}${compoundSelector.join(
     " and "
   )}${pseudoClassLink}`;
