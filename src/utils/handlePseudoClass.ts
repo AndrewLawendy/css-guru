@@ -1,4 +1,9 @@
-import { PseudoClassElement } from "../types";
+import {
+  PseudoClassElement,
+  RegularPseudoClassElement,
+  NthPseudoClassElement,
+  NthAnPlusBPseudoClassChild,
+} from "../types";
 
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
@@ -74,9 +79,11 @@ export default function (selectorElement: PseudoClassElement): string {
     case "empty":
       return "has no children (neither elements nor text) except perhaps white space";
     case "nth-child":
-      return "wip";
+      return `${handleNth(selectorElement)} child of its parent`;
     case "nth-last-child":
-      return "wip";
+      return `${handleNth(
+        selectorElement
+      )} child of its parent counting from the last one`;
     case "first-child":
       return "is first child of its parent";
     case "last-child":
@@ -84,9 +91,11 @@ export default function (selectorElement: PseudoClassElement): string {
     case "only-child":
       return "is only child of its parent";
     case "nth-of-type":
-      return "wip";
+      return `${handleNth(selectorElement)} sibling of its type`;
     case "nth-last-of-type":
-      return "wip";
+      return `${handleNth(
+        selectorElement
+      )} sibling of its type counting from the last one`;
     case "first-of-type":
       return "is the first sibling of its type";
     case "last-of-type":
@@ -99,10 +108,95 @@ export default function (selectorElement: PseudoClassElement): string {
   }
 }
 
-function handleCurrentState(selectorElement: PseudoClassElement): string {
+function handleCurrentState(
+  selectorElement: RegularPseudoClassElement
+): string {
   if (selectorElement.children?.length > 0) {
     return `is the deepest <code>:current</code> element that matches selector <code>${selectorElement.children[0].value}</code>`;
   } else {
     return "is currently presented in a time-dimensional canvas";
   }
+}
+
+function handleNth(selectorElement: NthPseudoClassElement): string {
+  const [firstChild] = selectorElement.children;
+
+  switch (firstChild.nth.type) {
+    case "Identifier":
+      return `is an ${firstChild.nth.name}`;
+    case "AnPlusB":
+      return handleAnPlusB(firstChild.nth);
+  }
+}
+
+function handleAnPlusB(firstChildNth: NthAnPlusBPseudoClassChild): string {
+  if (firstChildNth.a === null && firstChildNth.b !== null) {
+    return `is the ${getNth(firstChildNth.b)}`;
+  } else if (firstChildNth.a !== null) {
+    if (firstChildNth.b === null) {
+      //An
+      switch (firstChildNth.a) {
+        case "1":
+          return "is any";
+        case "2":
+          return "is an even";
+        default:
+          return `is any ${getNth(firstChildNth.a)}`;
+      }
+    } else {
+      // An+B
+      if (firstChildNth.a === "0") {
+        return `is the ${getNth(firstChildNth.b)}`;
+      } else {
+        if (isNegative(firstChildNth.a)) {
+          return handleNthNegativeB(firstChildNth.a, firstChildNth.b);
+        } else {
+          return handleNthPositiveB(firstChildNth.a, firstChildNth.b);
+        }
+      }
+    }
+  }
+}
+
+function getNth(nth: string): string {
+  switch (nth) {
+    case "1":
+      return "first";
+    case "2":
+      return "second";
+    case "3":
+      return "third";
+    default:
+      return `${nth}th`;
+  }
+}
+
+function handleNthNegativeB(a: string, b: string): string {
+  const aNumber = Math.abs(Number(a));
+  const bNumber = Number(b);
+  if (aNumber >= bNumber) {
+    return `is the ${getNth(b)}`;
+  } else {
+    const selectedElements = [];
+    for (let n = 0; n <= bNumber; n++) {
+      const nthElement = bNumber - aNumber * n;
+      if (selectedElements.length <= 3) {
+        selectedElements.push(`${getNth(nthElement.toString())} element`);
+      } else {
+        selectedElements.push("etc...");
+        break;
+      }
+    }
+
+    return `is ${selectedElements.join(", ")}`;
+  }
+}
+
+function handleNthPositiveB(a: string, b: string): string {
+  if (b === "1") return "is an odd";
+  return `is every ${getNth(a)} element starting at ${getNth(b)} `;
+}
+
+function isNegative(nth: string): boolean {
+  return nth.startsWith("-");
 }

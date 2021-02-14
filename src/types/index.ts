@@ -8,15 +8,43 @@ export type AttributeSelectorElement = {
   };
 };
 
-export type PseudoClassElement = {
+type NthIdentifierPseudoClassChild = {
+  type: "Identifier";
+  name: string;
+};
+
+export type NthAnPlusBPseudoClassChild = {
+  type: "AnPlusB";
+  a: null | string;
+  b: null | string;
+};
+
+type NthPseudoClassChild = {
+  type: "Nth";
+  nth: NthIdentifierPseudoClassChild | NthAnPlusBPseudoClassChild;
+};
+
+export type NthPseudoClassElement = {
+  type: "PseudoClassSelector";
+  name: "nth-child" | "nth-last-child" | "nth-of-type" | "nth-last-of-type";
+  children?: NthPseudoClassChild[];
+};
+
+type PseudoClassChild = {
+  type: string;
+  name?: string;
+  value?: string;
+};
+
+export type RegularPseudoClassElement = {
   type: "PseudoClassSelector";
   name: string;
-  children?: {
-    type: string;
-    name?: string;
-    value?: string;
-  }[];
+  children?: PseudoClassChild[];
 };
+
+export type PseudoClassElement =
+  | RegularPseudoClassElement
+  | NthPseudoClassElement;
 
 export type RegularSelectorElement = {
   type:
