@@ -1,14 +1,12 @@
-import React, { FC, useContext, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
-
-import { AppContext } from "../../context/AppContextProvider";
-import { ContextValueType } from "../../context/types";
 
 import parseSelector from "../../utils/parseSelector";
 
-const CodeExplanation: FC = () => {
+import { CodeExplanationPropTypes } from "./types";
+
+const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
   const [selectorsInterpretations, setSelectorsInterpretations] = useState([]);
-  const { cssValue }: ContextValueType = useContext(AppContext);
 
   useEffect(parseAndGenerateCssTree, [cssValue]);
 

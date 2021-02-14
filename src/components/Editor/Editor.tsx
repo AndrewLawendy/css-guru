@@ -1,4 +1,4 @@
-import React, { FC, useState, useContext } from "react";
+import React, { FC, useState } from "react";
 import AceEditor from "react-ace";
 import { Button } from "semantic-ui-react";
 
@@ -6,14 +6,11 @@ import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/snippets/css";
 import "ace-builds/src-noconflict/theme-monokai";
 
-import { AppContext } from "../../context/AppContextProvider";
-import { ContextValueType } from "../../context/types";
-
 import styles from "./Editor.scss";
+import { EditorPropTypes } from "./types";
 
-const Editor: FC = () => {
+const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
   const [cssText, setCssText] = useState("");
-  const { setCssValue }: ContextValueType = useContext(AppContext);
 
   function handleChange(value) {
     setCssText(value);
