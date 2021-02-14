@@ -3,9 +3,9 @@ import { AttributeSelectorElement } from "../types";
 function getFlagInterpretation(selector: AttributeSelectorElement) {
   switch (selector.flags) {
     case "s":
-      return `whose value is exactly and case-sensitively equal to ${selector.value.value}`;
+      return `whose value is exactly and case-sensitively equal to <code>${selector.value.value}</code>`;
     case "i":
-      return `whose value is exactly equal to any (ASCII-range) case-insensitive of ${selector.value.value}`;
+      return `whose value is exactly equal to any (ASCII-range) case-insensitive of <code>${selector.value.value}</code>`;
     default:
       throw new Error(`This flag ${selector.flags} is not a valid one`);
   }
