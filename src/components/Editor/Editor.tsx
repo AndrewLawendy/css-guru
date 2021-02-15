@@ -40,7 +40,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
     setCssText(value);
   }
 
-  function handleParseCss() {
+  function handleInterpretCss() {
     setCssValue(cssText);
   }
 
@@ -60,7 +60,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
           onChange={handleThemeChange}
         />
 
-        <Button color="red" onClick={handleParseCss}>
+        <Button color="red" onClick={handleInterpretCss}>
           Interpret Css
         </Button>
       </div>

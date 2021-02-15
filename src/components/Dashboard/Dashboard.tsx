@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import { Grid, Segment, Accordion, Icon, Divider } from "semantic-ui-react";
+import { ErrorBoundary } from "react-error-boundary";
 
+import InterpretationErrorBoundaryFallback from "../InterpretationErrorBoundaryFallback/InterpretationErrorBoundaryFallback";
 import Editor from "../Editor/Editor";
 import CodeExplanation from "../CodeExplanation/CodeExplanation";
 
@@ -10,6 +12,11 @@ const Dashboard: FC = () => {
   function handleAccordionClick(_, { index }) {
     const newIndex = activeAccordionIndex === index ? -1 : index;
     setActiveAccordionIndex(newIndex);
+  }
+
+  function resetInterpretation() {
+    setCssValue("");
+    setActiveAccordionIndex(-1);
   }
 
   useEffect(() => {
@@ -36,7 +43,12 @@ const Dashboard: FC = () => {
               </Accordion.Title>
               <Accordion.Content active={activeAccordionIndex === 0}>
                 <Divider className="mt-0" />
-                <CodeExplanation cssValue={cssValue} />
+                <ErrorBoundary
+                  FallbackComponent={InterpretationErrorBoundaryFallback}
+                  onReset={resetInterpretation}
+                >
+                  <CodeExplanation cssValue={cssValue} />
+                </ErrorBoundary>
               </Accordion.Content>
             </Segment>
 
@@ -51,7 +63,12 @@ const Dashboard: FC = () => {
               </Accordion.Title>
               <Accordion.Content active={activeAccordionIndex === 1}>
                 <Divider className="mt-0" />
-                Smelling...
+                <ErrorBoundary
+                  FallbackComponent={InterpretationErrorBoundaryFallback}
+                  onReset={resetInterpretation}
+                >
+                  Smelling...
+                </ErrorBoundary>
               </Accordion.Content>
             </Segment>
           </Accordion>

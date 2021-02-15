@@ -13,7 +13,7 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      <Dashboard />;
+      <Dashboard />
       <ReactNotification />
     </>
   );
