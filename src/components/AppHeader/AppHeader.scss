@@ -1,3 +1,5 @@
+@import "../../style/variables";
+
 header {
   position: sticky;
   top: 0;
@@ -10,10 +12,48 @@ header {
   align-items: center;
   justify-content: space-between;
 
-  .buyMeACoffee {
+  nav {
+    display: flex;
     height: 100%;
-    img {
+
+    .buyMeACoffee {
       height: 100%;
+      img {
+        height: 100%;
+      }
     }
+
+    a {
+      line-height: 49px;
+      font-size: 1.3rem;
+
+      &:not(:last-of-type) {
+        margin-right: 0.5rem;
+        position: relative;
+        overflow: hidden;
+
+        &::before {
+          content: "";
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background-color: $locust;
+          transition: bottom 0.2s;
+        }
+
+        &.active,
+        &:hover {
+          &::before {
+            bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  a {
+    cursor: pointer;
   }
 }

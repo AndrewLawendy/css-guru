@@ -13,6 +13,10 @@
       header + .app-container {
         padding: 15px;
       }
+
+      a {
+        color: inherit;
+      }
     }
   }
 
@@ -34,6 +38,10 @@
 
   .ml-0 {
     margin-left: 0 !important;
+  }
+
+  .text-bold {
+    font-weight: bold;
   }
 
   code {

@@ -23,7 +23,8 @@
     "react-notifications-component": "^3.0.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.3",
-    "use-local-storage-state": "^9.0.2"
+    "use-local-storage-state": "^9.0.2",
+    "wouter": "^2.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
