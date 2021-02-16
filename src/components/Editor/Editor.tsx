@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import AceEditor from "react-ace";
-import { Button, Dropdown } from "semantic-ui-react";
+import { validate } from "csstree-validator";
+import { Button, Dropdown, Message, Transition } from "semantic-ui-react";
 
 import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/snippets/css";
@@ -36,18 +37,27 @@ const themeOptions = [
 
 const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
   const [cssText, setCssText] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]);
   const [editorTheme, setEditorTheme] = useEditorTheme();
 
-  function handleChange(value) {
+  function handleEditorChange(value) {
     setCssText(value);
-  }
-
-  function handleInterpretCss() {
-    setCssValue(cssText);
+    if (validationErrors.length > 0) {
+      setValidationErrors([]);
+    }
   }
 
   function handleThemeChange(_, { value }) {
     setEditorTheme(value);
+  }
+
+  function handleInterpretCss() {
+    const validation = validate(cssText);
+    if (validation.length > 0) {
+      setValidationErrors(validation);
+    } else {
+      setCssValue(cssText);
+    }
   }
 
   return (
@@ -62,7 +72,11 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
           onChange={handleThemeChange}
         />
 
-        <Button color="red" onClick={handleInterpretCss}>
+        <Button
+          color="red"
+          onClick={handleInterpretCss}
+          disabled={cssText.length === 0}
+        >
           Interpret Css
         </Button>
       </div>
@@ -73,7 +87,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
         mode="css"
         theme={editorTheme}
         name="css_editor"
-        onChange={handleChange}
+        onChange={handleEditorChange}
         fontSize={14}
         showPrintMargin={false}
         showGutter={true}
@@ -87,6 +101,19 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
           tabSize: 2,
         }}
       />
+
+      <Transition.Group animation="fade up" duration={500}>
+        {validationErrors.length > 0 && (
+          <Message
+            error
+            floating
+            header="CSS Input Error"
+            list={validationErrors.map(
+              ({ name, message }) => `${name}: ${message}`
+            )}
+          />
+        )}
+      </Transition.Group>
     </div>
   );
 };
