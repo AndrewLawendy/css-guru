@@ -1,5 +1,7 @@
 .editorWrapper {
-  height: 100%;
+  height: calc(100vh - 110px);
+  position: sticky;
+  top: 95px;
   display: flex;
   flex-direction: column;
 

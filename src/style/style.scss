@@ -10,7 +10,7 @@
       display: grid;
       grid-template-rows: 80px 1fr;
 
-      header + * {
+      header + .app-container {
         padding: 15px;
       }
     }
