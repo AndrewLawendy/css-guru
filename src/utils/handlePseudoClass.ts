@@ -60,7 +60,7 @@ export default function (selectorElement: PseudoClassElement): string {
     case "active":
       return "is in an activated state";
     case "hover":
-      return "is under the cursor, or that has a descendant under the cursor";
+      return "is hovered (under the cursor, or that has a descendant under the cursor)";
     case "focus":
       return "has user input focus";
     case "focus-within":
