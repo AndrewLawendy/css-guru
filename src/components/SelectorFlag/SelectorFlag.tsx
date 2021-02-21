@@ -13,7 +13,7 @@ const SelectorFlag: FC<Flag> = ({ text, status }) => {
         <span>
           <Icon color="teal" name="lab" /> This feature is experimental,
           supported by limited browsers and should not be used in production
-          code.
+          code
         </span>
       );
       break;
