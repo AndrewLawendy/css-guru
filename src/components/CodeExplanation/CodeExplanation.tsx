@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
 import reactStringReplace from "react-string-replace";
+import flow from "lodash.flow";
 
 import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
@@ -29,26 +30,24 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
   }
 
   function formatInterpretation(interpretation: string) {
-    const flagReplacement = reactStringReplace(
-      interpretation,
-      /({.+})/g,
-      (match, i) => {
+    function flagReplacement(text: string) {
+      return reactStringReplace(text, /({.+})/g, (match, i) => {
         if (match) {
           const flag = JSON.parse(match);
           return <SelectorFlag {...flag} />;
         }
 
         return match;
-      }
-    );
+      });
+    }
 
-    const codeTagReplacement = reactStringReplace(
-      flagReplacement,
-      /<code>(.+?)<\/code>/g,
-      (match) => <code dangerouslySetInnerHTML={{ __html: match }} />
-    );
+    function codeTagReplacement(text: string) {
+      return reactStringReplace(text, /<code>(.+?)<\/code>/g, (match) => (
+        <code dangerouslySetInnerHTML={{ __html: match }} />
+      ));
+    }
 
-    return codeTagReplacement;
+    return flow(flagReplacement, codeTagReplacement)(interpretation);
   }
 
   return (
