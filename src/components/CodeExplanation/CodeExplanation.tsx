@@ -31,10 +31,10 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
 
   function formatInterpretation(interpretation: string) {
     function flagReplacement(text: string) {
-      return reactStringReplace(text, /({.+})/g, (match, i) => {
+      return reactStringReplace(text, /({.+})/g, (match, index) => {
         if (match) {
           const flag = JSON.parse(match);
-          return <SelectorFlag {...flag} />;
+          return <SelectorFlag key={`${match}-${index}`} {...flag} />;
         }
 
         return match;
