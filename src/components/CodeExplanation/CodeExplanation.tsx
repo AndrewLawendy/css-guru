@@ -42,9 +42,16 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
     }
 
     function codeTagReplacement(text: string) {
-      return reactStringReplace(text, /<code>(.+?)<\/code>/g, (match) => (
-        <code dangerouslySetInnerHTML={{ __html: match }} />
-      ));
+      return reactStringReplace(
+        text,
+        /<code>(.+?)<\/code>/g,
+        (match, index) => (
+          <code
+            key={`${match}-${index}`}
+            dangerouslySetInnerHTML={{ __html: match }}
+          />
+        )
+      );
     }
 
     return flow(flagReplacement, codeTagReplacement)(interpretation);
