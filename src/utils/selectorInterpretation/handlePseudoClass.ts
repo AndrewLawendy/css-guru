@@ -17,15 +17,28 @@ export default function (selectorElement: PseudoClassElement): string {
         selectorElement,
         "or"
       )}`;
-    case "is":
+    case "is": {
       isSelectorListParamsPseudoClass(selectorElement);
-      return `matches ${handleSelectorListParams(selectorElement, "and/or")}`;
-    case "where":
+      const flag: Flag = {
+        text: `matches ${handleSelectorListParams(selectorElement, "and/or")}`,
+        status: "Experimental",
+      };
+
+      return JSON.stringify(flag);
+    }
+    case "where": {
       isSelectorListParamsPseudoClass(selectorElement);
-      return `matches ${handleSelectorListParams(
-        selectorElement,
-        "and/or"
-      )} but contributes no specificity`;
+      const flag: Flag = {
+        text: `matches ${handleSelectorListParams(
+          selectorElement,
+          "and/or"
+        )} but contributes no specificity`,
+        status: "Experimental",
+      };
+
+      return JSON.stringify(flag);
+    }
+
     case "has": {
       isSelectorListParamsPseudoClass(selectorElement);
       const flag: Flag = {
@@ -35,14 +48,27 @@ export default function (selectorElement: PseudoClassElement): string {
         )} evaluated with the previous element as the :scope elements`,
         status: "Not Supported",
       };
+
       return JSON.stringify(flag);
     }
 
-    case "dir":
-      return `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`;
+    case "dir": {
+      const flag: Flag = {
+        text: `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`,
+        status: "Experimental",
+      };
 
-    case "any-link":
-      return "is the source anchor of a hyperlink";
+      return JSON.stringify(flag);
+    }
+
+    case "any-link": {
+      const flag: Flag = {
+        text: "is the source anchor of a hyperlink",
+        status: "Experimental",
+      };
+
+      return JSON.stringify(flag);
+    }
     case "link":
       return "is the source anchor of a hyperlink of which the target is not yet visited";
     case "visited":
@@ -100,10 +126,23 @@ export default function (selectorElement: PseudoClassElement): string {
       return "requires input";
     case "optional":
       return "does not require input";
-    case "blank":
-      return "has a blank (empty/missing) value";
-    case "user-invalid":
-      return "is user-altered user-input with incorrect input (invalid, out-of-range, omitted-but-required)";
+    case "blank": {
+      const flag: Flag = {
+        text: "has a blank (empty/missing) value",
+        status: "Not Supported",
+      };
+
+      return JSON.stringify(flag);
+    }
+    case "user-invalid": {
+      const flag: Flag = {
+        text:
+          "is user-altered user-input with incorrect input (invalid, out-of-range, omitted-but-required)",
+        status: "Experimental",
+      };
+
+      return JSON.stringify(flag);
+    }
 
     case "root":
       return "is root of the document";

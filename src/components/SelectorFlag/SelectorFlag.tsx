@@ -11,8 +11,9 @@ const SelectorFlag: FC<Flag> = ({ text, status }) => {
     case "Experimental":
       popupContent = (
         <span>
-          <Icon color="teal" name="lab" /> This feature is experimental and is
-          supported by limited browsers
+          <Icon color="teal" name="lab" /> This feature is experimental,
+          supported by limited browsers and should not be used in production
+          code.
         </span>
       );
       break;
@@ -21,7 +22,7 @@ const SelectorFlag: FC<Flag> = ({ text, status }) => {
       popupContent = (
         <span>
           <Icon color="red" name="exclamation triangle" /> This feature is not
-          supported yet
+          supported yet by any browser
         </span>
       );
       break;
