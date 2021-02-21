@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import AceEditor from "react-ace";
 import { validate } from "csstree-validator";
-import { Button, Dropdown, Message, Transition } from "semantic-ui-react";
+import { Button, Dropdown, Message, Popup } from "semantic-ui-react";
 
 import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/snippets/css";
@@ -81,6 +81,21 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
         </Button>
       </div>
 
+      <Popup
+        content={
+          <Message
+            error
+            floating
+            header="CSS Input Error"
+            list={validationErrors.map(
+              ({ name, message }) => `${name}: ${message}`
+            )}
+          />
+        }
+        open={validationErrors.length > 0}
+        trigger={<span />}
+        flowing
+      />
       <AceEditor
         className={styles.editor}
         placeholder="Type your CSS here..."
@@ -102,19 +117,6 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
           tabSize: 2,
         }}
       />
-
-      <Transition.Group animation="fade up" duration={500}>
-        {validationErrors.length > 0 && (
-          <Message
-            error
-            floating
-            header="CSS Input Error"
-            list={validationErrors.map(
-              ({ name, message }) => `${name}: ${message}`
-            )}
-          />
-        )}
-      </Transition.Group>
     </div>
   );
 };
