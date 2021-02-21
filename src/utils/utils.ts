@@ -1,5 +1,10 @@
-export function capitalizePhrase(article: string): string {
-  return article.charAt(0).toUpperCase() + article.slice(1);
+export function capitalizePhrase(word: string): string {
+  const firstLetter = word.charAt(0);
+  if (firstLetter !== "{") {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  } else {
+    return word.slice(0, 9) + word.charAt(9).toUpperCase() + word.slice(10);
+  }
 }
 
 export function getArticle(
