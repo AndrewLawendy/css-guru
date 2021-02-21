@@ -11,7 +11,7 @@ const SelectorFlag: FC<Flag> = ({ text, status }) => {
     case "Experimental":
       popupContent = (
         <span>
-          <Icon color="teal" name="lab" /> This feature is experimental ans is
+          <Icon color="teal" name="lab" /> This feature is experimental and is
           supported by limited browsers
         </span>
       );
@@ -37,7 +37,7 @@ const SelectorFlag: FC<Flag> = ({ text, status }) => {
     <Popup
       content={popupContent}
       trigger={<span className={styles.popupTrigger}>{spanContent}</span>}
-      wide
+      flowing
       hoverable
     />
   );
