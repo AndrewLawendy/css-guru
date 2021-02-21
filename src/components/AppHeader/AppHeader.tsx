@@ -6,6 +6,7 @@ import styles from "./AppHeader.scss";
 
 const AppHeader: FC = () => {
   const [isAboutUs] = useRoute("/about-us");
+  const [isHowItWorks] = useRoute("/how-it-works");
 
   return (
     <header className={styles.header}>
@@ -14,6 +15,12 @@ const AppHeader: FC = () => {
       </Header>
 
       <nav className={styles.nav}>
+        <Link
+          href="/how-it-works"
+          className={isHowItWorks ? `${styles.active} text-bold` : "text-bold"}
+        >
+          How It Works
+        </Link>
         <Link
           href="/about-us"
           className={isAboutUs ? `${styles.active} text-bold` : "text-bold"}

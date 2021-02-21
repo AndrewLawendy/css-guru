@@ -51,6 +51,16 @@ header {
         }
       }
     }
+
+    &:hover {
+      a {
+        &:not(:hover) {
+          &::before {
+            bottom: -4px;
+          }
+        }
+      }
+    }
   }
 
   a {
