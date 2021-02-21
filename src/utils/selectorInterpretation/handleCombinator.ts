@@ -9,6 +9,8 @@ export default function (selectorElement: RegularSelectorElement): string {
     case "~":
       return "...is preceded by";
     default:
-      throw new Error(`Combinator ${selectorElement.name} is not valid`);
+      throw new Error(
+        `This combinator <code>${selectorElement.name}</code> is not valid`
+      );
   }
 }

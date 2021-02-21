@@ -11,6 +11,8 @@ export default function (selectorElement: SelectorElement): string {
     case "first-letter":
       return "the <code>first letter</code>";
     default:
-      throw new Error("This is not a valid pseudo element");
+      throw new Error(
+        `This pseudo element <code>${selectorElement.name}</code> is invalid`
+      );
   }
 }

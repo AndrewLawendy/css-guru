@@ -7,7 +7,7 @@ function getFlagInterpretation(selector: AttributeSelectorElement) {
     case "i":
       return `whose value is exactly equal to any (ASCII-range) case-insensitive of <code>${selector.value.value}</code>`;
     default:
-      throw new Error(`This flag ${selector.flags} is not a valid one`);
+      throw new Error(`This flag <code>${selector.flags}</code> is not valid`);
   }
 }
 
@@ -28,7 +28,7 @@ function getAttributeMatcherInterpretation(selector: AttributeSelectorElement) {
       return `whose value is a hyphen-separated list of values beginning with <code>${selector.value.value}</code>`;
     default:
       throw new Error(
-        `This matcher ${selector.matcher} is not a valid attribute matcher`
+        `This matcher <code>${selector.matcher}</code> is not a valid attribute matcher`
       );
   }
 }

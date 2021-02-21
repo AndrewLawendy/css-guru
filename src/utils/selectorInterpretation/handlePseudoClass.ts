@@ -139,7 +139,7 @@ export default function (selectorElement: PseudoClassElement): string {
       return "is the only sibling of its type";
 
     default:
-      throw new Error(`This pseudo class ${selectorElement.name} is invalid`);
+      handleNotValidPseudoClass(selectorElement);
   }
 }
 
@@ -285,4 +285,21 @@ function handleSelectorListParams(
   });
 
   return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
+}
+
+function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
+  switch (selectorElement.name) {
+    case "before":
+    case "after":
+    case "first-line":
+    case "first-letter":
+      throw new Error(
+        `Pseudo Elements like <code>${selectorElement.name}</code> are preferably preceded by <code>::</code> instead of <code>:</code>`
+      );
+
+    default:
+      throw new Error(
+        `This pseudo class <code>${selectorElement.name}</code> is invalid`
+      );
+  }
 }

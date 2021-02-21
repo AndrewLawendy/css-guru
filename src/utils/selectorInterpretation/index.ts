@@ -4,7 +4,7 @@ import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
 import handlePseudoClass from "./handlePseudoClass";
-import handlePseudoElements from "./handlePsuedoElements";
+import handlePseudoElements from "./handlePseudoElements";
 
 const interpretationsStore: string[] = [];
 const compoundSelector: string[] = [];
