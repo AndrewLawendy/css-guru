@@ -4,9 +4,9 @@ import {
   NthPseudoClassElement,
   NthAnPlusBPseudoClassChild,
   SelectorListParamsPseudoClassElement,
-} from "../types";
+} from "../../types";
 
-import parseSelector from "./parseSelector";
+import interpretSelector from ".";
 
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
@@ -272,7 +272,7 @@ function handleSelectorListParams(
   const getEither = selectorsList.length > 1 ? "either " : "";
 
   selectorsList.forEach((selector) => {
-    const selectorsInterpretations = parseSelector(selector);
+    const selectorsInterpretations = interpretSelector(selector);
     selectorsListInterpreted.push(
       selectorsInterpretations.join(" ").toLowerCase()
     );

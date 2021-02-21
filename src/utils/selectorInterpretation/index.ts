@@ -1,6 +1,6 @@
-import { SelectorElement, Selector } from "../types";
+import { SelectorElement, Selector } from "../../types";
 
-import { getArticle, capitalizePhrase } from "./utils";
+import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
 import handleCombinator from "./handleCombinator";
 import handlePseudoClass from "./handlePseudoClass";

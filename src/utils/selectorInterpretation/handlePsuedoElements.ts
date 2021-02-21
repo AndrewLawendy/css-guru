@@ -1,4 +1,4 @@
-import { SelectorElement } from "../types";
+import { SelectorElement } from "../../types";
 
 export default function (selectorElement: SelectorElement): string {
   switch (selectorElement.name) {

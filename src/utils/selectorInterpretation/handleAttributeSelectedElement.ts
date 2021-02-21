@@ -1,4 +1,4 @@
-import { AttributeSelectorElement } from "../types";
+import { AttributeSelectorElement } from "../../types";
 
 function getFlagInterpretation(selector: AttributeSelectorElement) {
   switch (selector.flags) {

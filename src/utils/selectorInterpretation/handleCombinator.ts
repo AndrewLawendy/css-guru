@@ -1,4 +1,4 @@
-import { RegularSelectorElement } from "../types";
+import { RegularSelectorElement } from "../../types";
 
 export default function (selectorElement: RegularSelectorElement): string {
   switch (selectorElement.name) {

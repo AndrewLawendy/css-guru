@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
 
-import parseSelector from "../../utils/parseSelector";
+import interpretSelector from "../../utils/selectorInterpretation";
 
 import { CodeExplanationPropTypes } from "./types";
 
@@ -16,7 +16,7 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
     const { children: cssRules } = toPlainObject(ast);
     cssRules.forEach(({ prelude: { children: selectorList } }) => {
       selectorList.forEach((selector) => {
-        const selectorsInterpretations = parseSelector(selector);
+        const selectorsInterpretations = interpretSelector(selector);
         setSelectorsInterpretations((selectorsInterpretationsArray) => [
           ...selectorsInterpretationsArray,
           selectorsInterpretations,
