@@ -72,3 +72,8 @@ export type SelectorElement =
 export type Selector = {
   children: SelectorElement[];
 };
+
+export type Flag = {
+  text: string;
+  status: "Experimental" | "Not Supported";
+};

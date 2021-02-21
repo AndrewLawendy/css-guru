@@ -1,0 +1,10 @@
+@import "../../style/variables";
+
+.popupTrigger {
+  border-bottom: 1px dashed lighten($hint, 30);
+  transition: border-bottom 0.15s;
+
+  &:hover {
+    border-bottom-color: $hint;
+  }
+}

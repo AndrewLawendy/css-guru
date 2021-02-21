@@ -4,6 +4,7 @@ import {
   NthPseudoClassElement,
   NthAnPlusBPseudoClassChild,
   SelectorListParamsPseudoClassElement,
+  Flag,
 } from "../../types";
 
 import interpretSelector from ".";
@@ -25,12 +26,17 @@ export default function (selectorElement: PseudoClassElement): string {
         selectorElement,
         "and/or"
       )} but contributes no specificity`;
-    case "has":
+    case "has": {
       isSelectorListParamsPseudoClass(selectorElement);
-      return `has the relative selectors ${handleSelectorListParams(
-        selectorElement,
-        "or"
-      )} evaluated with the previous element as the :scope elements`;
+      const flag: Flag = {
+        text: `has the relative selectors ${handleSelectorListParams(
+          selectorElement,
+          "or"
+        )} evaluated with the previous element as the :scope elements`,
+        status: "Not Supported",
+      };
+      return JSON.stringify(flag);
+    }
 
     case "dir":
       return `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`;

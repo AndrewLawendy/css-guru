@@ -1,5 +1,8 @@
 import React, { FC, useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
+import reactStringReplace from "react-string-replace";
+
+import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
 import interpretSelector from "../../utils/selectorInterpretation";
 
@@ -25,17 +28,45 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
     });
   }
 
+  function formatInterpretation(interpretation: string) {
+    const flagReplacement = reactStringReplace(
+      interpretation,
+      /({.+})/g,
+      (match, i) => {
+        if (match) {
+          const flag = JSON.parse(match);
+          return <SelectorFlag {...flag} />;
+        }
+
+        return match;
+      }
+    );
+
+    const codeTagReplacement = reactStringReplace(
+      flagReplacement,
+      /<code>(.+?)<\/code>/g,
+      (match) => <code dangerouslySetInnerHTML={{ __html: match }} />
+    );
+
+    return codeTagReplacement;
+  }
+
   return (
     <>
       {selectorsInterpretations.map((selectorInterpretations, index) => (
         <ul key={`selector-interpretations-${index}`}>
           {selectorInterpretations.map(
-            (interpretation, interpretationIndex) => (
-              <li
-                key={`interpretation-${interpretationIndex}`}
-                dangerouslySetInnerHTML={{ __html: interpretation }}
-              ></li>
-            )
+            (interpretation, interpretationIndex) => {
+              const interpretationFormatted = formatInterpretation(
+                interpretation
+              );
+
+              return (
+                <li key={`interpretation-${interpretationIndex}`}>
+                  {interpretationFormatted}
+                </li>
+              );
+            }
           )}
         </ul>
       ))}
