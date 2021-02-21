@@ -6,8 +6,8 @@ My sister started her own path as well and sometimes she struggles with the frus
 
 # Contact
 
-📨 [E-Mail](mailto:andrew.lawendy@outlook.com)
-💻 [GitHub](https://github.com/AndrewLawendy/)
+[<i aria-hidden="true" class="yellow mail icon"></i>E-Mail](mailto:andrew.lawendy@outlook.com)
+[<i aria-hidden="true" class="github icon"></i>GitHub](https://github.com/AndrewLawendy/)
 
 I'd be pleased if you can support us via the `Buy me a coffee`
 link on top.
