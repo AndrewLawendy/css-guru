@@ -8,6 +8,7 @@ import CodeExplanation from "../CodeExplanation/CodeExplanation";
 
 const Dashboard: FC = () => {
   const [cssValue, setCssValue] = useState("");
+  const [editorDisabled, setEditorDisabled] = useState(false);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(-1);
   function handleAccordionClick(_, { index }) {
     const newIndex = activeAccordionIndex === index ? -1 : index;
@@ -17,6 +18,11 @@ const Dashboard: FC = () => {
   function resetInterpretation() {
     setCssValue("");
     setActiveAccordionIndex(-1);
+    setEditorDisabled(false);
+  }
+
+  function handleError() {
+    setEditorDisabled(true);
   }
 
   useEffect(() => {
@@ -27,7 +33,7 @@ const Dashboard: FC = () => {
     <Grid>
       <Grid.Row columns={2}>
         <Grid.Column>
-          <Editor setCssValue={setCssValue} />
+          <Editor setCssValue={setCssValue} editorDisabled={editorDisabled} />
         </Grid.Column>
 
         <Grid.Column>
@@ -46,6 +52,7 @@ const Dashboard: FC = () => {
                 <ErrorBoundary
                   FallbackComponent={InterpretationErrorBoundaryFallback}
                   onReset={resetInterpretation}
+                  onError={handleError}
                 >
                   <CodeExplanation cssValue={cssValue} />
                 </ErrorBoundary>
@@ -66,6 +73,7 @@ const Dashboard: FC = () => {
                 <ErrorBoundary
                   FallbackComponent={InterpretationErrorBoundaryFallback}
                   onReset={resetInterpretation}
+                  onError={handleError}
                 >
                   Smelling...
                 </ErrorBoundary>

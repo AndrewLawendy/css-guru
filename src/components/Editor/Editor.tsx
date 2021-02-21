@@ -35,7 +35,7 @@ const themeOptions = [
   { key: "terminal", value: "terminal", text: "Terminal" },
 ];
 
-const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
+const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
   const [cssText, setCssText] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
   const [editorTheme, setEditorTheme] = useEditorTheme();
@@ -75,7 +75,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
         <Button
           color="red"
           onClick={handleInterpretCss}
-          disabled={cssText.length === 0}
+          disabled={cssText.length === 0 || editorDisabled}
         >
           Interpret Css
         </Button>
@@ -93,6 +93,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue }) => {
         showGutter={true}
         highlightActiveLine={true}
         value={cssText}
+        readOnly={editorDisabled}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,
