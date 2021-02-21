@@ -17,3 +17,9 @@ export function getArticle(
 
   return capitalize ? capitalizePhrase(article) : article;
 }
+
+export function assertString(str: unknown): asserts str is string {
+  if (typeof str !== "string") {
+    throw new Error(`${str} is not a string`);
+  }
+}
