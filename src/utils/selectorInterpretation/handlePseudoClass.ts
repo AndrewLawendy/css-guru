@@ -233,6 +233,21 @@ function handleAnPlusB(firstChildNth: NthAnPlusBPseudoClassChild): string {
 }
 
 function getNth(nth: string): string {
+  function getNthAboveTwenty(nthAboveTwenty: string): string {
+    const lastDigit = nthAboveTwenty.slice(-1);
+
+    switch (lastDigit) {
+      case "1":
+        return `${nthAboveTwenty}st`;
+      case "2":
+        return `${nthAboveTwenty}nd`;
+      case "3":
+        return `${nthAboveTwenty}rd`;
+      default:
+        return `${nthAboveTwenty}th`;
+    }
+  }
+
   switch (nth) {
     case "1":
       return "first";
@@ -241,7 +256,7 @@ function getNth(nth: string): string {
     case "3":
       return "third";
     default:
-      return `${nth}th`;
+      return Number(nth) > 20 ? getNthAboveTwenty(nth) : `${nth}th`;
   }
 }
 
