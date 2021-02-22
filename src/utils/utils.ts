@@ -9,7 +9,7 @@ export function capitalizePhrase(word: string): string {
 
 export function getArticle(
   word: string,
-  capitalize: boolean = false,
+  capitalize = false,
   isCompound: boolean
 ): string {
   let article;

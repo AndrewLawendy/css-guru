@@ -1,5 +1,4 @@
 import { SelectorElement, Flag } from "../../types";
-import { handleSelectorListParams } from ".";
 
 export default function (selectorElement: SelectorElement): string {
   switch (selectorElement.name) {
