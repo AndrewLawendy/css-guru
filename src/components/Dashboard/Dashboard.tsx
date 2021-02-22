@@ -75,7 +75,7 @@ const Dashboard: FC = () => {
                   onReset={resetInterpretation}
                   onError={handleError}
                 >
-                  Smelling...
+                  Soon...
                 </ErrorBoundary>
               </Accordion.Content>
             </Segment>
