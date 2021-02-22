@@ -18,4 +18,14 @@
   .content {
     margin-top: 1.2rem;
   }
+
+  img {
+    border: 1px solid $pearl-bush;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  li:not(:last-of-type) {
+    margin-bottom: 1em;
+  }
 }
