@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import MarkdownParser from "../MarkdownParser/MarkdownParser";
-const howItWorksArticle = require("../../articles/how-it-works.md");
+import howItWorksArticle from "../../articles/how-it-works.md";
 
 const HowItWorks: FC = () => {
   return <MarkdownParser title="How It Works" file={howItWorksArticle} />;
