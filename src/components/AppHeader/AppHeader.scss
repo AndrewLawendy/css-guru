@@ -12,6 +12,22 @@ header {
   align-items: center;
   justify-content: space-between;
 
+  .logo {
+    margin-bottom: 0 !important;
+    height: 100%;
+
+    a {
+      height: inherit;
+      display: flex;
+      align-items: center;
+
+      img {
+        height: inherit;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+
   nav {
     display: flex;
     height: 100%;

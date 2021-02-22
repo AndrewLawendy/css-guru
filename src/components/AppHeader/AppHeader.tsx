@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Link, useRoute } from "wouter";
 import { Header } from "semantic-ui-react";
 
+import logo from "../../assets/css-guru-logo.png";
 import styles from "./AppHeader.scss";
 
 const AppHeader: FC = () => {
@@ -10,8 +11,11 @@ const AppHeader: FC = () => {
 
   return (
     <header className={styles.header}>
-      <Header className="m-0" as="h1">
-        <Link href="/">CSS Guru</Link>
+      <Header className={styles.logo} as="h1">
+        <Link href="/" title="CSS Guru">
+          <img src={logo} alt="CSS Guru Logo" />
+          <span>CSS Guru</span>
+        </Link>
       </Header>
 
       <nav className={styles.nav}>
