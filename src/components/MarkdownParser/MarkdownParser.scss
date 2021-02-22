@@ -3,11 +3,12 @@
 .contentWrapper {
   background-color: #fff;
   min-height: calc(100% + 30px);
-  padding: 15px;
+  padding: 65px 15px 15px;
   margin: -15px;
 
   :global .header {
-    font-size: 5rem !important;
+    font-size: 4rem !important;
+    line-height: 4rem !important;
   }
 
   .metaData {
