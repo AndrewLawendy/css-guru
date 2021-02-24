@@ -2,6 +2,9 @@ import { ComputedValueType } from "../../types";
 import {
   initialComputedValue,
   blockComputedValue,
+  olComputedValue,
+  olLiComputedValue,
+  ulLiComputedValue,
   hiddenComputedValue,
   tableComputedValue,
   captionComputedValue,
@@ -32,9 +35,7 @@ export default function (element: string): ComputedValueType {
     case "dl":
     case "dt":
     case "dd":
-    case "ol":
     case "ul":
-    case "li":
     case "fieldset":
     case "form":
     case "legend":
@@ -51,6 +52,20 @@ export default function (element: string): ComputedValueType {
     case "nav":
     case "section":
       return { ...initialComputedValue, ...blockComputedValue };
+
+    case "ol":
+      return {
+        ...initialComputedValue,
+        ...blockComputedValue,
+        ...olComputedValue,
+      };
+    case "li":
+      // TODO handle the difference between ul li and ol li
+      return {
+        ...initialComputedValue,
+        ...blockComputedValue,
+        ...ulLiComputedValue,
+      };
 
     case "head":
     case "audio":

@@ -565,6 +565,23 @@ export const blockComputedValue: { [key: string]: string } = {
   width: "1848px",
 };
 
+export const olComputedValue: { [key: string]: string } = {
+  listStyle: "outside none decimal",
+  listStyleType: "decimal",
+};
+
+export const ulLiComputedValue: { [key: string]: string } = {
+  display: "list-item",
+  textAlign: "left",
+};
+
+export const olLiComputedValue: { [key: string]: string } = {
+  display: "list-item",
+  listStyle: "outside none decimal",
+  listStyleType: "decimal",
+  textAlign: "left",
+};
+
 export const hiddenComputedValue: { [key: string]: string } = {
   display: "none",
 };
