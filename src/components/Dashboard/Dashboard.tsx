@@ -5,6 +5,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import InterpretationErrorBoundaryFallback from "../InterpretationErrorBoundaryFallback/InterpretationErrorBoundaryFallback";
 import Editor from "../Editor/Editor";
 import CodeExplanation from "../CodeExplanation/CodeExplanation";
+import CodeSmelling from "../CodeSmelling/CodeSmelling";
 
 const Dashboard: FC = () => {
   const [cssValue, setCssValue] = useState("");
@@ -75,7 +76,7 @@ const Dashboard: FC = () => {
                   onReset={resetInterpretation}
                   onError={handleError}
                 >
-                  Soon...
+                  <CodeSmelling cssValue={cssValue} />
                 </ErrorBoundary>
               </Accordion.Content>
             </Segment>

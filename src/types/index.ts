@@ -73,6 +73,39 @@ export type Selector = {
   children: SelectorElement[];
 };
 
+export type Declaration = {
+  important: boolean;
+  property: string;
+  value: {
+    children: DeclarationValue[];
+  };
+};
+
+export type DeclarationValue =
+  | CommonDeclarationValue
+  | FunctionDeclarationValue;
+
+export type CommonDeclarationValue = {
+  type: "Dimension" | "Whitespace" | "Operator";
+  unit: string;
+  value: string;
+};
+
+export type FunctionDeclarationValue = {
+  type: "Function";
+  name: string;
+  children: CommonDeclarationValue[];
+};
+
+export type CssRule = {
+  block: {
+    children: Declaration[];
+  };
+  prelude: {
+    children: Selector[];
+  };
+};
+
 export type Flag = {
   text: string;
   status: "Experimental" | "Not Supported";
