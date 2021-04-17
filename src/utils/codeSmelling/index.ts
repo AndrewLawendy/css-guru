@@ -1,5 +1,6 @@
 import { CssRule, SelectorElement, RegularSelectorElement } from "../../types";
-import getComputedValue from "./getComputedValue";
+import getElementComputedValue from "./getElementComputedValue";
+import getBlockComputedValue from "./getBlockComputedValue";
 import { findLastIndex } from "../utils";
 
 export default function ({ block, prelude }: CssRule): string[] {
@@ -16,7 +17,8 @@ export default function ({ block, prelude }: CssRule): string[] {
         : { type: "TypeSelector", name: "any" };
     assertTypeSelector(element);
 
-    const computedValues = getComputedValue(element.name);
+    const elementComputedValue = getElementComputedValue(element.name);
+    const blockComputedValue = getBlockComputedValue(block.children);
   });
 
   return [""];
