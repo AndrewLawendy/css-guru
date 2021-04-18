@@ -56,6 +56,9 @@ function handleDeclarationValue(
       case "Function":
         acc.push(constructFunctionDeclaration(declarationValue));
         break;
+      case "Identifier":
+        acc.push(declarationValue.name);
+        break;
       default:
         acc.push(declarationValue.value);
     }

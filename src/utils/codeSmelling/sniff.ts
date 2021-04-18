@@ -1,4 +1,8 @@
-import { ComputedValueType } from "../../types";
+import {
+  ComputedValueType,
+  CssSmellingRule,
+  CssSmellingRuleMessage,
+} from "../../types";
 import { rules } from "./rules";
 
 export default function (
@@ -6,25 +10,62 @@ export default function (
   blockComputedValue: {
     [key: string]: string;
   }
-): string[] {
+): CssSmellingRuleMessage[] {
   const computedStyle = { ...elementComputedValue, ...blockComputedValue };
-  const errorMessage: string[] = [];
+  const errorMessages: CssSmellingRuleMessage[] = [];
 
   for (const prop in blockComputedValue) {
     if (Object.prototype.hasOwnProperty.call(blockComputedValue, prop)) {
       const propRule = rules[prop];
+      const propValue = blockComputedValue[prop];
 
       if (propRule) {
-        propRule.forEach(({ prop, value, message }) => {
-          const computedPropValue = computedStyle[prop];
+        if (propRule.conflicts) {
+          handlePropConflicts(propRule, computedStyle, errorMessages);
+        }
 
-          if (computedPropValue === value) {
-            errorMessage.push(message);
-          }
-        });
+        if (propRule.values) {
+          handlePropValueConflicts(
+            propRule,
+            propValue,
+            computedStyle,
+            errorMessages
+          );
+        }
       }
     }
   }
 
-  return errorMessage;
+  return errorMessages;
+}
+
+function handlePropConflicts(
+  propRule: CssSmellingRule,
+  computedStyle: ComputedValueType,
+  errorMessages: CssSmellingRuleMessage[]
+): void {
+  propRule.conflicts.forEach(({ prop, value, message }) => {
+    const computedPropValue = computedStyle[prop];
+
+    if (computedPropValue === value) {
+      errorMessages.push(message);
+    }
+  });
+}
+
+function handlePropValueConflicts(
+  propRule: CssSmellingRule,
+  propValue: string,
+  computedStyle: ComputedValueType,
+  errorMessages: CssSmellingRuleMessage[]
+) {
+  if (propRule.values[propValue]) {
+    propRule.values[propValue].forEach(({ prop, value, message }) => {
+      const computedPropValue = computedStyle[prop];
+
+      if (computedPropValue === value) {
+        errorMessages.push(message);
+      }
+    });
+  }
 }

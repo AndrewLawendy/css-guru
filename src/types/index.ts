@@ -83,6 +83,7 @@ export type Declaration = {
 
 export type DeclarationValue =
   | CommonDeclarationValue
+  | IdentifierDeclarationValue
   | FunctionDeclarationValue;
 
 export type CommonDeclarationValue = {
@@ -95,6 +96,11 @@ export type FunctionDeclarationValue = {
   type: "Function";
   name: string;
   children: CommonDeclarationValue[];
+};
+
+export type IdentifierDeclarationValue = {
+  type: "Identifier";
+  name: string;
 };
 
 export type CssRule = {
@@ -110,8 +116,6 @@ export type Flag = {
   text: string;
   status: "Experimental" | "Not Supported";
 };
-
-export type CodeBlockSmell = { declaration: string; errorMessages: string[] };
 
 export type ComputedValueType = {
   alignContent: string;
@@ -661,4 +665,31 @@ export type ComputedValueType = {
   y: string;
   zIndex: string;
   zoom: string;
+};
+
+export type CssSmellingRuleSet = {
+  [propName: string]: CssSmellingRule;
+};
+
+export type CssSmellingRuleMessage = {
+  type: "error" | "warning";
+  content: string;
+};
+
+export type CssSmellingRuleDetail = {
+  prop: string;
+  value: string;
+  message: CssSmellingRuleMessage;
+};
+
+export type CssSmellingRule = {
+  conflicts?: CssSmellingRuleDetail[];
+  values?: {
+    [value: string]: CssSmellingRuleDetail[];
+  };
+};
+
+export type CodeSmellingMessage = {
+  declarationBlock: string;
+  errorMessages: CssSmellingRuleMessage[];
 };
