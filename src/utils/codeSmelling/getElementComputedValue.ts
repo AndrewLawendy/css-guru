@@ -16,7 +16,10 @@ import {
   tdComputedValue,
 } from "./computedValues";
 
-export default function (element: string): ComputedValueType {
+export default function (
+  element: string,
+  elementParent: string
+): ComputedValueType {
   switch (element) {
     case "html":
     case "body":
@@ -60,12 +63,7 @@ export default function (element: string): ComputedValueType {
         ...olComputedValue,
       };
     case "li":
-      // TODO handle the difference between ul li and ol li
-      return {
-        ...initialComputedValue,
-        ...blockComputedValue,
-        ...ulLiComputedValue,
-      };
+      return handleLi(element, elementParent);
 
     case "head":
     case "audio":
@@ -90,5 +88,24 @@ export default function (element: string): ComputedValueType {
 
     default:
       return initialComputedValue;
+  }
+}
+
+function handleLi(element: string, elementParent: string): ComputedValueType {
+  switch (elementParent) {
+    case "ol":
+      return {
+        ...initialComputedValue,
+        ...blockComputedValue,
+        ...olLiComputedValue,
+      };
+
+    case "ul":
+    default:
+      return {
+        ...initialComputedValue,
+        ...blockComputedValue,
+        ...ulLiComputedValue,
+      };
   }
 }

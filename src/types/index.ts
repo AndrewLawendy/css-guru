@@ -111,6 +111,8 @@ export type Flag = {
   status: "Experimental" | "Not Supported";
 };
 
+export type CodeBlockSmell = { declaration: string; errorMessages: string[] };
+
 export type ComputedValueType = {
   alignContent: string;
   alignItems: string;
