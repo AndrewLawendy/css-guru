@@ -16,6 +16,12 @@ export default function ({ block, prelude }: CssRule): CodeBlockSmell[] {
       (selectorElement: SelectorElement): boolean =>
         selectorElement.type === "TypeSelector"
     );
+    const elementParentIndex = findLastIndex<SelectorElement>(
+      selector.children,
+      (selectorElement: SelectorElement): boolean =>
+        selectorElement.type === "TypeSelector",
+      elementIndex > 0 ? elementIndex - 1 : undefined
+    );
 
     const element: SelectorElement =
       elementIndex > -1
@@ -23,8 +29,8 @@ export default function ({ block, prelude }: CssRule): CodeBlockSmell[] {
         : { type: "TypeSelector", name: "any" };
 
     const elementParent: SelectorElement =
-      elementIndex > 2
-        ? selector.children[elementIndex - 2]
+      elementParentIndex > -1
+        ? selector.children[elementParentIndex]
         : { type: "TypeSelector", name: "any" };
 
     assertRegularSelectorElementType(element);

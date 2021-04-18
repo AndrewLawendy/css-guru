@@ -31,9 +31,10 @@ export function assertString(str: unknown): asserts str is string {
 
 export function findLastIndex<T>(
   arr: T[],
-  validateExpression: (el: T) => boolean
+  validateExpression: (el: T) => boolean,
+  limit: number = arr.length - 1
 ): number {
-  for (let index = arr.length - 1; index >= 0; index--) {
+  for (let index = limit; index >= 0; index--) {
     const element = arr[index];
     if (validateExpression(element)) {
       return index;
