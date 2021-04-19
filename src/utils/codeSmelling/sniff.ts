@@ -3,7 +3,7 @@ import {
   CssSmellingRule,
   CssSmellingRuleMessage,
 } from "../../types";
-import { rules } from "./rules";
+import { getRuleSet } from "../../rules";
 
 export default function (
   elementComputedValue: ComputedValueType,
@@ -13,6 +13,7 @@ export default function (
 ): CssSmellingRuleMessage[] {
   const computedStyle = { ...elementComputedValue, ...blockComputedValue };
   const errorMessages: CssSmellingRuleMessage[] = [];
+  const rules = getRuleSet();
 
   for (const prop in blockComputedValue) {
     if (Object.prototype.hasOwnProperty.call(blockComputedValue, prop)) {
