@@ -20,6 +20,13 @@ export default function (
       const propRule = rules[prop];
       const propValue = blockComputedValue[prop];
 
+      handleValueSameAsInitial(
+        prop,
+        blockComputedValue,
+        elementComputedValue,
+        errorMessages
+      );
+
       if (propRule) {
         if (propRule.conflicts) {
           handlePropConflicts(propRule, computedStyle, errorMessages);
@@ -67,6 +74,25 @@ function handlePropValueConflicts(
       if (computedPropValue === value) {
         errorMessages.push(message);
       }
+    });
+  }
+}
+
+function handleValueSameAsInitial(
+  prop: string,
+  blockComputedValue: {
+    [key: string]: string;
+  },
+  elementComputedValue: ComputedValueType,
+  errorMessages: CssSmellingRuleMessage[]
+): void {
+  const blockPropValue = blockComputedValue[prop];
+  const initialPropValue = elementComputedValue[prop];
+
+  if (blockPropValue === initialPropValue) {
+    errorMessages.push({
+      type: "warning",
+      content: `this property "${prop}" has the same value of "${blockPropValue}" as the initial value of this element`,
     });
   }
 }

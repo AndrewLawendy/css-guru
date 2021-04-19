@@ -9,7 +9,7 @@ const rules: CssSmellingRuleSet = {
         prop: "position",
         value: "absolute",
         message: {
-          type: "warning",
+          type: "error",
           content:
             "all element with position absolute behave as display block already",
         },
