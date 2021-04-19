@@ -109,6 +109,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
         highlightActiveLine={true}
         value={cssText}
         readOnly={editorDisabled}
+        focus={true}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,

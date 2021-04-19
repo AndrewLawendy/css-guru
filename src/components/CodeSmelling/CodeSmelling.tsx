@@ -13,7 +13,7 @@ const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
   useEffect(smellCss, [cssValue]);
 
   function smellCss() {
-    const ast = parse(cssValue);
+    const ast = parse(cssValue, { positions: true });
     const { children: cssRules } = toPlainObject(ast);
     const codeSmells = [];
 
