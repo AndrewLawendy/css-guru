@@ -88,7 +88,8 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
             floating
             header="CSS Input Error"
             list={validationErrors.map(
-              ({ name, message }) => `${name}: ${message}`
+              ({ name, message, line, column }) =>
+                `${name}: ${message} at ${line}:${column}`
             )}
           />
         }
