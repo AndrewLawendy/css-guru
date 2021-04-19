@@ -9,7 +9,10 @@ import getElementComputedValue from "./getElementComputedValue";
 import getBlockComputedValue from "./getBlockComputedValue";
 import sniff from "./sniff";
 
-export default function ({ block, prelude }: CssRule): CodeSmellingMessage[] {
+export default function (
+  { block, prelude }: CssRule,
+  declarationBlock: string
+): CodeSmellingMessage[] {
   return prelude.children.reduce(
     (codeSmells: CodeSmellingMessage[], selector) => {
       const elementIndex = findLastIndex<SelectorElement>(
@@ -45,7 +48,7 @@ export default function ({ block, prelude }: CssRule): CodeSmellingMessage[] {
       const codeSmell = sniff(elementComputedValue, blockComputedValue);
 
       codeSmells.push({
-        declarationBlock: "div span",
+        declarationBlock,
         errorMessages: codeSmell,
       });
 
