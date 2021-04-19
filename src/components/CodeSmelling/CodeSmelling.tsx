@@ -42,7 +42,7 @@ const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
   function getTypeIcon(type) {
     switch (type) {
       case "warning":
-        return <Icon color="teal" name="lab" />;
+        return <Icon color="yellow" name="warning sign" />;
       case "error":
         return <Icon color="red" name="exclamation triangle" />;
     }
