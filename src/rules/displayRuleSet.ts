@@ -1,7 +1,5 @@
 import { CssSmellingRuleSet } from "../types";
 
-import { addToRuleSet } from "./index";
-
 const rules: CssSmellingRuleSet = {
   display: {
     conflicts: [
@@ -18,4 +16,4 @@ const rules: CssSmellingRuleSet = {
   },
 };
 
-addToRuleSet(rules);
+export default rules;

@@ -1,13 +1,18 @@
 import { CssSmellingRuleSet } from "../types";
+import dimensionsRuleSet from "./dimensionsRuleSet";
+import displayRuleSet from "./displayRuleSet";
+import floatRuleSet from "./floatRuleSet";
+import marginRuleSet from "./marginRuleSet";
+import verticalAlignRuleSet from "./verticalAlignRuleSet";
 
-const ruleSet: CssSmellingRuleSet = {};
-
-export function addToRuleSet(rules: CssSmellingRuleSet): void {
-  Object.assign(ruleSet, rules);
-}
+const ruleSet: CssSmellingRuleSet = {
+  ...dimensionsRuleSet,
+  ...displayRuleSet,
+  ...floatRuleSet,
+  ...marginRuleSet,
+  ...verticalAlignRuleSet,
+};
 
 export function getRuleSet(): CssSmellingRuleSet {
   return ruleSet;
 }
-
-require("./*.ts");

@@ -1,7 +1,5 @@
 import { CssSmellingRuleSet } from "../types";
 
-import { addToRuleSet } from "./index";
-
 const rules: CssSmellingRuleSet = {
   "margin-top": {
     conflicts: [
@@ -12,19 +10,6 @@ const rules: CssSmellingRuleSet = {
           type: "error",
           content:
             "margin-top has no effect on an element with a display inline",
-        },
-      },
-    ],
-  },
-  "margin-right": {
-    conflicts: [
-      {
-        prop: "display",
-        value: "inline",
-        message: {
-          type: "error",
-          content:
-            "margin-right has no effect on an element with a display inline",
         },
       },
     ],
@@ -42,19 +27,6 @@ const rules: CssSmellingRuleSet = {
       },
     ],
   },
-  "margin-left": {
-    conflicts: [
-      {
-        prop: "display",
-        value: "inline",
-        message: {
-          type: "error",
-          content:
-            "margin-left has no effect on an element with a display inline",
-        },
-      },
-    ],
-  },
 };
 
-addToRuleSet(rules);
+export default rules;
