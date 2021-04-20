@@ -51,14 +51,14 @@ const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
   return (
     <ul>
       {codeBlocksSmells.map((codeBlockSmells) =>
-        codeBlockSmells.map(({ declarationBlock, errorMessages }) => {
+        codeBlockSmells.map(({ declarationBlock, errorMessages }, index) => {
           if (errorMessages.length) {
             return (
-              <li key={declarationBlock}>
+              <li key={`${declarationBlock}-${index}`}>
                 {declarationBlock}
                 <ul>
-                  {errorMessages.map(({ type, content }) => (
-                    <li key={`${type}-${content}`}>
+                  {errorMessages.map(({ type, content }, index) => (
+                    <li key={`${type}-${content}-${index}`}>
                       {getTypeIcon(type)}
                       {content}
                     </li>

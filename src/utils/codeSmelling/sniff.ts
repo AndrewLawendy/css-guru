@@ -1,4 +1,5 @@
 import {
+  RegularObject,
   ComputedValueType,
   CssSmellingRule,
   CssSmellingRuleMessage,
@@ -7,9 +8,7 @@ import { getRuleSet } from "../../rules";
 
 export default function (
   elementComputedValue: ComputedValueType,
-  blockComputedValue: {
-    [key: string]: string;
-  }
+  blockComputedValue: RegularObject
 ): CssSmellingRuleMessage[] {
   const computedStyle = { ...elementComputedValue, ...blockComputedValue };
   const errorMessages: CssSmellingRuleMessage[] = [];
@@ -80,14 +79,12 @@ function handlePropValueConflicts(
 
 function handleValueSameAsInitial(
   prop: string,
-  blockComputedValue: {
-    [key: string]: string;
-  },
+  blockComputedValue: RegularObject,
   elementComputedValue: ComputedValueType,
   errorMessages: CssSmellingRuleMessage[]
 ): void {
   const blockPropValue = blockComputedValue[prop];
-  const initialPropValue = elementComputedValue[prop];
+  const initialPropValue = elementComputedValue?.[prop];
 
   if (blockPropValue === initialPropValue) {
     errorMessages.push({

@@ -40,10 +40,10 @@ export default function (
       assertRegularSelectorElementType(element);
       assertRegularSelectorElementType(elementParent);
 
-      const elementComputedValue = getElementComputedValue(
-        element.name,
-        elementParent.name
-      );
+      const elementComputedValue =
+        element.name !== "any"
+          ? getElementComputedValue(element.name, elementParent.name)
+          : null;
       const blockComputedValue = getBlockComputedValue(block.children);
       const codeSmell = sniff(elementComputedValue, blockComputedValue);
 

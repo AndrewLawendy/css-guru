@@ -1,3 +1,7 @@
+export type RegularObject = {
+  [key: string]: string;
+};
+
 export type AttributeSelectorElement = {
   flags: "s" | "i";
   type: "AttributeSelector";
