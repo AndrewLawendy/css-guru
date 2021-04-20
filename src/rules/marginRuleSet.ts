@@ -1,7 +1,7 @@
 import { CssSmellingRuleSet } from "../types";
 
 const rules: CssSmellingRuleSet = {
-  "margin-top": {
+  marginTop: {
     conflicts: [
       {
         prop: "display",
@@ -14,7 +14,7 @@ const rules: CssSmellingRuleSet = {
       },
     ],
   },
-  "margin-bottom": {
+  marginBottom: {
     conflicts: [
       {
         prop: "display",

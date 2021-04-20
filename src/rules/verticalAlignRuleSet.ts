@@ -1,7 +1,7 @@
 import { CssSmellingRuleSet } from "../types";
 
 const rules: CssSmellingRuleSet = {
-  "vertical-align": {
+  verticalAlign: {
     conflicts: [
       {
         prop: "display",

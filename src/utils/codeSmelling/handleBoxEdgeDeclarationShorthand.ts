@@ -7,10 +7,10 @@ export function handleMarginAndPaddingShorthand(
   );
 
   return {
-    [`${property}-top`]: top,
-    [`${property}-right`]: right,
-    [`${property}-bottom`]: bottom,
-    [`${property}-left`]: left,
+    [`${property}Top`]: top,
+    [`${property}Right`]: right,
+    [`${property}Bottom`]: bottom,
+    [`${property}Left`]: left,
   };
 }
 
@@ -22,10 +22,10 @@ export function handleBorderStyleShorthand(
   );
 
   return {
-    "border-top-style": top,
-    "border-right-style": right,
-    "border-bottom-style": bottom,
-    "border-left-style": left,
+    borderTopStyle: top,
+    borderRightStyle: right,
+    borderBottomStyle: bottom,
+    borderLeftStyle: left,
   };
 }
 
@@ -47,10 +47,10 @@ export function handleBorderRadiusShorthand(
   }
 
   return {
-    "border-top-left-radius": top,
-    "border-top-right-radius": right,
-    "border-bottom-right-radius": bottom,
-    "border-bottom-left-radius": left,
+    borderTopLeftRadius: top,
+    borderTopRightRadius: right,
+    borderBottomRightRadius: bottom,
+    borderBottomLeftRadius: left,
   };
 }
 
