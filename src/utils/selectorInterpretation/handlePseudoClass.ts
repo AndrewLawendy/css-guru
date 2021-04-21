@@ -8,6 +8,7 @@ import {
 } from "../../types";
 
 import interpretSelector from ".";
+import handlePseudoElements from "./handlePseudoElements";
 
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
@@ -347,9 +348,16 @@ function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
     case "after":
     case "first-line":
     case "first-letter":
-      throw new Error(
-        `Pseudo Elements like <code>${selectorElement.name}</code> are preferably preceded by <code>::</code> instead of <code>:</code>`
-      );
+    case "backdrop":
+    case "cue":
+    case "cue-region":
+    case "grammar-error":
+    case "marker":
+    case "part":
+    case "placeholder":
+    case "spelling-error":
+      handlePseudoElements(selectorElement);
+      break;
 
     default:
       throw new Error(

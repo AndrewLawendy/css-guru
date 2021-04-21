@@ -1,4 +1,4 @@
-import { SelectorElement, Selector } from "../../types";
+import { SelectorElement, Selector, PseudoClassElement } from "../../types";
 
 import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -23,7 +23,11 @@ function getElementType(selectorElement: SelectorElement): string {
     case "AttributeSelector":
       return handleAttributeSelectedElement(selectorElement);
     case "PseudoClassSelector":
-      return handlePseudoClass(selectorElement);
+      if (isElementAPseudoElementWithSingleColon(selectorElement)) {
+        return handlePseudoElements(selectorElement);
+      } else {
+        return handlePseudoClass(selectorElement);
+      }
     case "PseudoElementSelector":
       return handlePseudoElements(selectorElement);
   }
@@ -93,6 +97,26 @@ function handleTypeSelectorCase(selectorElement) {
   lastElement = `${article} ${tag}`;
 }
 
+function isElementAPseudoElementWithSingleColon(
+  selectorElement: PseudoClassElement
+): boolean {
+  const validPseudoElements = [
+    "before",
+    "after",
+    "first-line",
+    "first-letter",
+    "backdrop",
+    "cue",
+    "cue-region",
+    "grammar-error",
+    "marker",
+    "part",
+    "placeholder",
+    "spelling-error",
+  ];
+  return validPseudoElements.includes(selectorElement.name);
+}
+
 export default function ({ children }: Selector): string[] {
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
@@ -109,7 +133,11 @@ export default function ({ children }: Selector): string[] {
         handleTypeSelectorCase(selectorElement);
         break;
       case "PseudoClassSelector":
-        pseudoClasses.push(selectorElementInterpretation);
+        if (isElementAPseudoElementWithSingleColon(selectorElement)) {
+          pseudoElement = selectorElementInterpretation;
+        } else {
+          pseudoClasses.push(selectorElementInterpretation);
+        }
         break;
       case "PseudoElementSelector":
         pseudoElement = selectorElementInterpretation;
