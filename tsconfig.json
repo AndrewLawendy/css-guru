@@ -5,6 +5,7 @@
     "paths": {
       "~*": ["./*"]
     },
+    "lib": ["es2020"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true

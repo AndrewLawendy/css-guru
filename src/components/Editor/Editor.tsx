@@ -42,6 +42,10 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
 
   function handleEditorChange(value) {
     setCssText(value);
+    clearErrors();
+  }
+
+  function clearErrors() {
     if (validationErrors.length > 0) {
       setValidationErrors([]);
     }
@@ -55,6 +59,7 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
     const validation = validate(cssText);
     if (validation.length > 0) {
       setValidationErrors(validation);
+      setCssValue("");
     } else {
       setCssValue(cssText);
     }
@@ -88,12 +93,14 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
             floating
             header="CSS Input Error"
             list={validationErrors.map(
-              ({ name, message }) => `${name}: ${message}`
+              ({ name, message, line, column }) =>
+                `${name}: ${message} at ${line}:${column}`
             )}
           />
         }
         open={validationErrors.length > 0}
         trigger={<span />}
+        position="bottom right"
         flowing
       />
       <AceEditor
@@ -109,6 +116,8 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
         highlightActiveLine={true}
         value={cssText}
         readOnly={editorDisabled}
+        focus={true}
+        onFocus={clearErrors}
         setOptions={{
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true,

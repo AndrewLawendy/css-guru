@@ -16,7 +16,7 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
 
   function parseAndGenerateCssTree() {
     setSelectorsInterpretations([]);
-    const ast = parse(cssValue);
+    const ast = parse(cssValue, { positions: true });
     const { children: cssRules } = toPlainObject(ast);
     cssRules.forEach(({ prelude: { children: selectorList } }) => {
       selectorList.forEach((selector) => {
