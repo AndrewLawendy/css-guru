@@ -1,4 +1,5 @@
 import { SelectorElement, Flag } from "../../types";
+import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 export default function (selectorElement: SelectorElement): string {
   switch (selectorElement.name) {
@@ -71,7 +72,7 @@ export default function (selectorElement: SelectorElement): string {
     }
 
     default:
-      throw new Error(
+      addToErrors(
         `This pseudo element <code>${selectorElement.name}</code> is invalid`
       );
   }

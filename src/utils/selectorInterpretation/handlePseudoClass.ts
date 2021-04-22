@@ -9,6 +9,7 @@ import {
 
 import interpretSelector from ".";
 import handlePseudoElements from "./handlePseudoElements";
+import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 export default function (selectorElement: PseudoClassElement): string {
   switch (selectorElement.name) {
@@ -360,7 +361,7 @@ function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
       break;
 
     default:
-      throw new Error(
+      addToErrors(
         `This pseudo class <code>${selectorElement.name}</code> is invalid`
       );
   }

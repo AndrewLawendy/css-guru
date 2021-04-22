@@ -6,6 +6,7 @@ import flow from "lodash.flow";
 import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
 import interpretSelector from "../../utils/selectorInterpretation";
+import { fireInterpretationErrors } from "../../utils/selectorInterpretation/selectorInterpretationErrorHandler";
 
 import { CodeExplanationPropTypes } from "./types";
 
@@ -27,6 +28,8 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
         ]);
       });
     });
+
+    fireInterpretationErrors();
   }
 
   function formatInterpretation(interpretation: string) {

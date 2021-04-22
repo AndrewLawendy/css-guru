@@ -1,4 +1,5 @@
 import { AttributeSelectorElement } from "../../types";
+import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 function getFlagInterpretation(selector: AttributeSelectorElement) {
   switch (selector.flags) {
@@ -7,7 +8,7 @@ function getFlagInterpretation(selector: AttributeSelectorElement) {
     case "i":
       return `whose value is exactly equal to any (ASCII-range) case-insensitive of <code>${selector.value.value}</code>`;
     default:
-      throw new Error(`This flag <code>${selector.flags}</code> is not valid`);
+      addToErrors(`This flag <code>${selector.flags}</code> is not valid`);
   }
 }
 
@@ -27,7 +28,7 @@ function getAttributeMatcherInterpretation(selector: AttributeSelectorElement) {
     case "|=":
       return `whose value is a hyphen-separated list of values beginning with <code>${selector.value.value}</code>`;
     default:
-      throw new Error(
+      addToErrors(
         `This matcher <code>${selector.matcher}</code> is not a valid attribute matcher`
       );
   }

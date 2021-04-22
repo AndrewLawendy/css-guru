@@ -1,4 +1,5 @@
 import { RegularSelectorElement } from "../../types";
+import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 export default function (selectorElement: RegularSelectorElement): string {
   switch (selectorElement.name) {
@@ -9,7 +10,7 @@ export default function (selectorElement: RegularSelectorElement): string {
     case "~":
       return "...is preceded by";
     default:
-      throw new Error(
+      addToErrors(
         `This combinator <code>${selectorElement.name}</code> is not valid`
       );
   }
