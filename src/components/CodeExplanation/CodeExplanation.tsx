@@ -19,7 +19,9 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
     setSelectorsInterpretations([]);
     const ast = parse(cssValue, { positions: true });
     const { children: cssRules } = toPlainObject(ast);
-    cssRules.forEach(({ prelude: { children: selectorList } }) => {
+    cssRules.forEach(({ prelude }) => {
+      const selectorList = prelude?.children ?? [];
+
       selectorList.forEach((selector) => {
         const selectorsInterpretations = interpretSelector(selector);
         setSelectorsInterpretations((selectorsInterpretationsArray) => [

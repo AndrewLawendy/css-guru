@@ -117,7 +117,7 @@ function isElementAPseudoElementWithSingleColon(
   return validPseudoElements.includes(selectorElement.name);
 }
 
-export default function ({ children }: Selector): string[] {
+export default function ({ children = [] }: Selector): string[] {
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);

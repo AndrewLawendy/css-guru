@@ -328,19 +328,25 @@ function handleSelectorListParams(
   selectorElement: SelectorListParamsPseudoClassElement,
   link: string
 ): string {
-  const [firstChild] = selectorElement.children;
-  const selectorsList = firstChild.children;
-  const selectorsListInterpreted = [];
-  const getEither = selectorsList.length > 1 ? "either " : "";
+  if (selectorElement.children != null) {
+    const [firstChild] = selectorElement.children;
+    const selectorsList = firstChild.children;
+    const selectorsListInterpreted = [];
+    const getEither = selectorsList.length > 1 ? "either " : "";
 
-  selectorsList.forEach((selector) => {
-    const selectorsInterpretations = interpretSelector(selector);
-    selectorsListInterpreted.push(
-      selectorsInterpretations.join(" ").toLowerCase()
+    selectorsList.forEach((selector) => {
+      const selectorsInterpretations = interpretSelector(selector);
+      selectorsListInterpreted.push(
+        selectorsInterpretations.join(" ").toLowerCase()
+      );
+    });
+
+    return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
+  } else {
+    addToErrors(
+      `<code>${selectorElement.name}</code> pseudo class should have at least one parameter`
     );
-  });
-
-  return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
+  }
 }
 
 function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
