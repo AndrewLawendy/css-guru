@@ -112,7 +112,7 @@ function handleBoxEdgeShorthand(
       return handleBoxEdgeDoubleShorthand(computedDeclarationValues);
     case 5:
       return handleBoxTripleShorthand(computedDeclarationValues);
-    case 8:
+    case 7:
       return handleBoxNoShorthand(computedDeclarationValues);
   }
 }
