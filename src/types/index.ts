@@ -114,6 +114,7 @@ export type CssRule = {
   prelude: {
     children: Selector[];
   };
+  type: string;
 };
 
 export type Flag = {

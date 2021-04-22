@@ -10,9 +10,18 @@ import getBlockComputedValue from "./getBlockComputedValue";
 import sniff from "./sniff";
 
 export default function (
-  { block, prelude }: CssRule,
+  { block, prelude, type }: CssRule,
   declarationBlock: string
 ): CodeSmellingMessage[] {
+  switch (type) {
+    case "Rule":
+      return handleRuleType(block, prelude, declarationBlock);
+    default:
+      return [];
+  }
+}
+
+function handleRuleType(block, prelude, declarationBlock) {
   return prelude.children.reduce(
     (codeSmells: CodeSmellingMessage[], selector) => {
       const elementIndex = findLastIndex<SelectorElement>(
