@@ -14,29 +14,21 @@ const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
 
   function smellCss() {
     const ast = parse(cssValue, { positions: true });
+    const nonParsedAst = parse(cssValue, {
+      positions: true,
+      parseRulePrelude: false,
+      parseAtrulePrelude: false,
+      parseValue: false,
+    });
     const { children: cssRules } = toPlainObject(ast);
-    const declarationBlocks = getDeclarationBlocks(cssValue);
+    const { children: nonParsedCssRules } = toPlainObject(nonParsedAst);
     const codeSmells = [];
 
     cssRules.forEach((rule, index) => {
-      codeSmells.push(smellCode(rule, declarationBlocks[index]));
+      codeSmells.push(smellCode(rule, nonParsedCssRules[index]));
     });
 
     setCodeBlocksSmells(codeSmells);
-  }
-
-  function getDeclarationBlocks(cssValue: string): string[] {
-    const declarations: string[] = [];
-    const matches = [
-      ...cssValue.replace(/\n+/g, "").matchAll(/(.+?)\s*{.+?}/g),
-    ];
-
-    matches.forEach((match) => {
-      const [, declaration] = match;
-      declarations.push(declaration);
-    });
-
-    return declarations;
   }
 
   function getTypeIcon(type) {

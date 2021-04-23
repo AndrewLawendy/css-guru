@@ -85,6 +85,14 @@ export type Declaration = {
   };
 };
 
+export type NonParsedDeclaration = {
+  important: boolean;
+  property: string;
+  value: {
+    value: string;
+  };
+};
+
 export type DeclarationValue =
   | CommonDeclarationValue
   | IdentifierDeclarationValue
@@ -115,6 +123,26 @@ export type CssRule = {
     children: Selector[];
   };
   type: string;
+};
+
+export type NonParsedCssRule = {
+  block: {
+    children: NonParsedDeclaration[];
+    loc: Location;
+  };
+  prelude: {
+    value: string;
+    loc: Location;
+  };
+  type: string;
+};
+
+export type Location = {
+  start: {
+    column: number;
+    line: number;
+    offset: number;
+  };
 };
 
 export type Flag = {

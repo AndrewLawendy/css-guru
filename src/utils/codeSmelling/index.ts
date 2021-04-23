@@ -1,5 +1,6 @@
 import {
   CssRule,
+  NonParsedCssRule,
   SelectorElement,
   RegularSelectorElement,
   CodeSmellingMessage,
@@ -10,19 +11,19 @@ import getBlockComputedValue from "./getBlockComputedValue";
 import sniff from "./sniff";
 
 export default function (
-  { block, prelude, type }: CssRule,
-  declarationBlock: string
+  cssRule: CssRule,
+  nonParsedRule: NonParsedCssRule
 ): CodeSmellingMessage[] {
-  switch (type) {
+  switch (cssRule.type) {
     case "Rule":
-      return handleRuleType(block, prelude, declarationBlock);
+      return handleRuleType(cssRule, nonParsedRule);
     default:
       return [];
   }
 }
 
-function handleRuleType(block, prelude, declarationBlock) {
-  return prelude.children.reduce(
+function handleRuleType(cssRule: CssRule, nonParsedRule: NonParsedCssRule) {
+  return cssRule.prelude.children.reduce(
     (codeSmells: CodeSmellingMessage[], selector) => {
       const elementIndex = findLastIndex<SelectorElement>(
         selector.children,
@@ -53,11 +54,11 @@ function handleRuleType(block, prelude, declarationBlock) {
         element.name !== "any"
           ? getElementComputedValue(element.name, elementParent.name)
           : null;
-      const blockComputedValue = getBlockComputedValue(block.children);
+      const blockComputedValue = getBlockComputedValue(cssRule.block.children);
       const codeSmell = sniff(elementComputedValue, blockComputedValue);
 
       codeSmells.push({
-        declarationBlock,
+        declarationBlock: `${nonParsedRule.prelude.value} [${nonParsedRule.prelude.loc.start.line}:${nonParsedRule.prelude.loc.start.column}]`,
         errorMessages: codeSmell,
       });
 
