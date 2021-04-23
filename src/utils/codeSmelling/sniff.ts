@@ -28,7 +28,13 @@ export default function (
 
       if (propRule) {
         if (propRule.conflicts) {
-          handlePropConflicts(propRule, computedStyle, errorMessages);
+          handlePropConflicts(
+            prop,
+            propRule,
+            elementComputedValue,
+            computedStyle,
+            errorMessages
+          );
         }
 
         if (propRule.values) {
@@ -47,14 +53,20 @@ export default function (
 }
 
 function handlePropConflicts(
+  blockComputedProp: string,
   propRule: CssSmellingRule,
+  elementComputedValue: ComputedValueType,
   computedStyle: ComputedValueType,
   errorMessages: CssSmellingRuleMessage[]
 ): void {
   propRule.conflicts.forEach(({ prop, value, message }) => {
     const computedPropValue = computedStyle[prop];
 
-    if (computedPropValue === value) {
+    if (
+      computedPropValue === value &&
+      elementComputedValue[blockComputedProp] !==
+        computedStyle[blockComputedProp]
+    ) {
       errorMessages.push(message);
     }
   });

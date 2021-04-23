@@ -60,7 +60,9 @@ function handleDeclarationValue(
         acc.push(declarationValue.name);
         break;
       default:
-        acc.push(declarationValue.value);
+        acc.push(
+          declarationValue.value === "0" ? "0px" : declarationValue.value
+        );
     }
 
     return acc;
