@@ -96,7 +96,7 @@ function handleValueSameAsInitial(
   errorMessages: CssSmellingRuleMessage[]
 ): void {
   const blockPropValue = blockComputedValue[prop];
-  const initialPropValue = elementComputedValue?.[prop];
+  const initialPropValue = elementComputedValue[prop];
 
   if (blockPropValue === initialPropValue) {
     errorMessages.push({

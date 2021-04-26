@@ -50,10 +50,10 @@ function handleRuleType(cssRule: CssRule, nonParsedRule: NonParsedCssRule) {
       assertRegularSelectorElementType(element);
       assertRegularSelectorElementType(elementParent);
 
-      const elementComputedValue =
-        element.name !== "any"
-          ? getElementComputedValue(element.name, elementParent.name)
-          : null;
+      const elementComputedValue = getElementComputedValue(
+        element.name,
+        elementParent.name
+      );
       const blockComputedValue = getBlockComputedValue(cssRule.block.children);
       const codeSmell = sniff(elementComputedValue, blockComputedValue);
 
