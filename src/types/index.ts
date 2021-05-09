@@ -720,6 +720,11 @@ export type CssSmellingRule = {
   values?: {
     [value: string]: CssSmellingRuleDetail[];
   };
+  fallback?: {
+    delimiter: string | RegExp;
+    minimum?: number;
+    message: CssSmellingRuleMessage;
+  };
 };
 
 export type CodeSmellingMessage = {

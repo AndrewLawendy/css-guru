@@ -45,6 +45,10 @@ export default function (
             errorMessages
           );
         }
+
+        if (propRule.fallback) {
+          handlePropFallback(propRule, propValue, errorMessages);
+        }
       }
     }
   }
@@ -103,5 +107,18 @@ function handleValueSameAsInitial(
       type: "warning",
       content: `this property "${prop}" has the same value of "${blockPropValue}" as the initial value of this element`,
     });
+  }
+}
+
+function handlePropFallback(
+  { fallback: { delimiter, minimum, message } }: CssSmellingRule,
+  propValue: string,
+  errorMessages: CssSmellingRuleMessage[]
+): void {
+  const allValues = propValue.split(delimiter);
+  const minimumValues = minimum ?? 2;
+
+  if (allValues.length < minimumValues) {
+    errorMessages.push(message);
   }
 }
