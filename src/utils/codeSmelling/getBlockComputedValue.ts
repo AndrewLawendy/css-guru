@@ -1,3 +1,4 @@
+import camelCase from "lodash.camelcase";
 import {
   Declaration,
   DeclarationValue,
@@ -38,7 +39,7 @@ export default function (block: Declaration[]): { [key: string]: string } {
         break;
 
       default:
-        acc[property] = computedDeclarationValues.join("");
+        acc[camelCase(property)] = computedDeclarationValues.join("");
     }
 
     return acc;
