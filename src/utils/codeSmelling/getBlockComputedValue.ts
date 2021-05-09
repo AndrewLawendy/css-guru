@@ -60,6 +60,9 @@ function handleDeclarationValue(
       case "Identifier":
         acc.push(declarationValue.name);
         break;
+      case "Percentage":
+        acc.push(`${declarationValue.value}%`);
+        break;
       default:
         acc.push(
           declarationValue.value === "0" ? "0px" : declarationValue.value

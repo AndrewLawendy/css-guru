@@ -95,6 +95,7 @@ export type NonParsedDeclaration = {
 
 export type DeclarationValue =
   | CommonDeclarationValue
+  | PercentageDeclarationValue
   | IdentifierDeclarationValue
   | FunctionDeclarationValue;
 
@@ -113,6 +114,11 @@ export type FunctionDeclarationValue = {
 export type IdentifierDeclarationValue = {
   type: "Identifier";
   name: string;
+};
+
+export type PercentageDeclarationValue = {
+  type: "Percentage";
+  value: string;
 };
 
 export type CssRule = {
@@ -717,8 +723,17 @@ export type CssSmellingRuleDetail = {
 
 export type CssSmellingRule = {
   conflicts?: CssSmellingRuleDetail[];
-  values?: {
-    [value: string]: CssSmellingRuleDetail[];
+  value?: {
+    values?: {
+      [value: string]: CssSmellingRuleDetail[];
+    };
+    units?: {
+      [unit: string]: CssSmellingRuleDetail[];
+    };
+    absolute?: {
+      positive?: CssSmellingRuleDetail[];
+      negative?: CssSmellingRuleDetail[];
+    };
   };
   fallback?: {
     delimiter: string | RegExp;

@@ -3,6 +3,7 @@ import {
   ComputedValueType,
   CssSmellingRule,
   CssSmellingRuleMessage,
+  CssSmellingRuleDetail,
 } from "../../types";
 import { getRuleSet } from "../../rules";
 
@@ -37,7 +38,7 @@ export default function (
           );
         }
 
-        if (propRule.values) {
+        if (propRule.value) {
           handlePropValueConflicts(
             propRule,
             propValue,
@@ -77,19 +78,39 @@ function handlePropConflicts(
 }
 
 function handlePropValueConflicts(
-  propRule: CssSmellingRule,
+  { value: { values, units, absolute } }: CssSmellingRule,
   propValue: string,
   computedStyle: ComputedValueType,
   errorMessages: CssSmellingRuleMessage[]
 ) {
-  if (propRule.values[propValue]) {
-    propRule.values[propValue].forEach(({ prop, value, message }) => {
-      const computedPropValue = computedStyle[prop];
+  const [, valueNumber, valueUnit] = propValue.match(/(-?\d+)\s*(\D+)/) || [];
 
-      if (computedPropValue === value) {
-        errorMessages.push(message);
-      }
-    });
+  if (values && values[propValue]) {
+    values[propValue].forEach(checkSmellingRuleDetails);
+  }
+
+  if (units && units[valueUnit]) {
+    units[valueUnit].forEach(checkSmellingRuleDetails);
+  }
+
+  if (absolute) {
+    const absoluteKey = Number(valueNumber) >= 0 ? "positive" : "negative";
+
+    if (absolute[absoluteKey]) {
+      absolute[absoluteKey].forEach(checkSmellingRuleDetails);
+    }
+  }
+
+  function checkSmellingRuleDetails({
+    prop,
+    value,
+    message,
+  }: CssSmellingRuleDetail): void {
+    const computedPropValue = computedStyle[prop];
+
+    if (computedPropValue === value) {
+      errorMessages.push(message);
+    }
   }
 }
 
