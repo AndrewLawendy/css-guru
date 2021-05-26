@@ -1,3 +1,4 @@
+import { PseudoClassSelectorPlain } from "css-tree";
 import {
   PseudoClassElement,
   RegularPseudoClassElement,
@@ -11,7 +12,7 @@ import interpretSelector from ".";
 import handlePseudoElements from "./handlePseudoElements";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
-export default function (selectorElement: PseudoClassElement): string {
+export default function (selectorElement: PseudoClassSelectorPlain): string {
   switch (selectorElement.name) {
     case "not":
       isSelectorListParamsPseudoClass(selectorElement);

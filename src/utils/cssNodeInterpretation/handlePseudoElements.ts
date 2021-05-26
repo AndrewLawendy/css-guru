@@ -1,7 +1,10 @@
-import { SelectorElement, Flag } from "../../types";
+import { PseudoElementSelectorPlain, PseudoClassSelectorPlain } from "css-tree";
+import { Flag } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
-export default function (selectorElement: SelectorElement): string {
+export default function (
+  selectorElement: PseudoElementSelectorPlain | PseudoClassSelectorPlain
+): string {
   switch (selectorElement.name) {
     case "before":
       return "the <code>before</code> pseudo-element";

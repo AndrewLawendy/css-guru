@@ -5,8 +5,8 @@ import flow from "lodash.flow";
 
 import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
-import interpretSelector from "../../utils/selectorInterpretation";
-import { fireInterpretationErrors } from "../../utils/selectorInterpretation/selectorInterpretationErrorHandler";
+import interpretCssNode from "../../utils/cssNodeInterpretation";
+import { fireInterpretationErrors } from "../../utils/cssNodeInterpretation/selectorInterpretationErrorHandler";
 
 import { CodeExplanationPropTypes } from "./types";
 
@@ -18,18 +18,17 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
   function parseAndGenerateCssTree() {
     setSelectorsInterpretations([]);
     const ast = parse(cssValue, { positions: true });
-    const { children: cssRules } = toPlainObject(ast);
-    cssRules.forEach(({ prelude }) => {
-      const selectorList = prelude?.children ?? [];
-
-      selectorList.forEach((selector) => {
-        const selectorsInterpretations = interpretSelector(selector);
+    const cssNode = toPlainObject(ast);
+    if (cssNode.type === "StyleSheet") {
+      const { children: cssNodes } = cssNode;
+      cssNodes.forEach((node) => {
+        const selectorsInterpretations = interpretCssNode(node);
         setSelectorsInterpretations((selectorsInterpretationsArray) => [
           ...selectorsInterpretationsArray,
           selectorsInterpretations,
         ]);
       });
-    });
+    }
 
     fireInterpretationErrors();
   }

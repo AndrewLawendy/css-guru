@@ -1,3 +1,4 @@
+import { AttributeSelector } from "css-tree";
 import { AttributeSelectorElement } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
@@ -34,7 +35,7 @@ function getAttributeMatcherInterpretation(selector: AttributeSelectorElement) {
   }
 }
 
-export default function (selector: AttributeSelectorElement): string {
+export default function (selector: AttributeSelector): string {
   const attributeInterpretation = `an attribute <code>${selector.name.name}</code>`;
   let attributeMatcherInterpretation = "";
 

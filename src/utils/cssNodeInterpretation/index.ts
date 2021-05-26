@@ -1,4 +1,9 @@
-import { SelectorElement, Selector, PseudoClassElement } from "../../types";
+import {
+  CssNodePlain,
+  RulePlain,
+  SelectorPlain,
+  PseudoClassSelectorPlain,
+} from "css-tree";
 
 import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -12,7 +17,7 @@ let lastElement = "an element";
 const pseudoClasses: string[] = [];
 let pseudoElement: string;
 
-function getElementType(selectorElement: SelectorElement): string {
+function getElementType(selectorElement: CssNodePlain): string {
   switch (selectorElement.type) {
     case "TypeSelector":
       return selectorElement.name;
@@ -33,7 +38,7 @@ function getElementType(selectorElement: SelectorElement): string {
   }
 }
 
-function parseElement(selectorElement) {
+function parseElement(selectorElement: CssNodePlain) {
   const elementType = getElementType(selectorElement);
 
   return elementType;
@@ -98,7 +103,7 @@ function handleTypeSelectorCase(selectorElement) {
 }
 
 function isElementAPseudoElementWithSingleColon(
-  selectorElement: PseudoClassElement
+  selectorElement: PseudoClassSelectorPlain
 ): boolean {
   const validPseudoElements = [
     "before",
@@ -117,7 +122,7 @@ function isElementAPseudoElementWithSingleColon(
   return validPseudoElements.includes(selectorElement.name);
 }
 
-export default function ({ children = [] }: Selector): string[] {
+export function interpretSelector({ children }: SelectorPlain): string[] {
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);
@@ -157,4 +162,30 @@ export default function ({ children = [] }: Selector): string[] {
   resetSelector();
 
   return selectorInterpretations;
+}
+
+function handleSelectorListRule({ prelude }: RulePlain): string[] {
+  let selectorsInterpretationsArray: string[] = [];
+
+  if (prelude.type === "SelectorList") {
+    const selectorList = prelude.children;
+    selectorList.forEach((selector) => {
+      if (selector.type === "Selector") {
+        const selectorsInterpretations = interpretSelector(selector);
+        selectorsInterpretationsArray = [
+          ...selectorsInterpretationsArray,
+          ...selectorsInterpretations,
+        ];
+      }
+    });
+  }
+
+  return selectorsInterpretationsArray;
+}
+
+export default function (node: CssNodePlain): string[] {
+  switch (node.type) {
+    case "Rule":
+      return handleSelectorListRule(node);
+  }
 }
