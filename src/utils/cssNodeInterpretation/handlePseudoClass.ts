@@ -5,7 +5,7 @@ import {
 } from "css-tree";
 import { Flag } from "../../types";
 
-import { interpretSelector } from ".";
+import { interpretSelector } from "./handleSelectorListRule";
 import handlePseudoElements from "./handlePseudoElements";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
