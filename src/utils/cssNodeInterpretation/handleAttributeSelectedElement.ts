@@ -7,6 +7,8 @@ function getFlagInterpretation(selector: AttributeSelector) {
       return `a case-sensitively of`;
     case "i":
       return `any (ASCII-range) case-insensitive of`;
+    case null:
+      return "";
     default:
       addToErrors(`This flag <code>${selector.flags}</code> is not valid`);
   }
