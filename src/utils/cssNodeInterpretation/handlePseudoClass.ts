@@ -1,27 +1,22 @@
-import { PseudoClassSelectorPlain } from "css-tree";
 import {
-  PseudoClassElement,
-  RegularPseudoClassElement,
-  NthPseudoClassElement,
-  NthAnPlusBPseudoClassChild,
-  SelectorListParamsPseudoClassElement,
-  Flag,
-} from "../../types";
+  PseudoClassSelectorPlain,
+  PseudoElementSelectorPlain,
+  AnPlusB,
+} from "css-tree";
+import { Flag } from "../../types";
 
-import interpretSelector from ".";
+import { interpretSelector } from ".";
 import handlePseudoElements from "./handlePseudoElements";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 export default function (selectorElement: PseudoClassSelectorPlain): string {
   switch (selectorElement.name) {
     case "not":
-      isSelectorListParamsPseudoClass(selectorElement);
       return `does not match ${handleSelectorListParams(
         selectorElement,
         "or"
       )}`;
     case "is": {
-      isSelectorListParamsPseudoClass(selectorElement);
       const flag: Flag = {
         text: `matches ${handleSelectorListParams(selectorElement, "and/or")}`,
         status: "Experimental",
@@ -30,7 +25,6 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
       return JSON.stringify(flag);
     }
     case "where": {
-      isSelectorListParamsPseudoClass(selectorElement);
       const flag: Flag = {
         text: `matches ${handleSelectorListParams(
           selectorElement,
@@ -43,7 +37,6 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
     }
 
     case "has": {
-      isSelectorListParamsPseudoClass(selectorElement);
       const flag: Flag = {
         text: `has the relative selectors ${handleSelectorListParams(
           selectorElement,
@@ -55,14 +48,8 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
       return JSON.stringify(flag);
     }
 
-    case "dir": {
-      const flag: Flag = {
-        text: `has a ${selectorElement.children[0].name} directionality (the document language specifies how directionality is determined)`,
-        status: "Experimental",
-      };
-
-      return JSON.stringify(flag);
-    }
+    case "dir":
+      return handleDir(selectorElement);
 
     case "any-link": {
       const flag: Flag = {
@@ -152,10 +139,8 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
     case "empty":
       return "has no children (neither elements nor text) except perhaps white space";
     case "nth-child":
-      isNthPseudoClass(selectorElement);
       return `${handleNth(selectorElement)} of its parent`;
     case "nth-last-child":
-      isNthPseudoClass(selectorElement);
       return `${handleNth(
         selectorElement
       )} of its parent counting from the last one`;
@@ -166,10 +151,8 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
     case "only-child":
       return "is only child of its parent";
     case "nth-of-type":
-      isNthPseudoClass(selectorElement);
       return `${handleNth(selectorElement)} of its type`;
     case "nth-last-of-type":
-      isNthPseudoClass(selectorElement);
       return `${handleNth(
         selectorElement
       )} of its type counting from the last one`;
@@ -185,50 +168,72 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
   }
 }
 
-function handleCurrentState(
-  selectorElement: RegularPseudoClassElement
-): string {
+function handleDir(selectorElement: PseudoClassSelectorPlain): string {
   if (selectorElement.children?.length > 0) {
-    return `is the deepest <code>:current</code> element that matches selector <code>${selectorElement.children[0].value}</code>`;
+    const [dirValue] = selectorElement.children;
+
+    const flag: Flag = {
+      text: `has a ${
+        dirValue.type === "Identifier" ? dirValue.name : ""
+      } directionality (the document language specifies how directionality is determined)`,
+      status: "Experimental",
+    };
+
+    return JSON.stringify(flag);
+  } else {
+    addToErrors(
+      "<code>dir</code> pseudo class should have at least one parameter"
+    );
+  }
+}
+
+function handleCurrentState(selectorElement: PseudoClassSelectorPlain): string {
+  if (selectorElement.children?.length > 0) {
+    const [currentSelector] = selectorElement.children;
+    return `is the deepest <code>:current</code> element that matches selector <code>${
+      currentSelector.type === "Raw" ? currentSelector.value : ""
+    }</code>`;
   } else {
     return "is currently presented in a time-dimensional canvas";
   }
 }
 
-function handleNth(selectorElement: NthPseudoClassElement): string {
-  const [firstChild] = selectorElement.children;
+function handleNth(selectorElement: PseudoClassSelectorPlain): string {
+  const [nthValue] = selectorElement.children;
 
-  switch (firstChild.nth.type) {
-    case "Identifier":
-      return `is an ${firstChild.nth.name}`;
-    case "AnPlusB":
-      return handleAnPlusB(firstChild.nth);
+  if (nthValue.type === "Nth") {
+    switch (nthValue.nth.type) {
+      case "Identifier":
+        return `is an ${nthValue.nth.name}`;
+      case "AnPlusB":
+        return handleAnPlusB(nthValue.nth);
+    }
   }
 }
 
-function handleAnPlusB(firstChildNth: NthAnPlusBPseudoClassChild): string {
-  if (firstChildNth.a === null && firstChildNth.b !== null) {
-    return `is the ${getNth(firstChildNth.b)} child`;
-  } else if (firstChildNth.a !== null) {
-    if (firstChildNth.b === null) {
+function handleAnPlusB(AnPlusB: AnPlusB): string {
+  if (AnPlusB.a === null && AnPlusB.b !== null) {
+    return `is the ${getNth(AnPlusB.b)} child`;
+  } else if (AnPlusB.a !== null) {
+    if (AnPlusB.b === null) {
       //An
-      switch (firstChildNth.a) {
+      switch (AnPlusB.a) {
         case "1":
           return "is any child";
         case "2":
           return "is an even child";
         default:
-          return `is any ${getNth(firstChildNth.a)} child`;
+          return `is any ${getNth(AnPlusB.a)} child`;
       }
     } else {
       // An+B
-      if (firstChildNth.a === "0") {
-        return `is the ${getNth(firstChildNth.b)} child`;
+      if (AnPlusB.a === "0") {
+        return `is the ${getNth(AnPlusB.b)} child`;
       } else {
-        if (isNegative(firstChildNth.a)) {
-          return handleNthNegativeB(firstChildNth.a, firstChildNth.b);
+        if (isNegative(AnPlusB.a)) {
+          return handleNthNegativeB(AnPlusB.a, AnPlusB.b);
         } else {
-          return handleNthPositiveB(firstChildNth.a, firstChildNth.b);
+          return handleNthPositiveB(AnPlusB.a, AnPlusB.b);
         }
       }
     }
@@ -299,50 +304,28 @@ function isNegative(nth: string): boolean {
   return nth.startsWith("-");
 }
 
-function isNthPseudoClass(
-  element: PseudoClassElement
-): asserts element is NthPseudoClassElement {
-  if (
-    element.name !== "nth-child" &&
-    element.name !== "nth-last-child" &&
-    element.name !== "nth-of-type" &&
-    element.name !== "nth-of-type"
-  ) {
-    throw new Error("This element is not an nth pseudo class");
-  }
-}
-
-function isSelectorListParamsPseudoClass(
-  element: PseudoClassElement
-): asserts element is SelectorListParamsPseudoClassElement {
-  if (
-    element.name !== "not" &&
-    element.name !== "is" &&
-    element.name !== "where" &&
-    element.name !== "has"
-  ) {
-    throw new Error("This is element is not a not pseudo class");
-  }
-}
-
 function handleSelectorListParams(
-  selectorElement: SelectorListParamsPseudoClassElement,
+  selectorElement: PseudoClassSelectorPlain,
   link: string
 ): string {
   if (selectorElement.children != null) {
-    const [firstChild] = selectorElement.children;
-    const selectorsList = firstChild.children;
-    const selectorsListInterpreted = [];
-    const getEither = selectorsList.length > 1 ? "either " : "";
+    const [selectorList] = selectorElement.children;
+    if (selectorList.type === "SelectorList") {
+      const selectors = selectorList.children;
+      const selectorsListInterpreted = [];
+      const getEither = selectors.length > 1 ? "either " : "";
 
-    selectorsList.forEach((selector) => {
-      const selectorsInterpretations = interpretSelector(selector);
-      selectorsListInterpreted.push(
-        selectorsInterpretations.join(" ").toLowerCase()
-      );
-    });
+      selectors.forEach((selector) => {
+        if (selector.type === "Selector") {
+          const selectorsInterpretations = interpretSelector(selector);
+          selectorsListInterpreted.push(
+            selectorsInterpretations.join(" ").toLowerCase()
+          );
+        }
+      });
 
-    return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
+      return `${getEither}${selectorsListInterpreted.join(` ${link} `)}`;
+    }
   } else {
     addToErrors(
       `<code>${selectorElement.name}</code> pseudo class should have at least one parameter`
@@ -350,7 +333,7 @@ function handleSelectorListParams(
   }
 }
 
-function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
+function handleNotValidPseudoClass(selectorElement: PseudoClassSelectorPlain) {
   switch (selectorElement.name) {
     case "before":
     case "after":
@@ -364,7 +347,9 @@ function handleNotValidPseudoClass(selectorElement: PseudoClassElement) {
     case "part":
     case "placeholder":
     case "spelling-error":
-      handlePseudoElements(selectorElement);
+      handlePseudoElements(
+        (selectorElement as unknown) as PseudoElementSelectorPlain
+      );
       break;
 
     default:

@@ -3,6 +3,9 @@ import {
   RulePlain,
   SelectorPlain,
   PseudoClassSelectorPlain,
+  PseudoElementSelectorPlain,
+  Combinator,
+  TypeSelector,
 } from "css-tree";
 
 import { getArticle, capitalizePhrase } from "../utils";
@@ -29,7 +32,9 @@ function getElementType(selectorElement: CssNodePlain): string {
       return handleAttributeSelectedElement(selectorElement);
     case "PseudoClassSelector":
       if (isElementAPseudoElementWithSingleColon(selectorElement)) {
-        return handlePseudoElements(selectorElement);
+        return handlePseudoElements(
+          (selectorElement as unknown) as PseudoElementSelectorPlain
+        );
       } else {
         return handlePseudoClass(selectorElement);
       }
@@ -81,14 +86,14 @@ function handleWhiteSpaceCase() {
   interpretationsStore.push(interpretation);
 }
 
-function handleCombinatorCase(selectorElement) {
+function handleCombinatorCase(selectorElement: Combinator) {
   updateInterpretations();
   resetSelector();
   const combinatorInterpretation = handleCombinator(selectorElement);
   interpretationsStore.push(combinatorInterpretation);
 }
 
-function handleTypeSelectorCase(selectorElement) {
+function handleTypeSelectorCase(selectorElement: TypeSelector) {
   const article = getArticle(
     selectorElement.name,
     false,
