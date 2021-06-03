@@ -20,7 +20,7 @@ export default function (prelude: AtrulePreludePlain): string {
     });
   }
 
-  return mediaQueriesInterpretations.join(" and ");
+  return mediaQueriesInterpretations.join(" or when ");
 }
 
 function handleMediaQuery(mediaQuery: MediaQueryPlain): string {
