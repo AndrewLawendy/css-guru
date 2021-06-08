@@ -7,6 +7,7 @@ import {
   Combinator,
   TypeSelector,
 } from "css-tree";
+import { CssNodeInterpretation } from "../../types";
 
 import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -169,21 +170,33 @@ export function interpretSelector({ children }: SelectorPlain): string[] {
   return selectorInterpretations;
 }
 
-export default function ({ prelude }: RulePlain): string[] {
-  let selectorsInterpretationsArray: string[] = [];
+export default function (
+  { prelude }: RulePlain,
+  nonParsedNode: CssNodePlain,
+  mediaQuery = "All Media"
+): CssNodeInterpretation {
+  const codeBlockInterpretation: CssNodeInterpretation = {
+    mediaQuery,
+    blocksInterpretations: [],
+  };
 
   if (prelude.type === "SelectorList") {
     const selectorList = prelude.children;
     selectorList.forEach((selector) => {
-      if (selector.type === "Selector") {
-        const selectorsInterpretations = interpretSelector(selector);
-        selectorsInterpretationsArray = [
-          ...selectorsInterpretationsArray,
-          ...selectorsInterpretations,
-        ];
+      if (
+        selector.type === "Selector" &&
+        nonParsedNode.type === "Rule" &&
+        nonParsedNode.prelude.type === "Raw"
+      ) {
+        const selectorsInterpretation = interpretSelector(selector);
+        codeBlockInterpretation.blocksInterpretations.push({
+          block: nonParsedNode.prelude.value,
+          location: `[${selector.loc.start.line}:${selector.loc.start.column}]`,
+          selectorsInterpretation,
+        });
       }
     });
   }
 
-  return selectorsInterpretationsArray;
+  return codeBlockInterpretation;
 }

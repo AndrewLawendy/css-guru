@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
 import reactStringReplace from "react-string-replace";
 import flow from "lodash.flow";
+import { List } from "semantic-ui-react";
 
 import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
@@ -9,31 +10,48 @@ import interpretCssNode from "../../utils/cssNodeInterpretation";
 import { fireInterpretationErrors } from "../../utils/cssNodeInterpretation/selectorInterpretationErrorHandler";
 
 import { CodeExplanationPropTypes } from "./types";
+import { CssNodeInterpretation } from "../../types";
 
 const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
-  const [selectorsInterpretations, setSelectorsInterpretations] = useState([]);
+  const [cssNodesInterpretations, setCssNodesInterpretations] = useState<
+    CssNodeInterpretation[]
+  >([]);
 
   useEffect(parseAndGenerateCssTree, [cssValue]);
 
   function parseAndGenerateCssTree() {
-    setSelectorsInterpretations([]);
+    setCssNodesInterpretations([]);
     const ast = parse(cssValue, { positions: true });
     const cssNode = toPlainObject(ast);
-    if (cssNode.type === "StyleSheet") {
+    const nonParsedAst = parse(cssValue, {
+      positions: true,
+      parseRulePrelude: false,
+      parseAtrulePrelude: false,
+      parseValue: false,
+    });
+    const nonParsedCssNode = toPlainObject(nonParsedAst);
+    const nodeInterpretations: CssNodeInterpretation[] = [];
+
+    if (
+      cssNode.type === "StyleSheet" &&
+      nonParsedCssNode.type === "StyleSheet"
+    ) {
       const { children: cssNodes } = cssNode;
-      cssNodes.forEach((node) => {
-        const selectorsInterpretations = interpretCssNode(node);
-        setSelectorsInterpretations((selectorsInterpretationsArray) => [
-          ...selectorsInterpretationsArray,
-          selectorsInterpretations,
-        ]);
+      const { children: nonParsedCssRules } = nonParsedCssNode;
+      cssNodes.forEach((node, nodeIndex) => {
+        const nodeInterpretation = interpretCssNode(
+          node,
+          nonParsedCssRules[nodeIndex]
+        );
+        nodeInterpretations.push(nodeInterpretation);
       });
     }
 
+    setCssNodesInterpretations(nodeInterpretations);
     fireInterpretationErrors();
   }
 
-  function formatInterpretation(interpretation: string) {
+  function formatInterpretation(interpretation: string): React.ReactNodeArray {
     function flagReplacement(text: string) {
       return reactStringReplace(text, /({.+})/g, (match, index) => {
         if (match) {
@@ -62,25 +80,73 @@ const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
   }
 
   return (
-    <>
-      {selectorsInterpretations.map((selectorInterpretations, index) => (
-        <ul key={`selector-interpretations-${index}`}>
-          {selectorInterpretations.map(
-            (interpretation, interpretationIndex) => {
-              const interpretationFormatted = formatInterpretation(
-                interpretation
-              );
+    <List>
+      {cssNodesInterpretations.map(
+        (
+          { mediaQuery, blocksInterpretations },
+          cssNodeInterpretationsIndex
+        ) => (
+          <List.Item key={`${mediaQuery}-${cssNodeInterpretationsIndex}`}>
+            <List.Icon name="desktop" />
+            <List.Content>
+              <List.Header>{mediaQuery}</List.Header>
+              {blocksInterpretations.map(
+                (
+                  { block, location, selectorsInterpretation },
+                  interpretationIndex
+                ) => {
+                  return (
+                    <List.List
+                      key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}`}
+                    >
+                      <List.Item>
+                        <List.Icon name="code" color="yellow" />
+                        <List.Content>
+                          <List.Header>{`${block} ${location}`}</List.Header>
+                          <List.List
+                            key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}`}
+                          >
+                            {selectorsInterpretation.map(
+                              (
+                                selectorInterpretation,
+                                selectorInterpretationIndex
+                              ) => {
+                                const interpretationFormatted = formatInterpretation(
+                                  selectorInterpretation
+                                );
 
-              return (
-                <li key={`interpretation-${interpretationIndex}`}>
-                  {interpretationFormatted}
-                </li>
-              );
-            }
-          )}
-        </ul>
-      ))}
-    </>
+                                return (
+                                  <List.Item
+                                    key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}-interpretation-${cssNodeInterpretationsIndex}-${interpretationIndex}-${selectorInterpretationIndex}`}
+                                  >
+                                    {selectorInterpretationIndex % 2 > 0 ? (
+                                      <List.Icon name="linkify" color="olive" />
+                                    ) : (
+                                      <List.Icon
+                                        name="css3 alternate"
+                                        color="blue"
+                                      />
+                                    )}
+
+                                    <List.Content>
+                                      {interpretationFormatted}
+                                    </List.Content>
+                                  </List.Item>
+                                );
+                              }
+                            )}
+                          </List.List>
+                        </List.Content>
+                      </List.Item>
+                    </List.List>
+                  );
+                }
+              )}
+            </List.Content>
+          </List.Item>
+        )
+      )}
+    </List>
   );
 };
 
