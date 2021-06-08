@@ -180,17 +180,18 @@ export default function (
     blocksInterpretations: [],
   };
 
-  if (prelude.type === "SelectorList") {
+  if (
+    prelude.type === "SelectorList" &&
+    nonParsedNode.type === "Rule" &&
+    nonParsedNode.prelude.type === "Raw"
+  ) {
     const selectorList = prelude.children;
-    selectorList.forEach((selector) => {
-      if (
-        selector.type === "Selector" &&
-        nonParsedNode.type === "Rule" &&
-        nonParsedNode.prelude.type === "Raw"
-      ) {
+    const blocks = nonParsedNode.prelude.value.split(/,\s*/g);
+    selectorList.forEach((selector, selectorIndex) => {
+      if (selector.type === "Selector") {
         const selectorsInterpretation = interpretSelector(selector);
         codeBlockInterpretation.blocksInterpretations.push({
-          block: nonParsedNode.prelude.value,
+          block: blocks[selectorIndex],
           location: `[${selector.loc.start.line}:${selector.loc.start.column}]`,
           selectorsInterpretation,
         });
