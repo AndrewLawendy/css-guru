@@ -1,12 +1,16 @@
-import { AtrulePlain } from "css-tree";
+import { AtrulePlain, CssNodePlain } from "css-tree";
+import { CssNodeInterpretation } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 import handleMediaQuery from "./handleMediaQuery";
 
-export default function ({ prelude, name }: AtrulePlain): string[] {
+export default function (
+  { prelude, loc, block, name }: AtrulePlain,
+  nonParsedNode: CssNodePlain
+): CssNodeInterpretation {
   if (prelude.type === "AtrulePrelude") {
     switch (name) {
       case "media":
-        return [handleMediaQuery(prelude)];
+        return handleMediaQuery(prelude, loc, block, nonParsedNode);
       case "supports":
       case "page":
       case "font-face":

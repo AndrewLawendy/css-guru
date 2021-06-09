@@ -1,15 +1,40 @@
 import {
   CssNodePlain,
+  CssLocation,
+  BlockPlain,
   AtrulePreludePlain,
   MediaQueryPlain,
   MediaFeature,
 } from "css-tree";
+import { CssNodeInterpretation, BlockInterpretation } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
-import { linkPhrases } from "../utils";
+import { linkPhrases, capitalizePhrase } from "../utils";
+import handleSelectorListRule from "./handleSelectorListRule";
 
-export default function (prelude: AtrulePreludePlain): string {
+export default function (
+  prelude: AtrulePreludePlain,
+  loc: CssLocation,
+  block: BlockPlain,
+  nonParsedNode: CssNodePlain
+): CssNodeInterpretation {
+  const mediaQueryInterpretation = handleMediaQueriesInterpretations(prelude);
+  const blocksInterpretations: BlockInterpretation[] = handleMediaQueryBlockInterpretations(
+    block,
+    nonParsedNode
+  );
+
+  return {
+    mediaQuery: `${mediaQueryInterpretation} [${loc.start.line}:${loc.start.column}]`,
+    blocksInterpretations,
+  };
+}
+
+function handleMediaQueriesInterpretations(
+  prelude: AtrulePreludePlain
+): string {
   const mediaQueriesInterpretations: string[] = [];
   const [mediaQueryList] = prelude.children;
+
   if (mediaQueryList.type === "MediaQueryList") {
     const { children: mediaQueries } = mediaQueryList;
 
@@ -20,7 +45,34 @@ export default function (prelude: AtrulePreludePlain): string {
     });
   }
 
-  return mediaQueriesInterpretations.join(" or when ");
+  return capitalizePhrase(mediaQueriesInterpretations.join(" or when "));
+}
+
+function handleMediaQueryBlockInterpretations(
+  block: BlockPlain,
+  nonParsedNode: CssNodePlain
+): BlockInterpretation[] {
+  let blocksInterpretations: BlockInterpretation[] = [];
+  if (nonParsedNode.type === "Atrule") {
+    const { children: cssNodes } = block;
+    const { children: nonParsedCssRules } = nonParsedNode.block;
+
+    cssNodes.forEach((cssNode, cssNodeIndex) => {
+      if (cssNode.type === "Rule") {
+        const blockInterpretations = handleSelectorListRule(
+          cssNode,
+          nonParsedCssRules[cssNodeIndex]
+        );
+
+        blocksInterpretations = [
+          ...blocksInterpretations,
+          ...blockInterpretations,
+        ];
+      }
+    });
+  }
+
+  return blocksInterpretations;
 }
 
 function handleMediaQuery(mediaQuery: MediaQueryPlain): string {

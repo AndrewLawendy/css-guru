@@ -9,8 +9,11 @@ export default function (
 ): CssNodeInterpretation {
   switch (node.type) {
     case "Rule":
-      return handleSelectorListRule(node, nonParsedNode);
-    // case "Atrule":
-    //   return handleAtrule(node);
+      return {
+        mediaQuery: "All media",
+        blocksInterpretations: handleSelectorListRule(node, nonParsedNode),
+      };
+    case "Atrule":
+      return handleAtrule(node, nonParsedNode);
   }
 }

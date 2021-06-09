@@ -7,7 +7,7 @@ import {
   Combinator,
   TypeSelector,
 } from "css-tree";
-import { CssNodeInterpretation } from "../../types";
+import { BlockInterpretation } from "../../types";
 
 import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -172,13 +172,9 @@ export function interpretSelector({ children }: SelectorPlain): string[] {
 
 export default function (
   { prelude }: RulePlain,
-  nonParsedNode: CssNodePlain,
-  mediaQuery = "All Media"
-): CssNodeInterpretation {
-  const codeBlockInterpretation: CssNodeInterpretation = {
-    mediaQuery,
-    blocksInterpretations: [],
-  };
+  nonParsedNode: CssNodePlain
+): BlockInterpretation[] {
+  const blocksInterpretations: BlockInterpretation[] = [];
 
   if (
     prelude.type === "SelectorList" &&
@@ -190,7 +186,7 @@ export default function (
     selectorList.forEach((selector, selectorIndex) => {
       if (selector.type === "Selector") {
         const selectorsInterpretation = interpretSelector(selector);
-        codeBlockInterpretation.blocksInterpretations.push({
+        blocksInterpretations.push({
           block: blocks[selectorIndex],
           location: `[${selector.loc.start.line}:${selector.loc.start.column}]`,
           selectorsInterpretation,
@@ -199,5 +195,5 @@ export default function (
     });
   }
 
-  return codeBlockInterpretation;
+  return blocksInterpretations;
 }
