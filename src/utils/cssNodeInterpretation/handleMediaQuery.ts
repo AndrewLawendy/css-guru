@@ -83,7 +83,7 @@ function handleMediaQuery(mediaQuery: MediaQueryPlain): string {
   let mediaFeatures: CssNodePlain[] = [];
 
   if (mediaFeaturesIndex > -1) {
-    mediaIdentifiers = mediaQuery.children.slice(0, mediaFeaturesIndex - 3);
+    mediaIdentifiers = mediaQuery.children.slice(0, mediaFeaturesIndex);
     mediaFeatures = mediaQuery.children.slice(mediaFeaturesIndex);
   } else {
     mediaIdentifiers = mediaQuery.children;
