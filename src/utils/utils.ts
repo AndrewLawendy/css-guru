@@ -43,3 +43,15 @@ export function findLastIndex<T>(
 
   return -1;
 }
+
+export function linkPhrases(
+  firstPhrase: string,
+  secondPhrase: string,
+  link = ""
+): string {
+  if (firstPhrase) {
+    return `${firstPhrase} ${link} ${secondPhrase}`;
+  } else {
+    return secondPhrase;
+  }
+}

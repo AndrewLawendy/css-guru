@@ -746,3 +746,14 @@ export type CodeSmellingMessage = {
   declarationBlock: string;
   errorMessages: CssSmellingRuleMessage[];
 };
+
+export type BlockInterpretation = {
+  block: string;
+  location: string;
+  selectorsInterpretation: string[];
+};
+
+export type CssNodeInterpretation = {
+  mediaQuery: string;
+  blocksInterpretations: BlockInterpretation[];
+};

@@ -1,7 +1,8 @@
-import { SelectorElement, Flag } from "../../types";
+import { PseudoElementSelectorPlain } from "css-tree";
+import { Flag } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
-export default function (selectorElement: SelectorElement): string {
+export default function (selectorElement: PseudoElementSelectorPlain): string {
   switch (selectorElement.name) {
     case "before":
       return "the <code>before</code> pseudo-element";
@@ -45,19 +46,8 @@ export default function (selectorElement: SelectorElement): string {
       return JSON.stringify(flag);
     }
 
-    case "part": {
-      const [firstChild] = selectorElement.children;
-      const value = firstChild?.value
-        ? `<code>${firstChild?.value}</code>`
-        : "a matching";
-
-      const flag: Flag = {
-        text: `the element within a shadow tree that has ${value} <code>part</code> attribute`,
-        status: "Experimental",
-      };
-
-      return JSON.stringify(flag);
-    }
+    case "part":
+      return handlePart(selectorElement);
 
     case "placeholder":
       return "the placeholder text in an <code>input</code> or <code>textarea</code>";
@@ -75,5 +65,26 @@ export default function (selectorElement: SelectorElement): string {
       addToErrors(
         `This pseudo element <code>${selectorElement.name}</code> is invalid`
       );
+  }
+}
+
+function handlePart(selectorElement: PseudoElementSelectorPlain) {
+  if (selectorElement.children) {
+    const [partValue] = selectorElement.children;
+
+    if (partValue.type === "Raw") {
+      const value = partValue.value
+        ? `<code>${partValue.value}</code>`
+        : "a matching";
+
+      const flag: Flag = {
+        text: `the element within a shadow tree that has ${value} <code>part</code> attribute`,
+        status: "Experimental",
+      };
+
+      return JSON.stringify(flag);
+    }
+  } else {
+    addToErrors(`This pseudo element <code>part</code> needs parameters`);
   }
 }

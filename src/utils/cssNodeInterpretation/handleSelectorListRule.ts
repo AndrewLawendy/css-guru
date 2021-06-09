@@ -1,4 +1,13 @@
-import { SelectorElement, Selector, PseudoClassElement } from "../../types";
+import {
+  CssNodePlain,
+  RulePlain,
+  SelectorPlain,
+  PseudoClassSelectorPlain,
+  PseudoElementSelectorPlain,
+  Combinator,
+  TypeSelector,
+} from "css-tree";
+import { BlockInterpretation } from "../../types";
 
 import { getArticle, capitalizePhrase } from "../utils";
 import handleAttributeSelectedElement from "./handleAttributeSelectedElement";
@@ -12,7 +21,7 @@ let lastElement = "an element";
 const pseudoClasses: string[] = [];
 let pseudoElement: string;
 
-function getElementType(selectorElement: SelectorElement): string {
+function getElementType(selectorElement: CssNodePlain): string {
   switch (selectorElement.type) {
     case "TypeSelector":
       return selectorElement.name;
@@ -24,7 +33,9 @@ function getElementType(selectorElement: SelectorElement): string {
       return handleAttributeSelectedElement(selectorElement);
     case "PseudoClassSelector":
       if (isElementAPseudoElementWithSingleColon(selectorElement)) {
-        return handlePseudoElements(selectorElement);
+        return handlePseudoElements(
+          (selectorElement as unknown) as PseudoElementSelectorPlain
+        );
       } else {
         return handlePseudoClass(selectorElement);
       }
@@ -33,7 +44,7 @@ function getElementType(selectorElement: SelectorElement): string {
   }
 }
 
-function parseElement(selectorElement) {
+function parseElement(selectorElement: CssNodePlain) {
   const elementType = getElementType(selectorElement);
 
   return elementType;
@@ -76,14 +87,14 @@ function handleWhiteSpaceCase() {
   interpretationsStore.push(interpretation);
 }
 
-function handleCombinatorCase(selectorElement) {
+function handleCombinatorCase(selectorElement: Combinator) {
   updateInterpretations();
   resetSelector();
   const combinatorInterpretation = handleCombinator(selectorElement);
   interpretationsStore.push(combinatorInterpretation);
 }
 
-function handleTypeSelectorCase(selectorElement) {
+function handleTypeSelectorCase(selectorElement: TypeSelector) {
   const article = getArticle(
     selectorElement.name,
     false,
@@ -98,7 +109,7 @@ function handleTypeSelectorCase(selectorElement) {
 }
 
 function isElementAPseudoElementWithSingleColon(
-  selectorElement: PseudoClassElement
+  selectorElement: PseudoClassSelectorPlain
 ): boolean {
   const validPseudoElements = [
     "before",
@@ -117,7 +128,7 @@ function isElementAPseudoElementWithSingleColon(
   return validPseudoElements.includes(selectorElement.name);
 }
 
-export default function ({ children = [] }: Selector): string[] {
+export function interpretSelector({ children }: SelectorPlain): string[] {
   for (let index = children.length - 1; index >= 0; index--) {
     const selectorElement = children[index];
     const selectorElementInterpretation = parseElement(selectorElement);
@@ -157,4 +168,32 @@ export default function ({ children = [] }: Selector): string[] {
   resetSelector();
 
   return selectorInterpretations;
+}
+
+export default function (
+  { prelude }: RulePlain,
+  nonParsedNode: CssNodePlain
+): BlockInterpretation[] {
+  const blocksInterpretations: BlockInterpretation[] = [];
+
+  if (
+    prelude.type === "SelectorList" &&
+    nonParsedNode.type === "Rule" &&
+    nonParsedNode.prelude.type === "Raw"
+  ) {
+    const selectorList = prelude.children;
+    const blocks = nonParsedNode.prelude.value.split(/,\s*/g);
+    selectorList.forEach((selector, selectorIndex) => {
+      if (selector.type === "Selector") {
+        const selectorsInterpretation = interpretSelector(selector);
+        blocksInterpretations.push({
+          block: blocks[selectorIndex],
+          location: `[${selector.loc.start.line}:${selector.loc.start.column}]`,
+          selectorsInterpretation,
+        });
+      }
+    });
+  }
+
+  return blocksInterpretations;
 }

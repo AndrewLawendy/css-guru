@@ -1,7 +1,7 @@
-import { RegularSelectorElement } from "../../types";
+import { Combinator } from "css-tree";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
-export default function (selectorElement: RegularSelectorElement): string {
+export default function (selectorElement: Combinator): string {
   switch (selectorElement.name) {
     case ">":
       return "...is directly child of";
