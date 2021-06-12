@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
 import { Icon } from "semantic-ui-react";
 
@@ -6,7 +6,7 @@ import { CodeSmellingMessage } from "../../types";
 import { CodeSmellingPropTypes } from "./types";
 import smellCode from "../../utils/codeSmelling";
 
-const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
+const CodeSmelling = ({ cssValue }: CodeSmellingPropTypes): JSX.Element => {
   const [codeBlocksSmells, setCodeBlocksSmells] = useState<
     CodeSmellingMessage[][]
   >([]);

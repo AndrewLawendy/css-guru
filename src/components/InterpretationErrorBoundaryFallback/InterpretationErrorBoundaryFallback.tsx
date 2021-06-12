@@ -1,12 +1,12 @@
-import React, { FC, ReactNodeArray } from "react";
+import React, { ReactNodeArray } from "react";
 import { FallbackProps } from "react-error-boundary";
 import { Message, Button, Icon } from "semantic-ui-react";
 import reactStringReplace from "react-string-replace";
 
-const InterpretationErrorBoundaryFallback: FC<FallbackProps> = ({
+const InterpretationErrorBoundaryFallback = ({
   error,
   resetErrorBoundary,
-}) => {
+}: FallbackProps): JSX.Element => {
   function replaceCode(message: string): ReactNodeArray {
     return reactStringReplace(
       message,

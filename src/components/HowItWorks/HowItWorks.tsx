@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React from "react";
 import MarkdownParser from "../MarkdownParser/MarkdownParser";
 import howItWorksArticle from "../../articles/how-it-works.md";
 
-const HowItWorks: FC = () => {
+const HowItWorks = (): JSX.Element => {
   return <MarkdownParser title="How It Works" file={howItWorksArticle} />;
 };
 

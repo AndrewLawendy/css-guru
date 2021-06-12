@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import AceEditor from "react-ace";
 import { validate } from "csstree-validator";
 import { Button, Dropdown, Message, Popup } from "semantic-ui-react";
@@ -35,7 +35,10 @@ const themeOptions = [
   { key: "terminal", value: "terminal", text: "Terminal" },
 ];
 
-const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
+const Editor = ({
+  setCssValue,
+  editorDisabled,
+}: EditorPropTypes): JSX.Element => {
   const [cssText, setCssText] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
   const [editorTheme, setEditorTheme] = useEditorTheme();

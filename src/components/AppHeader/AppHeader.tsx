@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React from "react";
 import { Link, useRoute } from "wouter";
 import { Header } from "semantic-ui-react";
 
 import logo from "../../assets/css-guru-logo.png";
 import styles from "./AppHeader.scss";
 
-const AppHeader: FC = () => {
+const AppHeader = (): JSX.Element => {
   const [isAboutUs] = useRoute("/about-us");
   const [isHowItWorks] = useRoute("/how-it-works");
 

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
 import reactStringReplace from "react-string-replace";
 import flow from "lodash.flow";
@@ -12,7 +12,9 @@ import { fireInterpretationErrors } from "../../utils/cssNodeInterpretation/sele
 import { CodeExplanationPropTypes } from "./types";
 import { CssNodeInterpretation } from "../../types";
 
-const CodeExplanation: FC<CodeExplanationPropTypes> = ({ cssValue }) => {
+const CodeExplanation = ({
+  cssValue,
+}: CodeExplanationPropTypes): JSX.Element => {
   const [cssNodesInterpretations, setCssNodesInterpretations] = useState<
     CssNodeInterpretation[]
   >([]);

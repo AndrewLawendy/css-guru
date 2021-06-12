@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import React from "react";
 import MarkdownParser from "../MarkdownParser/MarkdownParser";
 import aboutUsArticle from "../../articles/about-us.md";
 
-const AboutUs: FC = () => {
+const AboutUs = (): JSX.Element => {
   return <MarkdownParser title="About Us" file={aboutUsArticle} />;
 };
 

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Segment, Accordion, Icon, Divider } from "semantic-ui-react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -7,7 +7,7 @@ import Editor from "../Editor/Editor";
 import CodeExplanation from "../CodeExplanation/CodeExplanation";
 import CodeSmelling from "../CodeSmelling/CodeSmelling";
 
-const Dashboard: FC = () => {
+const Dashboard = (): JSX.Element => {
   const [cssValue, setCssValue] = useState("");
   const [editorDisabled, setEditorDisabled] = useState(false);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(-1);
