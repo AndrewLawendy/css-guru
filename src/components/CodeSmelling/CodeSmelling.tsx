@@ -14,19 +14,27 @@ const CodeSmelling: FC<CodeSmellingPropTypes> = ({ cssValue }) => {
 
   function smellCss() {
     const ast = parse(cssValue, { positions: true });
+    const cssNode = toPlainObject(ast);
     const nonParsedAst = parse(cssValue, {
       positions: true,
       parseRulePrelude: false,
       parseAtrulePrelude: false,
       parseValue: false,
     });
-    const { children: cssRules } = toPlainObject(ast);
-    const { children: nonParsedCssRules } = toPlainObject(nonParsedAst);
+    const nonParsedCssNode = toPlainObject(nonParsedAst);
     const codeSmells = [];
 
-    cssRules.forEach((rule, index) => {
-      codeSmells.push(smellCode(rule, nonParsedCssRules[index]));
-    });
+    if (
+      cssNode.type === "StyleSheet" &&
+      nonParsedCssNode.type === "StyleSheet"
+    ) {
+      const { children: cssRules } = cssNode;
+      const { children: nonParsedCssRules } = nonParsedCssNode;
+
+      cssRules.forEach((rule, index) => {
+        codeSmells.push(smellCode(rule, nonParsedCssRules[index]));
+      });
+    }
 
     setCodeBlocksSmells(codeSmells);
   }
