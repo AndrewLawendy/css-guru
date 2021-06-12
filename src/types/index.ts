@@ -2,7 +2,7 @@ export type RegularObject = {
   [key: string]: string;
 };
 
-export type Flag = {
+export type SupportFlag = {
   text: string;
   status: "Experimental" | "Not Supported";
 };
