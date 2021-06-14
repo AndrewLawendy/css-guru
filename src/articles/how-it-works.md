@@ -39,26 +39,31 @@ For more info on that matter I recommend checking this page on [CSS Tricks](http
    Examples of code explanation:
 
    - `.test::part() { }`
+
      ![Experimental Feature](../assets/articles-assets/experimental-feature.jpg)
 
    - `.test:blank { }`
+
      ![Not Supported Feature](../assets/articles-assets/not-supported-feature.jpg)
 
 3. We support pseudo classes and elements taking selector list as an argument.
 
    Example:
    `p:not(.active) { }`
+
    ![Pseudo Class Not](../assets/articles-assets/pseudo-class-not.png)
 
 4. We support `nth` pseudo class selectors.
 
    Example:
    `div:nth-child(2n+5) { }`
+
    ![Pseudo Class Nth](../assets/articles-assets/pseudo-class-nth.png)
 
 5. We support media query explanation.
 
    Example:
+
    ![Media Query Support](../assets/articles-assets/media-query-support.jpg)
 
 ### Code Smelling
@@ -84,4 +89,5 @@ Here are some few examples of many:
   are calculated compared to width of the parent!
 
   Example:
+
   ![Code Smelling](../assets/articles-assets/smelling.jpg)

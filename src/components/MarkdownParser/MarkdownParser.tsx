@@ -10,7 +10,7 @@ const MarkdownParser = ({ title, file }: FileReaderPropTypes): JSX.Element => {
 
   return (
     <div className={styles.contentWrapper}>
-      <Container text>
+      <Container>
         <Header as="h1">{title}</Header>
         <span className={styles.metaData}>{readingTimeStats.text}</span>
         <div
