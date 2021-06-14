@@ -12,6 +12,8 @@ import { fireInterpretationErrors } from "../../utils/cssNodeInterpretation/sele
 import { CodeExplanationPropTypes } from "./types";
 import { CssNodeInterpretation } from "../../types";
 
+import styles from "./CodeExplanation.scss";
+
 const CodeExplanation = ({
   cssValue,
 }: CodeExplanationPropTypes): JSX.Element => {
@@ -88,7 +90,10 @@ const CodeExplanation = ({
           { mediaQuery, blocksInterpretations },
           cssNodeInterpretationsIndex
         ) => (
-          <List.Item key={`${mediaQuery}-${cssNodeInterpretationsIndex}`}>
+          <List.Item
+            key={`${mediaQuery}-${cssNodeInterpretationsIndex}`}
+            className={styles.cssNodesInterpretationsBlock}
+          >
             <List.Icon name="desktop" />
             <List.Content>
               <List.Header>{mediaQuery}</List.Header>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { parse, toPlainObject } from "css-tree";
-import { Icon } from "semantic-ui-react";
+import { List } from "semantic-ui-react";
 
 import { CodeSmellingMessage } from "../../types";
 import { CodeSmellingPropTypes } from "./types";
 import smellCode from "../../utils/codeSmelling";
+
+import styles from "./CodeSmelling.scss";
 
 const CodeSmelling = ({ cssValue }: CodeSmellingPropTypes): JSX.Element => {
   const [codeBlocksSmells, setCodeBlocksSmells] = useState<
@@ -42,34 +44,40 @@ const CodeSmelling = ({ cssValue }: CodeSmellingPropTypes): JSX.Element => {
   function getTypeIcon(type) {
     switch (type) {
       case "warning":
-        return <Icon color="yellow" name="warning sign" />;
+        return <List.Icon name="warning sign" color="yellow" />;
       case "error":
-        return <Icon color="red" name="close" />;
+        return <List.Icon name="close" color="red" />;
     }
   }
 
   return (
-    <ul>
+    <List>
       {codeBlocksSmells.map((codeBlockSmells) =>
         codeBlockSmells.map(({ declarationBlock, errorMessages }, index) => {
           if (errorMessages.length) {
             return (
-              <li key={`${declarationBlock}-${index}`}>
-                {declarationBlock}
-                <ul>
-                  {errorMessages.map(({ type, content }, index) => (
-                    <li key={`${type}-${content}-${index}`}>
-                      {getTypeIcon(type)}
-                      {content}
-                    </li>
-                  ))}
-                </ul>
-              </li>
+              <List.Item
+                key={`${declarationBlock}-${index}`}
+                className={styles.codeBlockSmellsErrorMessageBlock}
+              >
+                <List.Icon name="code" color="yellow" />
+                <List.Content>
+                  <List.Header>{declarationBlock}</List.Header>
+                  <List.List>
+                    {errorMessages.map(({ type, content }, index) => (
+                      <List.Item key={`${type}-${content}-${index}`}>
+                        {getTypeIcon(type)}
+                        <List.Content>{content}</List.Content>
+                      </List.Item>
+                    ))}
+                  </List.List>
+                </List.Content>
+              </List.Item>
             );
           }
         })
       )}
-    </ul>
+    </List>
   );
 };
 
