@@ -26,26 +26,26 @@ const CodeExplanation = ({
   function parseAndGenerateCssTree() {
     setCssNodesInterpretations([]);
     const ast = parse(cssValue, { positions: true });
-    const cssNode = toPlainObject(ast);
+    const styleSheet = toPlainObject(ast);
     const nonParsedAst = parse(cssValue, {
       positions: true,
       parseRulePrelude: false,
       parseAtrulePrelude: false,
       parseValue: false,
     });
-    const nonParsedCssNode = toPlainObject(nonParsedAst);
+    const nonParsedStyleSheet = toPlainObject(nonParsedAst);
     const nodeInterpretations: CssNodeInterpretation[] = [];
 
     if (
-      cssNode.type === "StyleSheet" &&
-      nonParsedCssNode.type === "StyleSheet"
+      styleSheet.type === "StyleSheet" &&
+      nonParsedStyleSheet.type === "StyleSheet"
     ) {
-      const { children: cssNodes } = cssNode;
-      const { children: nonParsedCssRules } = nonParsedCssNode;
+      const { children: cssNodes } = styleSheet;
+      const { children: nonParsedCssNodes } = nonParsedStyleSheet;
       cssNodes.forEach((node, nodeIndex) => {
         const nodeInterpretation = interpretCssNode(
           node,
-          nonParsedCssRules[nodeIndex]
+          nonParsedCssNodes[nodeIndex]
         );
         nodeInterpretations.push(nodeInterpretation);
       });

@@ -16,25 +16,25 @@ const CodeSmelling = ({ cssValue }: CodeSmellingPropTypes): JSX.Element => {
 
   function smellCss() {
     const ast = parse(cssValue, { positions: true });
-    const cssNode = toPlainObject(ast);
+    const styleSheet = toPlainObject(ast);
     const nonParsedAst = parse(cssValue, {
       positions: true,
       parseRulePrelude: false,
       parseAtrulePrelude: false,
       parseValue: false,
     });
-    const nonParsedCssNode = toPlainObject(nonParsedAst);
+    const nonParsedStyleSheet = toPlainObject(nonParsedAst);
     const codeSmells = [];
 
     if (
-      cssNode.type === "StyleSheet" &&
-      nonParsedCssNode.type === "StyleSheet"
+      styleSheet.type === "StyleSheet" &&
+      nonParsedStyleSheet.type === "StyleSheet"
     ) {
-      const { children: cssRules } = cssNode;
-      const { children: nonParsedCssRules } = nonParsedCssNode;
+      const { children: cssNodes } = styleSheet;
+      const { children: nonParsedCssNodes } = nonParsedStyleSheet;
 
-      cssRules.forEach((rule, index) => {
-        codeSmells.push(smellCode(rule, nonParsedCssRules[index]));
+      cssNodes.forEach((cssNode, cssNodeIndex) => {
+        codeSmells.push(smellCode(cssNode, nonParsedCssNodes[cssNodeIndex]));
       });
     }
 

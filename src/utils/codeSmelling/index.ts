@@ -5,13 +5,13 @@ import handleRuleType from "./handleRuleType";
 import handleAtRuleType from "./handleAtRuleType";
 
 export default function (
-  cssRule: CssNodePlain,
-  nonParsedRule: CssNodePlain
+  node: CssNodePlain,
+  nonParsedNode: CssNodePlain
 ): CodeSmellingMessage[] {
-  switch (cssRule.type) {
+  switch (node.type) {
     case "Rule":
-      return handleRuleType(cssRule, nonParsedRule);
+      return handleRuleType(node, nonParsedNode);
     case "Atrule":
-      return handleAtRuleType(cssRule, nonParsedRule);
+      return handleAtRuleType(node, nonParsedNode);
   }
 }
