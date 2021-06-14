@@ -48,10 +48,12 @@ export default function (
         const blockComputedValue = getBlockComputedValue(block.children);
         const codeSmell = sniff(elementComputedValue, blockComputedValue);
 
-        codeSmells.push({
-          declarationBlock: `${blocks[selectorIndex]} [${nonParsedNode.prelude.loc.start.line}:${nonParsedNode.prelude.loc.start.column}]`,
-          errorMessages: codeSmell,
-        });
+        if (codeSmell.length > 0) {
+          codeSmells.push({
+            declarationBlock: `${blocks[selectorIndex]} [${nonParsedNode.prelude.loc.start.line}:${nonParsedNode.prelude.loc.start.column}]`,
+            errorMessages: codeSmell,
+          });
+        }
       }
     });
   }

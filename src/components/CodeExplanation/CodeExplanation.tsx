@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import reactStringReplace from "react-string-replace";
 import flow from "lodash.flow";
-import { List } from "semantic-ui-react";
+import { List, Message } from "semantic-ui-react";
 
 import SelectorFlag from "../SelectorFlag/SelectorFlag";
 
@@ -64,78 +64,90 @@ const CodeExplanation = (cssValue: CssValue): JSX.Element => {
     return flow(flagReplacement, codeTagReplacement)(interpretation);
   }
 
-  return (
-    <List>
-      {cssNodesInterpretations.map(
-        (
-          { mediaQuery, blocksInterpretations },
-          cssNodeInterpretationsIndex
-        ) => (
-          <List.Item
-            key={`${mediaQuery}-${cssNodeInterpretationsIndex}`}
-            className={styles.cssNodesInterpretationsBlock}
-          >
-            <List.Icon name="desktop" />
-            <List.Content>
-              <List.Header>{mediaQuery}</List.Header>
-              {blocksInterpretations.map(
-                (
-                  { block, location, selectorsInterpretation },
-                  interpretationIndex
-                ) => {
-                  return (
-                    <List.List
-                      key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}`}
-                    >
-                      <List.Item>
-                        <List.Icon name="code" color="yellow" />
-                        <List.Content>
-                          <List.Header>{`${block} ${location}`}</List.Header>
-                          <List.List
-                            key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}`}
-                          >
-                            {selectorsInterpretation.map(
-                              (
-                                selectorInterpretation,
-                                selectorInterpretationIndex
-                              ) => {
-                                const interpretationFormatted = formatInterpretation(
-                                  selectorInterpretation
-                                );
+  if (cssValue.cssNodes) {
+    return (
+      <List>
+        {cssNodesInterpretations.map(
+          (
+            { mediaQuery, blocksInterpretations },
+            cssNodeInterpretationsIndex
+          ) => (
+            <List.Item
+              key={`${mediaQuery}-${cssNodeInterpretationsIndex}`}
+              className={styles.cssNodesInterpretationsBlock}
+            >
+              <List.Icon name="desktop" />
+              <List.Content>
+                <List.Header>{mediaQuery}</List.Header>
+                {blocksInterpretations.map(
+                  (
+                    { block, location, selectorsInterpretation },
+                    interpretationIndex
+                  ) => {
+                    return (
+                      <List.List
+                        key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}`}
+                      >
+                        <List.Item>
+                          <List.Icon name="code" color="yellow" />
+                          <List.Content>
+                            <List.Header>{`${block} ${location}`}</List.Header>
+                            <List.List
+                              key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}`}
+                            >
+                              {selectorsInterpretation.map(
+                                (
+                                  selectorInterpretation,
+                                  selectorInterpretationIndex
+                                ) => {
+                                  const interpretationFormatted = formatInterpretation(
+                                    selectorInterpretation
+                                  );
 
-                                return (
-                                  <List.Item
-                                    key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}-interpretation-${cssNodeInterpretationsIndex}-${interpretationIndex}-${selectorInterpretationIndex}`}
-                                  >
-                                    {selectorInterpretationIndex % 2 > 0 ? (
-                                      <List.Icon name="linkify" color="olive" />
-                                    ) : (
-                                      <List.Icon
-                                        name="css3 alternate"
-                                        color="blue"
-                                      />
-                                    )}
+                                  return (
+                                    <List.Item
+                                      key={`${mediaQuery}-${cssNodeInterpretationsIndex}-${block}-${location}-${interpretationIndex}-selector-interpretations-${cssNodeInterpretationsIndex}-${interpretationIndex}-interpretation-${cssNodeInterpretationsIndex}-${interpretationIndex}-${selectorInterpretationIndex}`}
+                                    >
+                                      {selectorInterpretationIndex % 2 > 0 ? (
+                                        <List.Icon
+                                          name="linkify"
+                                          color="olive"
+                                        />
+                                      ) : (
+                                        <List.Icon
+                                          name="css3 alternate"
+                                          color="blue"
+                                        />
+                                      )}
 
-                                    <List.Content>
-                                      {interpretationFormatted}
-                                    </List.Content>
-                                  </List.Item>
-                                );
-                              }
-                            )}
-                          </List.List>
-                        </List.Content>
-                      </List.Item>
-                    </List.List>
-                  );
-                }
-              )}
-            </List.Content>
-          </List.Item>
-        )
-      )}
-    </List>
-  );
+                                      <List.Content>
+                                        {interpretationFormatted}
+                                      </List.Content>
+                                    </List.Item>
+                                  );
+                                }
+                              )}
+                            </List.List>
+                          </List.Content>
+                        </List.Item>
+                      </List.List>
+                    );
+                  }
+                )}
+              </List.Content>
+            </List.Item>
+          )
+        )}
+      </List>
+    );
+  } else {
+    return (
+      <Message
+        warning
+        content="Please fill the editor with valid CSS and hit Interpret CSS button to read the explanation"
+      />
+    );
+  }
 };
 
 export default CodeExplanation;
