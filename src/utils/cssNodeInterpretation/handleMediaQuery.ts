@@ -17,16 +17,18 @@ export default function (
   block: BlockPlain,
   nonParsedNode: CssNodePlain
 ): CssNodeInterpretation {
-  const mediaQueryInterpretation = handleMediaQueriesInterpretations(prelude);
-  const blocksInterpretations: BlockInterpretation[] = handleMediaQueryBlockInterpretations(
-    block,
-    nonParsedNode
-  );
+  if (prelude.type === "AtrulePrelude") {
+    const mediaQueryInterpretation = handleMediaQueriesInterpretations(prelude);
+    const blocksInterpretations: BlockInterpretation[] = handleMediaQueryBlockInterpretations(
+      block,
+      nonParsedNode
+    );
 
-  return {
-    mediaQuery: `${mediaQueryInterpretation} [${loc.start.line}:${loc.start.column}]`,
-    blocksInterpretations,
-  };
+    return {
+      mediaQuery: `${mediaQueryInterpretation} [${loc.start.line}:${loc.start.column}]`,
+      blocksInterpretations,
+    };
+  }
 }
 
 function handleMediaQueriesInterpretations(

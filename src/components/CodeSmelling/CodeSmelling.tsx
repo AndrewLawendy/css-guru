@@ -20,7 +20,7 @@ const CodeSmelling = (cssValue: CssValue): JSX.Element => {
     cssNodes?.forEach((cssNode, cssNodeIndex) => {
       const codeSmell = smellCode(cssNode, nonParsedCssNodes[cssNodeIndex]);
 
-      if (codeSmell.length > 0) {
+      if (codeSmell?.length > 0) {
         codeSmells.push(codeSmell);
       }
     });

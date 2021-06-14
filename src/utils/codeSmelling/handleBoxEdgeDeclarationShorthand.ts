@@ -69,7 +69,7 @@ function handleBoxEdgeSingleShorthand(
 function handleBoxEdgeDoubleShorthand(
   computedDeclarationValues: string[]
 ): { top: string; right: string; bottom: string; left: string } {
-  const [topAndBottom, , rightAndLeft] = computedDeclarationValues;
+  const [topAndBottom, rightAndLeft] = computedDeclarationValues;
   return {
     top: topAndBottom,
     right: rightAndLeft,
@@ -81,7 +81,7 @@ function handleBoxEdgeDoubleShorthand(
 function handleBoxTripleShorthand(
   computedDeclarationValues: string[]
 ): { top: string; right: string; bottom: string; left: string } {
-  const [top, , rightAndLeft, , bottom] = computedDeclarationValues;
+  const [top, rightAndLeft, bottom] = computedDeclarationValues;
   return {
     top,
     right: rightAndLeft,
@@ -93,7 +93,7 @@ function handleBoxTripleShorthand(
 function handleBoxNoShorthand(
   computedDeclarationValues: string[]
 ): { top: string; right: string; bottom: string; left: string } {
-  const [top, , right, , bottom, , left] = computedDeclarationValues;
+  const [top, right, bottom, left] = computedDeclarationValues;
   return {
     top,
     right,
@@ -108,11 +108,11 @@ function handleBoxEdgeShorthand(
   switch (computedDeclarationValues.length) {
     case 1:
       return handleBoxEdgeSingleShorthand(computedDeclarationValues);
-    case 3:
+    case 2:
       return handleBoxEdgeDoubleShorthand(computedDeclarationValues);
-    case 5:
+    case 3:
       return handleBoxTripleShorthand(computedDeclarationValues);
-    case 7:
+    case 4:
       return handleBoxNoShorthand(computedDeclarationValues);
   }
 }

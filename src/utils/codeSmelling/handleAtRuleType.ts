@@ -8,7 +8,7 @@ export default function (
 ): CodeSmellingMessage[] {
   let rulesSmellingMessages: CodeSmellingMessage[] = [];
 
-  if (nonParsedNode.type === "Atrule") {
+  if (block !== null && nonParsedNode.type === "Atrule") {
     const { children: cssNodes } = block;
     const { children: nonParsedCssNodes } = nonParsedNode.block;
 

@@ -10,7 +10,7 @@ export default function (block: CssNodePlain[]): { [key: string]: string } {
   return block.reduce((acc, node) => {
     if (node.type === "Declaration") {
       const { property, value } = node;
-      let computedDeclarationValues = [];
+      let computedDeclarationValues: string[] = [];
       if (value.type === "Value") {
         computedDeclarationValues = handleDeclarationValue(value.children);
       }
@@ -63,10 +63,20 @@ function handleDeclarationValue(declarationValues: CssNodePlain[]): string[] {
       case "Percentage":
         acc.push(`${declarationValue.value}%`);
         break;
+      case "Number":
+        acc.push(declarationValue.value);
+        break;
+      case "Hash":
+        acc.push(`#${declarationValue.value}`);
+        break;
       case "Raw":
         acc.push(
           declarationValue.value === "0" ? "0px" : declarationValue.value
         );
+        break;
+      case "String":
+        acc.push(declarationValue.value);
+        break;
     }
 
     return acc;
