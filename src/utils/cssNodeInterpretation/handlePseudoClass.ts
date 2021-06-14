@@ -3,7 +3,7 @@ import {
   PseudoElementSelectorPlain,
   AnPlusB,
 } from "css-tree";
-import { Flag } from "../../types";
+import { SupportFlag } from "../../types";
 
 import { interpretSelector } from "./handleSelectorListRule";
 import handlePseudoElements from "./handlePseudoElements";
@@ -17,7 +17,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
         "or"
       )}`;
     case "is": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: `matches ${handleSelectorListParams(selectorElement, "and/or")}`,
         status: "Experimental",
       };
@@ -25,7 +25,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
       return JSON.stringify(flag);
     }
     case "where": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: `matches ${handleSelectorListParams(
           selectorElement,
           "and/or"
@@ -37,7 +37,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
     }
 
     case "has": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: `has the relative selectors ${handleSelectorListParams(
           selectorElement,
           "or"
@@ -52,7 +52,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
       return handleDir(selectorElement);
 
     case "any-link": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: "is the source anchor of a hyperlink",
         status: "Experimental",
       };
@@ -117,7 +117,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
     case "optional":
       return "does not require input";
     case "blank": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: "has a blank (empty/missing) value",
         status: "Not Supported",
       };
@@ -125,7 +125,7 @@ export default function (selectorElement: PseudoClassSelectorPlain): string {
       return JSON.stringify(flag);
     }
     case "user-invalid": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text:
           "is user-altered user-input with incorrect input (invalid, out-of-range, omitted-but-required)",
         status: "Experimental",
@@ -172,7 +172,7 @@ function handleDir(selectorElement: PseudoClassSelectorPlain): string {
   if (selectorElement.children?.length > 0) {
     const [dirValue] = selectorElement.children;
 
-    const flag: Flag = {
+    const flag: SupportFlag = {
       text: `has a ${
         dirValue.type === "Identifier" ? dirValue.name : ""
       } directionality (the document language specifies how directionality is determined)`,

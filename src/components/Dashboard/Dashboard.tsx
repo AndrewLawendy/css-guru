@@ -1,14 +1,15 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Segment, Accordion, Icon, Divider } from "semantic-ui-react";
 import { ErrorBoundary } from "react-error-boundary";
+import { CssValue } from "../../types";
 
 import InterpretationErrorBoundaryFallback from "../InterpretationErrorBoundaryFallback/InterpretationErrorBoundaryFallback";
 import Editor from "../Editor/Editor";
 import CodeExplanation from "../CodeExplanation/CodeExplanation";
 import CodeSmelling from "../CodeSmelling/CodeSmelling";
 
-const Dashboard: FC = () => {
-  const [cssValue, setCssValue] = useState("");
+const Dashboard = (): JSX.Element => {
+  const [cssValue, setCssValue] = useState<CssValue>(null);
   const [editorDisabled, setEditorDisabled] = useState(false);
   const [activeAccordionIndex, setActiveAccordionIndex] = useState(-1);
   function handleAccordionClick(_, { index }) {
@@ -17,7 +18,7 @@ const Dashboard: FC = () => {
   }
 
   function resetInterpretation() {
-    setCssValue("");
+    setCssValue(null);
     setActiveAccordionIndex(-1);
     setEditorDisabled(false);
   }
@@ -55,7 +56,7 @@ const Dashboard: FC = () => {
                   onReset={resetInterpretation}
                   onError={handleError}
                 >
-                  <CodeExplanation cssValue={cssValue} />
+                  <CodeExplanation {...cssValue} />
                 </ErrorBoundary>
               </Accordion.Content>
             </Segment>
@@ -76,7 +77,7 @@ const Dashboard: FC = () => {
                   onReset={resetInterpretation}
                   onError={handleError}
                 >
-                  <CodeSmelling cssValue={cssValue} />
+                  <CodeSmelling {...cssValue} />
                 </ErrorBoundary>
               </Accordion.Content>
             </Segment>

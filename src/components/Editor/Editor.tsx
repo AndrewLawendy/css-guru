@@ -1,5 +1,6 @@
-import React, { FC, useState } from "react";
+import React, { useState } from "react";
 import AceEditor from "react-ace";
+import { parse, toPlainObject } from "css-tree";
 import { validate } from "csstree-validator";
 import { Button, Dropdown, Message, Popup } from "semantic-ui-react";
 
@@ -35,7 +36,10 @@ const themeOptions = [
   { key: "terminal", value: "terminal", text: "Terminal" },
 ];
 
-const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
+const Editor = ({
+  setCssValue,
+  editorDisabled,
+}: EditorPropTypes): JSX.Element => {
   const [cssText, setCssText] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
   const [editorTheme, setEditorTheme] = useEditorTheme();
@@ -55,13 +59,35 @@ const Editor: FC<EditorPropTypes> = ({ setCssValue, editorDisabled }) => {
     setEditorTheme(value);
   }
 
+  function parseCSS() {
+    const ast = parse(cssText, { positions: true });
+    const styleSheet = toPlainObject(ast);
+    const nonParsedAst = parse(cssText, {
+      positions: true,
+      parseRulePrelude: false,
+      parseAtrulePrelude: false,
+      parseValue: false,
+    });
+    const nonParsedStyleSheet = toPlainObject(nonParsedAst);
+
+    if (
+      styleSheet.type === "StyleSheet" &&
+      nonParsedStyleSheet.type === "StyleSheet"
+    ) {
+      const { children: cssNodes } = styleSheet;
+      const { children: nonParsedCssNodes } = nonParsedStyleSheet;
+
+      setCssValue({ cssNodes, nonParsedCssNodes });
+    }
+  }
+
   function handleInterpretCss() {
     const validation = validate(cssText);
     if (validation.length > 0) {
       setValidationErrors(validation);
-      setCssValue("");
+      setCssValue(null);
     } else {
-      setCssValue(cssText);
+      parseCSS();
     }
   }
 

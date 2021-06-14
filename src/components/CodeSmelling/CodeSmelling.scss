@@ -1,0 +1,5 @@
+.codeBlockSmellsErrorMessageBlock {
+  &:nth-of-type(1n + 2) {
+    margin-top: 16px;
+  }
+}

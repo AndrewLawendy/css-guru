@@ -1,5 +1,5 @@
 import { PseudoElementSelectorPlain } from "css-tree";
-import { Flag } from "../../types";
+import { SupportFlag } from "../../types";
 import { addToErrors } from "./selectorInterpretationErrorHandler";
 
 export default function (selectorElement: PseudoElementSelectorPlain): string {
@@ -18,7 +18,7 @@ export default function (selectorElement: PseudoElementSelectorPlain): string {
     case "cue":
       return "the WebVTT cues";
     case "cue-region": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: "the WebVTT cues",
         status: "Not Supported",
       };
@@ -27,7 +27,7 @@ export default function (selectorElement: PseudoElementSelectorPlain): string {
     }
 
     case "grammar-error": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text:
           "the text segment which the user agent has flagged as grammatically incorrect",
         status: "Not Supported",
@@ -37,7 +37,7 @@ export default function (selectorElement: PseudoElementSelectorPlain): string {
     }
 
     case "marker": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text:
           "the marker box of a list item, which typically contains a bullet or number",
         status: "Experimental",
@@ -53,7 +53,7 @@ export default function (selectorElement: PseudoElementSelectorPlain): string {
       return "the placeholder text in an <code>input</code> or <code>textarea</code>";
 
     case "spelling-error": {
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: `the text segment which the user agent has flagged as incorrectly spelled`,
         status: "Not Supported",
       };
@@ -77,7 +77,7 @@ function handlePart(selectorElement: PseudoElementSelectorPlain) {
         ? `<code>${partValue.value}</code>`
         : "a matching";
 
-      const flag: Flag = {
+      const flag: SupportFlag = {
         text: `the element within a shadow tree that has ${value} <code>part</code> attribute`,
         status: "Experimental",
       };

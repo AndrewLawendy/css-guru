@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React from "react";
 import { Container, Header } from "semantic-ui-react";
 import readingTime from "reading-time";
 import { FileReaderPropTypes } from "./types";
 
 import styles from "./MarkdownParser.scss";
 
-const MarkdownParser: FC<FileReaderPropTypes> = ({ title, file }) => {
+const MarkdownParser = ({ title, file }: FileReaderPropTypes): JSX.Element => {
   const readingTimeStats = readingTime(file);
 
   return (

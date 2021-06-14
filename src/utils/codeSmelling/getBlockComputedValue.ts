@@ -1,54 +1,54 @@
-import camelCase from "lodash.camelcase";
-import {
-  Declaration,
-  DeclarationValue,
-  FunctionDeclarationValue,
-} from "../../types";
+import { CssNodePlain, FunctionNodePlain } from "css-tree";
 import {
   handleMarginAndPaddingShorthand,
   handleBorderStyleShorthand,
   handleBorderRadiusShorthand,
 } from "./handleBoxEdgeDeclarationShorthand";
+import camelCase from "lodash.camelcase";
 
-export default function (block: Declaration[]): { [key: string]: string } {
-  return block.reduce((acc, { property, value: { children } }) => {
-    const computedDeclarationValues = handleDeclarationValue(children);
+export default function (block: CssNodePlain[]): { [key: string]: string } {
+  return block.reduce((acc, node) => {
+    if (node.type === "Declaration") {
+      const { property, value } = node;
+      let computedDeclarationValues = [];
+      if (value.type === "Value") {
+        computedDeclarationValues = handleDeclarationValue(value.children);
+      }
 
-    switch (property) {
-      case "margin":
-      case "padding":
-        acc = {
-          ...acc,
-          ...handleMarginAndPaddingShorthand(
-            property,
-            computedDeclarationValues
-          ),
-        };
-        break;
-      case "border-style":
-        acc = {
-          ...acc,
-          ...handleBorderStyleShorthand(computedDeclarationValues),
-        };
-        break;
-      case "border-radius":
-        acc = {
-          ...acc,
-          ...handleBorderRadiusShorthand(computedDeclarationValues),
-        };
-        break;
+      switch (property) {
+        case "margin":
+        case "padding":
+          acc = {
+            ...acc,
+            ...handleMarginAndPaddingShorthand(
+              property,
+              computedDeclarationValues
+            ),
+          };
+          break;
+        case "border-style":
+          acc = {
+            ...acc,
+            ...handleBorderStyleShorthand(computedDeclarationValues),
+          };
+          break;
+        case "border-radius":
+          acc = {
+            ...acc,
+            ...handleBorderRadiusShorthand(computedDeclarationValues),
+          };
+          break;
 
-      default:
-        acc[camelCase(property)] = computedDeclarationValues.join("");
+        default:
+          acc[camelCase(property)] = computedDeclarationValues.join("");
+      }
     }
 
     return acc;
   }, {});
 }
 
-function handleDeclarationValue(
-  declarationValues: DeclarationValue[]
-): string[] {
+function handleDeclarationValue(declarationValues: CssNodePlain[]): string[] {
   return declarationValues.reduce((acc, declarationValue) => {
     switch (declarationValue.type) {
       case "Dimension":
@@ -63,7 +63,7 @@ function handleDeclarationValue(
       case "Percentage":
         acc.push(`${declarationValue.value}%`);
         break;
-      default:
+      case "Raw":
         acc.push(
           declarationValue.value === "0" ? "0px" : declarationValue.value
         );
@@ -74,14 +74,14 @@ function handleDeclarationValue(
 }
 
 function constructFunctionDeclaration(
-  declarationValue: FunctionDeclarationValue
+  declarationValue: FunctionNodePlain
 ): string {
   const childrenValue = declarationValue.children.reduce((acc, curr) => {
     switch (curr.type) {
       case "Dimension":
         acc += `${curr.value}${curr.unit}`;
         break;
-      default:
+      case "Raw":
         acc += curr.value;
     }
 

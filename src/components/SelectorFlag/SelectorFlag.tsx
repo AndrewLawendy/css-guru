@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React from "react";
 import reactStringReplace from "react-string-replace";
 import { Popup, Icon } from "semantic-ui-react";
-import { Flag } from "../../types";
+import { SupportFlag } from "../../types";
 
 import styles from "./SelectorFlag.scss";
 
-const SelectorFlag: FC<Flag> = ({ text, status }) => {
+const SelectorFlag = ({ text, status }: SupportFlag): JSX.Element => {
   let popupContent;
   switch (status) {
     case "Experimental":
