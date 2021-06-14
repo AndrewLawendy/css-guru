@@ -9,6 +9,7 @@
   :global .header {
     font-size: 4rem !important;
     line-height: 4rem !important;
+    margin-bottom: 0 !important;
   }
 
   .metaData {
@@ -23,6 +24,7 @@
     border: 1px solid $pearl-bush;
     border-radius: 6px;
     overflow: hidden;
+    max-width: 100%;
   }
 
   li:not(:last-of-type) {

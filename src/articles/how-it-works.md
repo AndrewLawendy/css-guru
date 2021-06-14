@@ -56,6 +56,11 @@ For more info on that matter I recommend checking this page on [CSS Tricks](http
    `div:nth-child(2n+5) { }`
    ![Pseudo Class Nth](../assets/articles-assets/pseudo-class-nth.png)
 
+5. We support media query explanation.
+
+   Example:
+   ![Media Query Support](../assets/articles-assets/media-query-support.jpg)
+
 ### Code Smelling
 
 We evaluate obsolete and contradictory declarations.
@@ -77,3 +82,6 @@ Here are some few examples of many:
   We will simply show a warning here to alert the developer
   that padding and margin with percentage values
   are calculated compared to width of the parent!
+
+  Example:
+  ![Code Smelling](../assets/articles-assets/smelling.jpg)
