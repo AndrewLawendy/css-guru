@@ -1,5 +1,12 @@
+import { CssNodePlain } from "css-tree";
+
 export type RegularObject = {
   [key: string]: string;
+};
+
+export type CssValue = {
+  cssNodes: CssNodePlain[];
+  nonParsedCssNodes: CssNodePlain[];
 };
 
 export type SupportFlag = {

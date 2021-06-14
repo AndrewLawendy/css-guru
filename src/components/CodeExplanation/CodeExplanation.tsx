@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { parse, toPlainObject } from "css-tree";
 import reactStringReplace from "react-string-replace";
 import flow from "lodash.flow";
 import { List } from "semantic-ui-react";
@@ -9,14 +8,11 @@ import SelectorFlag from "../SelectorFlag/SelectorFlag";
 import interpretCssNode from "../../utils/cssNodeInterpretation";
 import { fireInterpretationErrors } from "../../utils/cssNodeInterpretation/selectorInterpretationErrorHandler";
 
-import { CodeExplanationPropTypes } from "./types";
-import { CssNodeInterpretation } from "../../types";
+import { CssValue, CssNodeInterpretation } from "../../types";
 
 import styles from "./CodeExplanation.scss";
 
-const CodeExplanation = ({
-  cssValue,
-}: CodeExplanationPropTypes): JSX.Element => {
+const CodeExplanation = (cssValue: CssValue): JSX.Element => {
   const [cssNodesInterpretations, setCssNodesInterpretations] = useState<
     CssNodeInterpretation[]
   >([]);
@@ -25,31 +21,16 @@ const CodeExplanation = ({
 
   function parseAndGenerateCssTree() {
     setCssNodesInterpretations([]);
-    const ast = parse(cssValue, { positions: true });
-    const styleSheet = toPlainObject(ast);
-    const nonParsedAst = parse(cssValue, {
-      positions: true,
-      parseRulePrelude: false,
-      parseAtrulePrelude: false,
-      parseValue: false,
-    });
-    const nonParsedStyleSheet = toPlainObject(nonParsedAst);
+    const { cssNodes, nonParsedCssNodes } = cssValue;
     const nodeInterpretations: CssNodeInterpretation[] = [];
 
-    if (
-      styleSheet.type === "StyleSheet" &&
-      nonParsedStyleSheet.type === "StyleSheet"
-    ) {
-      const { children: cssNodes } = styleSheet;
-      const { children: nonParsedCssNodes } = nonParsedStyleSheet;
-      cssNodes.forEach((node, nodeIndex) => {
-        const nodeInterpretation = interpretCssNode(
-          node,
-          nonParsedCssNodes[nodeIndex]
-        );
-        nodeInterpretations.push(nodeInterpretation);
-      });
-    }
+    cssNodes?.forEach((node, nodeIndex) => {
+      const nodeInterpretation = interpretCssNode(
+        node,
+        nonParsedCssNodes[nodeIndex]
+      );
+      nodeInterpretations.push(nodeInterpretation);
+    });
 
     setCssNodesInterpretations(nodeInterpretations);
     fireInterpretationErrors();
