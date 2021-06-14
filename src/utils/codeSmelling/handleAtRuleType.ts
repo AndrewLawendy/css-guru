@@ -1,30 +1,13 @@
 import { AtrulePlain, CssNodePlain } from "css-tree";
 import { CodeSmellingMessage } from "../../types";
-import handleRuleType from "./handleRuleType";
+import handleMediaQuery from "./handleMediaQuery";
 
 export default function (
-  { block }: AtrulePlain,
+  node: AtrulePlain,
   nonParsedNode: CssNodePlain
 ): CodeSmellingMessage[] {
-  let rulesSmellingMessages: CodeSmellingMessage[] = [];
-
-  if (block !== null && nonParsedNode.type === "Atrule") {
-    const { children: cssNodes } = block;
-    const { children: nonParsedCssNodes } = nonParsedNode.block;
-
-    cssNodes.forEach((cssNode, cssNodeIndex) => {
-      if (cssNode.type === "Rule") {
-        const ruleSmellingMessages = handleRuleType(
-          cssNode,
-          nonParsedCssNodes[cssNodeIndex]
-        );
-
-        rulesSmellingMessages = [
-          ...rulesSmellingMessages,
-          ...ruleSmellingMessages,
-        ];
-      }
-    });
+  switch (node.name) {
+    case "media":
+      return handleMediaQuery(node, nonParsedNode);
   }
-  return rulesSmellingMessages;
 }
