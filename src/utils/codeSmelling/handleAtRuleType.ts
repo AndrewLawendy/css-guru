@@ -1,8 +1,30 @@
+import { AtrulePlain, CssNodePlain } from "css-tree";
 import { CodeSmellingMessage } from "../../types";
+import handleRuleType from "./handleRuleType";
 
 export default function (
-  node: RulePlain,
+  { block }: AtrulePlain,
   nonParsedNode: CssNodePlain
 ): CodeSmellingMessage[] {
-  return [];
+  let rulesSmellingMessages: CodeSmellingMessage[] = [];
+
+  if (nonParsedNode.type === "Atrule") {
+    const { children: cssNodes } = block;
+    const { children: nonParsedCssNodes } = nonParsedNode.block;
+
+    cssNodes.forEach((cssNode, cssNodeIndex) => {
+      if (cssNode.type === "Rule") {
+        const ruleSmellingMessages = handleRuleType(
+          cssNode,
+          nonParsedCssNodes[cssNodeIndex]
+        );
+
+        rulesSmellingMessages = [
+          ...rulesSmellingMessages,
+          ...ruleSmellingMessages,
+        ];
+      }
+    });
+  }
+  return rulesSmellingMessages;
 }

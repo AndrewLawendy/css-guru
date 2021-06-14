@@ -11,12 +11,14 @@ export default function (
 ): CodeSmellingMessage[] {
   const codeSmells: CodeSmellingMessage[] = [];
 
-  if (prelude.type === "SelectorList" && nonParsedNode.type === "Rule") {
-    prelude.children.forEach((selector) => {
-      if (
-        selector.type === "Selector" &&
-        nonParsedNode.prelude.type === "Raw"
-      ) {
+  if (
+    prelude.type === "SelectorList" &&
+    nonParsedNode.type === "Rule" &&
+    nonParsedNode.prelude.type === "Raw"
+  ) {
+    const blocks = nonParsedNode.prelude.value.split(/,\s*/g);
+    prelude.children.forEach((selector, selectorIndex) => {
+      if (selector.type === "Selector") {
         const elementIndex = findLastIndex<CssNodePlain>(
           selector.children,
           (selectorElement: CssNodePlain): boolean =>
@@ -47,7 +49,7 @@ export default function (
         const codeSmell = sniff(elementComputedValue, blockComputedValue);
 
         codeSmells.push({
-          declarationBlock: `${nonParsedNode.prelude.value} [${nonParsedNode.prelude.loc.start.line}:${nonParsedNode.prelude.loc.start.column}]`,
+          declarationBlock: `${blocks[selectorIndex]} [${nonParsedNode.prelude.loc.start.line}:${nonParsedNode.prelude.loc.start.column}]`,
           errorMessages: codeSmell,
         });
       }
