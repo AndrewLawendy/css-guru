@@ -24,6 +24,7 @@ export default function (
     case "property":
     case "color-profile":
     case "import":
+    case "charset":
       break;
     default:
       addToErrors(

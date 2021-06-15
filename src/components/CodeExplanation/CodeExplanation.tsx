@@ -29,7 +29,10 @@ const CodeExplanation = (cssValue: CssValue): JSX.Element => {
         node,
         nonParsedCssNodes[nodeIndex]
       );
-      nodeInterpretations.push(nodeInterpretation);
+
+      if (nodeInterpretation) {
+        nodeInterpretations.push(nodeInterpretation);
+      }
     });
 
     setCssNodesInterpretations(nodeInterpretations);
