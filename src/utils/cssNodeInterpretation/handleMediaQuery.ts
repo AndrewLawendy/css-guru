@@ -279,6 +279,11 @@ function handleMediaFeature(mediaFeature: MediaFeature): string {
       return handleMediaFeaturePointer(mediaFeature, "the primary");
     case "any-pointer":
       return handleMediaFeaturePointer(mediaFeature, "any");
+
+    default:
+      addToErrors(
+        `<code>${mediaFeature.name}</code> is not a valid media feature [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
