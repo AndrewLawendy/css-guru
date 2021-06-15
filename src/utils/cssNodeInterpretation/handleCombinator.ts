@@ -11,7 +11,7 @@ export default function (selectorElement: Combinator): string {
       return "...is preceded by";
     default:
       addToErrors(
-        `This combinator <code>${selectorElement.name}</code> is not valid`
+        `This combinator <code>${selectorElement.name}</code> is not valid [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
       );
   }
 }

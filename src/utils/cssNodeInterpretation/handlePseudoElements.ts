@@ -63,7 +63,7 @@ export default function (selectorElement: PseudoElementSelectorPlain): string {
 
     default:
       addToErrors(
-        `This pseudo element <code>${selectorElement.name}</code> is invalid`
+        `This pseudo element <code>${selectorElement.name}</code> is invalid [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
       );
   }
 }
@@ -85,6 +85,8 @@ function handlePart(selectorElement: PseudoElementSelectorPlain) {
       return JSON.stringify(flag);
     }
   } else {
-    addToErrors(`This pseudo element <code>part</code> needs parameters`);
+    addToErrors(
+      `This pseudo element <code>part</code> needs parameters [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
+    );
   }
 }

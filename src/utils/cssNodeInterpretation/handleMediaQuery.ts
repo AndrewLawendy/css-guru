@@ -137,7 +137,7 @@ function handleMediaIdentifiers(mediaIdentifiers: CssNodePlain[]): string {
         }
         default:
           addToErrors(
-            `<code>${identifier.name}</code> is not a valid media query identifier`
+            `<code>${identifier.name}</code> is not a valid media query identifier [${identifier.loc.start.line}:${identifier.loc.start.column}]`
           );
       }
     }
@@ -321,7 +321,9 @@ function handleMediaFeatureScan(mediaFeature: MediaFeature): string {
       return "a screen using “progressive” rendering displays each screen fully like most modern screens, and all computer screens";
 
     default:
-      addToErrors(`${value} is not a valid scan media feature value`);
+      addToErrors(
+        `${value} is not a valid scan media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -338,7 +340,9 @@ function handleMediaFeatureGrid(mediaFeature: MediaFeature): string {
       return "the output device is bitmap";
 
     default:
-      addToErrors(`${value} is not a valid grid media feature value`);
+      addToErrors(
+        `${value} is not a valid grid media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -357,7 +361,9 @@ function handleMediaFeatureUpdate(mediaFeature: MediaFeature): string {
       return "the output device is not unusually constrained in speed, so regularly-updating things like CSS Animations can be used. Example: computer screens";
 
     default:
-      addToErrors(`${value} is not a valid update media feature value`);
+      addToErrors(
+        `${value} is not a valid update media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -375,7 +381,9 @@ function handleMediaFeatureOverflowBlock(mediaFeature: MediaFeature): string {
       return "content is broken up into discrete pages; content that overflows one page in the block axis is displayed on the following page. Examples: printers, ebook readers";
 
     default:
-      addToErrors(`${value} is not a valid overflow-block media feature value`);
+      addToErrors(
+        `${value} is not a valid overflow-block media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -391,7 +399,7 @@ function handleMediaFeatureOverflowInline(mediaFeature: MediaFeature): string {
 
     default:
       addToErrors(
-        `${value} is not a valid overflow-inline media feature value`
+        `${value} is not a valid overflow-inline media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
       );
   }
 }
@@ -464,7 +472,9 @@ function handleMediaFeatureColorGamut(mediaFeature: MediaFeature): string {
       return "the UA and output device can support approximately the gamut specified by the ITU-R Recommendation BT.2020 Color Space or more (The rec2020 gamut is larger than and includes the p3 gamut)";
 
     default:
-      addToErrors(`${value} is not a valied color-gamut media feature value`);
+      addToErrors(
+        `${value} is not a valied color-gamut media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -481,7 +491,9 @@ function handleMediaFeatureAnyHover(
       return `${key} device can’t hover, or that there is no pointing device. Examples include touchscreens and screens that use a basic drawing stylus`;
 
     default:
-      addToErrors(`${value} is not a valid hover media feature value`);
+      addToErrors(
+        `${value} is not a valid hover media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }
 
@@ -500,6 +512,8 @@ function handleMediaFeaturePointer(
       return `${key} input mechanism of the device does not include a pointing device`;
 
     default:
-      addToErrors(`${value} is not a valid pointer media feature value`);
+      addToErrors(
+        `${value} is not a valid pointer media feature value [${mediaFeature.loc.start.line}:${mediaFeature.loc.start.column}]`
+      );
   }
 }

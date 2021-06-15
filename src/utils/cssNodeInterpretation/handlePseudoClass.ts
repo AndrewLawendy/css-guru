@@ -182,7 +182,7 @@ function handleDir(selectorElement: PseudoClassSelectorPlain): string {
     return JSON.stringify(flag);
   } else {
     addToErrors(
-      "<code>dir</code> pseudo class should have at least one parameter"
+      `<code>dir</code> pseudo class should have at least one parameter [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
     );
   }
 }
@@ -328,7 +328,7 @@ function handleSelectorListParams(
     }
   } else {
     addToErrors(
-      `<code>${selectorElement.name}</code> pseudo class should have at least one parameter`
+      `<code>${selectorElement.name}</code> pseudo class should have at least one parameter [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
     );
   }
 }
@@ -354,7 +354,7 @@ function handleNotValidPseudoClass(selectorElement: PseudoClassSelectorPlain) {
 
     default:
       addToErrors(
-        `This pseudo class <code>${selectorElement.name}</code> is invalid`
+        `This pseudo class <code>${selectorElement.name}</code> is invalid [${selectorElement.loc.start.line}:${selectorElement.loc.start.column}]`
       );
   }
 }

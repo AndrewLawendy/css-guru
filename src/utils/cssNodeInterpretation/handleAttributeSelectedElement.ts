@@ -10,7 +10,9 @@ function getFlagInterpretation(selector: AttributeSelector) {
     case null:
       return "";
     default:
-      addToErrors(`This flag <code>${selector.flags}</code> is not valid`);
+      addToErrors(
+        `This flag <code>${selector.flags}</code> is not valid [${selector.loc.start.line}:${selector.loc.start.column}]`
+      );
   }
 }
 
@@ -43,7 +45,7 @@ function getAttributeMatcherInterpretation(selector: AttributeSelector) {
         )} <code>${selector.value.value}</code>`;
       default:
         addToErrors(
-          `This matcher <code>${selector.matcher}</code> is not a valid attribute matcher`
+          `This matcher <code>${selector.matcher}</code> is not a valid attribute matcher [${selector.loc.start.line}:${selector.loc.start.column}]`
         );
     }
   }

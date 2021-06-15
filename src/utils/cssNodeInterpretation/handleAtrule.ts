@@ -23,8 +23,11 @@ export default function (
     case "font-feature-values":
     case "property":
     case "color-profile":
+    case "import":
       break;
     default:
-      addToErrors(`${name} is not a valid at-rule identifier`);
+      addToErrors(
+        `<code>${name}</code> is not a valid at-rule identifier [${loc.start.line}:${loc.start.column}]`
+      );
   }
 }
