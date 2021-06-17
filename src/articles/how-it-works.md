@@ -68,7 +68,9 @@ For more info on that matter I recommend checking this page on [CSS Tricks](http
 
 ### Code Smelling
 
-We evaluate obsolete and contradictory declarations.
+We evaluate obsolete and contradictory declarations, but our strongest feature is that **we smell the non written**.
+
+**We evaluate your code with the user agent style sheet.**
 
 Here are some few examples of many:
 
@@ -88,6 +90,8 @@ Here are some few examples of many:
   that padding and margin with percentage values
   are calculated compared to width of the parent!
 
-  Example:
+  Examples:
+
+  ![Code Smelling](../assets/articles-assets/smell-non-written.jpg)
 
   ![Code Smelling](../assets/articles-assets/smelling.jpg)
