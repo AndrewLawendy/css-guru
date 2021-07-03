@@ -6,7 +6,7 @@
   padding: 65px 15px 15px;
   margin: -15px;
 
-  :global .header {
+  .documentTitle {
     font-size: 4rem !important;
     line-height: 4rem !important;
     margin-bottom: 0 !important;
@@ -18,16 +18,16 @@
 
   .content {
     margin-top: 1.2rem;
-  }
 
-  img {
-    border: 1px solid $pearl-bush;
-    border-radius: 6px;
-    overflow: hidden;
-    max-width: 100%;
-  }
+    img {
+      border: 1px solid $pearl-bush;
+      border-radius: 6px;
+      overflow: hidden;
+      max-width: 100%;
+    }
 
-  li:not(:last-of-type) {
-    margin-bottom: 1em;
+    li:not(:last-of-type) {
+      margin-bottom: 1em;
+    }
   }
 }
